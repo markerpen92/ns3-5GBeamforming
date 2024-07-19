@@ -256,7 +256,7 @@ int main(int argc , char* argv[])
 
     NodeContainer Users_NodeContainer;
     Users_NodeContainer.Create((int)UserNum);
-    Ptr<Node> Users_Node[(int)UserNum];
+    Ptr<Node>     Users_Node  [(int)UserNum];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         Users_Node[user_idx] = Users_NodeContainer.Get(user_idx);
@@ -264,7 +264,7 @@ int main(int argc , char* argv[])
 
     NodeContainer UsersAntenna1_NodeContainer;
     UsersAntenna1_NodeContainer.Create((int)UserNum);
-    Ptr<Node> UsersAntenna1_Node[(int)UserNum];
+    Ptr<Node>     UsersAntenna1_Node  [(int)UserNum];
     for(int antenna1_idx=0 ; antenna1_idx<(int)UserNum ; antenna1_idx++)
     {
         UsersAntenna1_Node[antenna1_idx] = UsersAntenna1_NodeContainer.Get(antenna1_idx);
@@ -272,7 +272,7 @@ int main(int argc , char* argv[])
 
     NodeContainer UsersAntenna2_NodeContainer;
     UsersAntenna2_NodeContainer.Create((int)UserNum);
-    Ptr<Node> UsersAntenna2_Node[(int)UserNum];
+    Ptr<Node>     UsersAntenna2_Node  [(int)UserNum];
     for(int antenna2_idx=0 ; antenna2_idx<(int)UserNum ; antenna2_idx++)
     {
         UsersAntenna2_Node[antenna2_idx] = UsersAntenna2_NodeContainer.Get(antenna2_idx);
@@ -291,9 +291,9 @@ int main(int argc , char* argv[])
 
     /*----------------Create Ether Channel--------------------------------------------------------------------------------------------------------------------------------------------------*/
     PointToPointHelper Channel_PointToPointHelper;
-    Channel_PointToPointHelper.SetDeviceAttribute("DataRate" , StringValue("5Gbps"));
-    Channel_PointToPointHelper.SetChannelAttribute("Delay"   , TimeValue(Seconds(0.000)));
-    Channel_PointToPointHelper.SetQueue("ns3::DropTailQueue" , "MaxSize" , QueueSizeValue(QueueSize("4294967295p")));
+    Channel_PointToPointHelper.SetDeviceAttribute ("DataRate"           , StringValue("5Gbps")     );
+    Channel_PointToPointHelper.SetChannelAttribute("Delay"              , TimeValue(Seconds(0.000)));
+    Channel_PointToPointHelper.SetQueue           ("ns3::DropTailQueue" , "MaxSize" , QueueSizeValue(QueueSize("4294967295p")));
 
     NetDeviceContainer ServerConnectGateway1_NetDeviceContainer   = 
     Channel_PointToPointHelper.Install(NodeContainer(EdgeServer_Node , Gateway1_Node));
@@ -323,12 +323,12 @@ int main(int argc , char* argv[])
     /*----------------Create Wireless Channel from antennas1 to AP1------------------------------------------------------------------------------------------------------------------------*/
     DmgWifiHelper WiFi_DmgWifiHelper;
     WiFi_DmgWifiHelper.SetStandard(NetworkStandard);
-    WiFi.SetRemoteStationManager("ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode));
+    WiFi.SetRemoteStationManager  ("ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode));
     WiFi_DmgWifiHelper.SetCodebook(
-        "ns3::CodebookAnalytical"   ,
-        "CodebookType"              ,
-        EnumValue(SIMPLE_CODEBOOK)  ,
-        "Antennas", UintegerValue(1),
+        "ns3::CodebookAnalytical"    ,
+        "CodebookType"               ,
+        EnumValue(SIMPLE_CODEBOOK)   ,
+        "Antennas", UintegerValue(1) ,
         "Sectors" , UintegerValue(8)
     );
 
@@ -337,11 +337,11 @@ int main(int argc , char* argv[])
     AP1Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
     AP1Channel_DmgWifiChannelHelper.AddPropagationLoss ("ns3::FriisPropagationLossModel" , "Frequency" , DoubleValue (60.48e9));
     AP1Phy_DmgWifiPhyHelper.SetChannel(AP1Channel_DmgWifiChannelHelper.Create());
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerStart"  , DoubleValue(10.0) );
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerEnd"    , DoubleValue(10.0) );
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerLevels" , UintegerValue(1)  );
-    AP1Phy_DmgWifiPhyHelper.Set("ChannelNumber", UintegerValue(2)   );
-    AP1Phy_DmgWifiPhyHelper.Set("SupportOfdmPhy", BooleanValue(true));
+    AP1Phy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
+    AP1Phy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
+    AP1Phy_DmgWifiPhyHelper.Set("TxPowerLevels"  , UintegerValue(1)  );
+    AP1Phy_DmgWifiPhyHelper.Set("ChannelNumber"  , UintegerValue(2)  );
+    AP1Phy_DmgWifiPhyHelper.Set("SupportOfdmPhy" , BooleanValue(true));
     if(WifiStandard == "802.11ay")
     {
         AP1Phy_DmgWifiPhyHelper.SetErrorRateModel(
@@ -350,9 +350,8 @@ int main(int argc , char* argv[])
         );
     }
 
-
     Ssid AP1_Ssid = Ssid("AP1");
-    DmgWifiMacHelper AP1Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default ();
+    DmgWifiMacHelper AP1Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default();
     AP1Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgApWifiMac" ,
         "Ssid"           , SsidValue(AP1_Ssid)     ,
@@ -370,10 +369,10 @@ int main(int argc , char* argv[])
 
     AP1Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgStaWifiMac" , 
-        "Ssid"            , SsidValue(AP1_Ssid) , 
-        "BE_MaxAmpduSize" , StringValue(MpduAggregationSize),
-        "BE_MaxAmsduSize" , StringValue(MsduAggregationSize),
-        "EDMGSupported"   , BooleanValue((WifiStandard == "ay"))
+        "Ssid"               , SsidValue(AP1_Ssid)                , 
+        "BE_MaxAmpduSize"    , StringValue(MpduAggregationSize)   ,
+        "BE_MaxAmsduSize"    , StringValue(MsduAggregationSize)   ,
+        "EDMGSupported"      , BooleanValue((WifiStandard == "ay"))
     );
 
     NetDeviceContainer Antenna1ConnectAP1_NetDeviceContainer[(int)UserNum];
@@ -388,19 +387,34 @@ int main(int argc , char* argv[])
     cout << "-----------------------------------------------Create APs Mac-----------------------------------------------\n";
 
     /*----------------Create APs Mac------------------------------------------------------------------------------------------------------------------------*/
+    DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
+    DmgWifiChannelHelper AP2Channel_DmgWifiChannelHelper;
+    AP2Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
+    AP2Channel_DmgWifiChannelHelper.AddPropagationLoss ("ns3::FriisPropagationLossModel" , "Frequency" , DoubleValue (60.48e9));
+    AP2Phy_DmgWifiPhyHelper.SetChannel(AP2Channel_DmgWifiChannelHelper.Create());
+    AP2Phy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
+    AP2Phy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
+    AP2Phy_DmgWifiPhyHelper.Set("TxPowerLevels"  , UintegerValue(1)  );
+    AP2Phy_DmgWifiPhyHelper.Set("ChannelNumber"  , UintegerValue(2)  );
+    AP2Phy_DmgWifiPhyHelper.Set("SupportOfdmPhy" , BooleanValue(true));
+    if(WifiStandard == "802.11ay")
+    {
+        AP2Phy_DmgWifiPhyHelper.SetErrorRateModel(
+            "ns3::DmgErrorModel","FileName", 
+            StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt")
+        );
+    }
+
     Ssid AP2_Ssid = Ssid("AP2");
-
-    DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = AP1Phy_DmgWifiPhyHelper;
-    DmgWifiMacHelper AP2Mac_DmgWifiMacHelper = AP1Mac_DmgWifiMacHelper;
-
+    DmgWifiMacHelper AP2Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default();
     AP2Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgApWifiMac" ,
-        "Ssid"           , SsidValue(AP2_Ssid)     ,
-        "BE_MaxAmpduSize", StringValue(MpduAggregationSize),
-        "BE_MaxAmsduSize", StringValue(MsduAggregationSize),
-        "SSSlotsPerABFT" , UintegerValue(8)        , 
-        "SSFramesPerSlot", UintegerValue(8)        ,
-        "BeaconInterval" , TimeValue(MicroSeconds (102400)),
+        "Ssid"           , SsidValue(AP2_Ssid)                ,
+        "BE_MaxAmpduSize", StringValue(MpduAggregationSize)   ,
+        "BE_MaxAmsduSize", StringValue(MsduAggregationSize)   ,
+        "SSSlotsPerABFT" , UintegerValue(8)                   , 
+        "SSFramesPerSlot", UintegerValue(8)                   ,
+        "BeaconInterval" , TimeValue(MicroSeconds (102400))   ,
         "EDMGSupported"  , BooleanValue((WifiStandard == "ay"))
     );
 
@@ -410,9 +424,9 @@ int main(int argc , char* argv[])
 
     AP2Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgStaWifiMac" , 
-        "Ssid"            , SsidValue(AP2_Ssid) , 
-        "BE_MaxAmpduSize" , StringValue(MpduAggregationSize),
-        "BE_MaxAmsduSize" , StringValue(MsduAggregationSize),
+        "Ssid"            , SsidValue(AP2_Ssid)                , 
+        "BE_MaxAmpduSize" , StringValue(MpduAggregationSize)   ,
+        "BE_MaxAmsduSize" , StringValue(MsduAggregationSize)   ,
         "EDMGSupported"   , BooleanValue((WifiStandard == "ay"))
     );
 
@@ -469,20 +483,19 @@ int main(int argc , char* argv[])
     Stack_InternetStackHelper.Install(Gateways_NodeContainer     );
     Stack_InternetStackHelper.Install(APs_NodeContainer          );
     Stack_InternetStackHelper.Install(Users_NodeContainer        );
-    cout << "Install Stacks Successfully\n";
+    Stack_InternetStackHelper.Install(UsersAntenna1_NodeContainer);
+    Stack_InternetStackHelper.Install(UsersAntenna2_NodeContainer);
 
     Ipv4AddressHelper Address_IPv4AddressHelper;
     Address_IPv4AddressHelper.SetBase("10.1.1.0" , "255.255.255.0");
     Ipv4InterfaceContainer ServerConnectGateway1_Ipv4InterfaceContainer   = Address_IPv4AddressHelper.Assign(
         ServerConnectGateway1_NetDeviceContainer
     );
-    cout << "Build Network 10.1.1.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.2.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway1ConnectGateway2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         Gateway1ConnectGateway2_NetDeviceContainer
     );
-    cout << "Build Network 10.1.2.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.3.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway2ConnectAPs_NetDeviceContainer = Address_IPv4AddressHelper.Assign(
@@ -491,7 +504,6 @@ int main(int argc , char* argv[])
     Address_IPv4AddressHelper.Assign(
         Gateway2ConnectAP2_NetDeviceContainer
     );
-    cout << "Build Network 10.1.3.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.4.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP1_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
@@ -504,7 +516,6 @@ int main(int argc , char* argv[])
             Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx]
         );
     }
-    cout << "Build Network 10.1.4.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.5.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
@@ -517,39 +528,42 @@ int main(int argc , char* argv[])
             Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx]
         );
     }
-    cout << "Build Network 10.1.5.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.6.0" , "255.255.255.0");
-    Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[(int)UserNum];
+    Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[(int)UserNum][2];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
-        UsersConnectAntennas_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
+        UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0] = Address_IPv4AddressHelper.Assign(
             Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][0]
         );
-        UsersConnectAntennas_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
+        UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1] = Address_IPv4AddressHelper.Assign(
             Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][1]
         );
     }
+    cout << "Build Network 10.1.6.0 Successfully\n";
 
+    Address_IPv4AddressHelper.SetBase("10.1.7.0" , "255.255.255.0");
     NodeContainer      UsersConnectServer_NodeContainer     [(int)UserNum];
     NetDeviceContainer UsersConnectServer_NetDeviceContainer[(int)UserNum];
     Ipv4InterfaceContainer UsersConnectServer_Ipv4InterfaceContainer[(int)UserNum];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
-        UsersConnectServer_NodeContainer[user_idx]      = NodeContainer(EdgeServer_Node , Users_Node[user_idx]);
+        UsersConnectServer_NodeContainer     [user_idx] = NodeContainer(EdgeServer_Node , Users_Node[user_idx]);
         UsersConnectServer_NetDeviceContainer[user_idx] = Channel_PointToPointHelper.Install(
-             UsersConnectServer_NodeContainer[user_idx]
+            UsersConnectServer_NodeContainer [user_idx]
         );
         UsersConnectServer_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
             UsersConnectServer_NetDeviceContainer[user_idx]
         );
     }
-    cout << "Build Network 10.1.6.0 Successfully\n";
+    cout << "Build Network 10.1.7.0 Successfully\n";
 
     /* Populate routing table */
-    Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+    Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+    cout << "Build RouteTable Successfully\n";
     /* We do not want any ARP packets */
     PopulateArpCache ();
+    cout << "ARP Disable Successfully\n";
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "-----------------------------------------------Install TCP Sink-----------------------------------------------\n";
@@ -573,7 +587,14 @@ int main(int argc , char* argv[])
             &(ServerSink_ApplicationContainer[user_idx])     , 
             EdgeServer_Node , (uint32_t)((int)port-user_idx) , 
             PayloadSize , DataRate , 1.4 , SimulationTime    , 
-            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx].GetAddress(1)
+            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1)
+        );
+
+        ns3_ForServer_InstallTCPTxSink_TCPApp2(
+            &(ServerSink_ApplicationContainer[user_idx])     , 
+            EdgeServer_Node , (uint32_t)((int)port-user_idx) , 
+            PayloadSize , DataRate , 1.4 , SimulationTime    , 
+            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1)
         );
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
