@@ -278,12 +278,11 @@ int main(int argc , char* argv[])
         UsersAntenna2_Node[antenna2_idx] = UsersAntenna2_NodeContainer.Get(antenna2_idx);
     }
 
-    NodeContainer UsersAntennas_NodeContainer[(int)UserNum];
+    NodeContainer UsersAntennas_NodeContainer[(int)UserNum][2];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
-        UsersAntennas_NodeContainer[user_idx].Add(Users_Node[user_idx]);
-        UsersAntennas_NodeContainer[user_idx].Add(UsersAntenna1_Node[user_idx]);
-        UsersAntennas_NodeContainer[user_idx].Add(UsersAntenna2_Node[user_idx]);
+        UsersAntennas_NodeContainer[user_idx][0] = NodeContainer(UsersAntenna1_Node[user_idx] , Users_Node[user_idx]);
+        UsersAntennas_NodeContainer[user_idx][1] = NodeContainer(UsersAntenna2_Node[user_idx] , Users_Node[user_idx]);
     }
     
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -308,10 +307,14 @@ int main(int argc , char* argv[])
     NetDeviceContainer Gateway2ConnectAP2_NetDeviceContainer      = 
     Channel_PointToPointHelper.Install(NodeContainer(Gateway2_Node   ,      AP2_Node));  
 
-    NetDeviceContainer Antenna1ConnectAntenna2_NetDeviceContainer[(int)UserNum];
+    NetDeviceContainer Antenna1ConnectAntenna2_NetDeviceContainer[(int)UserNum][2];
     for(int user_containeridx=0 ; user_containeridx<(int)UserNum ; user_containeridx++)
     {
-        Channel_PointToPointHelper.Install(UsersAntennas_NodeContainer[user_containeridx]);
+        Antenna1ConnectAntenna2_NetDeviceContainer[user_containeridx][0] = 
+        Channel_PointToPointHelper.Install(UsersAntennas_NodeContainer[user_containeridx][0]);
+
+        Antenna1ConnectAntenna2_NetDeviceContainer[user_containeridx][1] = 
+        Channel_PointToPointHelper.Install(UsersAntennas_NodeContainer[user_containeridx][1]);
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -382,9 +385,9 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+    cout << "-----------------------------------------------Create APs Mac-----------------------------------------------\n";
 
-
-    /*----------------Create Wireless Channel from antennas1 to AP1------------------------------------------------------------------------------------------------------------------------*/
+    /*----------------Create APs Mac------------------------------------------------------------------------------------------------------------------------*/
     Ssid AP2_Ssid = Ssid("AP2");
 
     DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = AP1Phy_DmgWifiPhyHelper;
@@ -422,7 +425,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
+    cout << "-----------------------------------------------Set Nodes' Location and mobility-----------------------------------------------\n";
 
     /*----------------Set Nodes' Location and mobility------------------------------------------------------------------------------------------------------------------------*/
     Ptr<ListPositionAllocator> PositionAlloc_ListPositionAllocator = CreateObject<ListPositionAllocator>();
@@ -453,32 +456,33 @@ int main(int argc , char* argv[])
     Mobile_MobilityHelper.Install(APs_NodeContainer       );
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
-        Mobile_MobilityHelper.Install(UsersAntennas_NodeContainer[user_idx]);
+        Mobile_MobilityHelper.Install(UsersAntennas_NodeContainer[user_idx][0]);
+        Mobile_MobilityHelper.Install(UsersAntennas_NodeContainer[user_idx][1]);
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
+    cout << "-----------------------------------------------IPv4 address assign-----------------------------------------------\n";
 
     /*----------------IPv4 address assign--------------------------------------------------------------------------------------------------------------------------------------------------*/
     InternetStackHelper Stack_InternetStackHelper;
     Stack_InternetStackHelper.Install(EdgeServer_NodeContainer   );
     Stack_InternetStackHelper.Install(Gateways_NodeContainer     );
     Stack_InternetStackHelper.Install(APs_NodeContainer          );
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
-    {
-        Stack_InternetStackHelper.Install(UsersAntennas_NodeContainer[user_idx]);
-    }
+    Stack_InternetStackHelper.Install(Users_NodeContainer        );
+    cout << "Install Stacks Successfully\n";
 
     Ipv4AddressHelper Address_IPv4AddressHelper;
     Address_IPv4AddressHelper.SetBase("10.1.1.0" , "255.255.255.0");
     Ipv4InterfaceContainer ServerConnectGateway1_Ipv4InterfaceContainer   = Address_IPv4AddressHelper.Assign(
         ServerConnectGateway1_NetDeviceContainer
     );
+    cout << "Build Network 10.1.1.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.2.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway1ConnectGateway2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         Gateway1ConnectGateway2_NetDeviceContainer
     );
+    cout << "Build Network 10.1.2.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.3.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway2ConnectAPs_NetDeviceContainer = Address_IPv4AddressHelper.Assign(
@@ -487,6 +491,7 @@ int main(int argc , char* argv[])
     Address_IPv4AddressHelper.Assign(
         Gateway2ConnectAP2_NetDeviceContainer
     );
+    cout << "Build Network 10.1.3.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.4.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP1_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
@@ -499,6 +504,7 @@ int main(int argc , char* argv[])
             Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx]
         );
     }
+    cout << "Build Network 10.1.4.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.5.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
@@ -511,13 +517,17 @@ int main(int argc , char* argv[])
             Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx]
         );
     }
+    cout << "Build Network 10.1.5.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("10.1.6.0" , "255.255.255.0");
     Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[(int)UserNum];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         UsersConnectAntennas_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
-            Antenna1ConnectAntenna2_NetDeviceContainer[user_idx]
+            Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][0]
+        );
+        UsersConnectAntennas_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
+            Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][1]
         );
     }
 
@@ -534,6 +544,7 @@ int main(int argc , char* argv[])
             UsersConnectServer_NetDeviceContainer[user_idx]
         );
     }
+    cout << "Build Network 10.1.6.0 Successfully\n";
 
     /* Populate routing table */
     Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
@@ -541,7 +552,7 @@ int main(int argc , char* argv[])
     PopulateArpCache ();
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
+    cout << "-----------------------------------------------Install TCP Sink-----------------------------------------------\n";
 
     /*----------------Install TCP Sink----------------------------------------------------------------------------------------------------------------------------------------------------*/
     ApplicationContainer UsersSink_ApplicationContainer    [(int)UserNum];
@@ -567,7 +578,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
+    cout << "-----------------------------------------------Put Trace NetworkPerformance software into nodes-----------------------------------------------\n";
 
     /*----------------Put Trace NetworkPerformance software into nodes---------------------------------------------------------------------------------------------------------------------*/
     Ptr<WifiNetDevice> AP1_WiFiNetDevice              = StaticCast<WifiNetDevice>(AP1_NetDeviceContainer.Get(0));
