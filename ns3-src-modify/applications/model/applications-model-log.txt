@@ -1,0 +1,554 @@
+diff ../../NS3-WiGig/src/applications/model/bulk-send-application.cc ../../ns-3-dev-git/src/applications/model/bulk-send-application.cc
+32d31
+< #include "ns3/boolean.h"
+56,60d54
+<     .AddAttribute ("Local",
+<                    "The Address on which to bind the socket. If not set, it is generated automatically.",
+<                    AddressValue (),
+<                    MakeAddressAccessor (&BulkSendApplication::m_local),
+<                    MakeAddressChecker ())
+73,77d66
+<     .AddAttribute ("EnableE2EStats",
+<                    "Enable E2E statistics (sequences, timestamps)",
+<                    BooleanValue (false),
+<                    MakeBooleanAccessor (&BulkSendApplication::m_enableE2EStats),
+<                    MakeBooleanChecker ())
+81,83d69
+<     .AddTraceSource ("TxE2EStat", "Statistic sent with the packet",
+<                      MakeTraceSourceAccessor (&BulkSendApplication::m_txTraceWithStats),
+<                      "ns3::PacketSink::E2EStatCallback")
+92,93c78
+<     m_totBytes (0),
+<     m_txPackets (0)
+---
+>     m_totBytes (0)
+131d115
+<   Address from;
+137d120
+<       int ret = -1;
+148c131
+<       if (! m_local.IsInvalid())
+---
+>       if (Inet6SocketAddress::IsMatchingType (m_peer))
+150,161c133
+<           NS_ABORT_MSG_IF ((Inet6SocketAddress::IsMatchingType (m_peer) && InetSocketAddress::IsMatchingType (m_local)) ||
+<                            (InetSocketAddress::IsMatchingType (m_peer) && Inet6SocketAddress::IsMatchingType (m_local)),
+<                            "Incompatible peer and local address IP version");
+<           ret = m_socket->Bind (m_local);
+<         }
+<       else
+<         {
+<           if (Inet6SocketAddress::IsMatchingType (m_peer))
+<             {
+<               ret = m_socket->Bind6 ();
+<             }
+<           else if (InetSocketAddress::IsMatchingType (m_peer))
+---
+>           if (m_socket->Bind6 () == -1)
+163c135
+<               ret = m_socket->Bind ();
+---
+>               NS_FATAL_ERROR ("Failed to bind socket");
+166,167c138
+< 
+<       if (ret == -1)
+---
+>       else if (InetSocketAddress::IsMatchingType (m_peer))
+169c140,143
+<           NS_FATAL_ERROR ("Failed to bind socket");
+---
+>           if (m_socket->Bind () == -1)
+>             {
+>               NS_FATAL_ERROR ("Failed to bind socket");
+>             }
+182,183c156
+<       m_socket->GetSockName (from);
+<       SendData (from, m_peer);
+---
+>       SendData ();
+205c178
+< void BulkSendApplication::SendData (const Address &from, const Address &to)
+---
+> void BulkSendApplication::SendData (void)
+223,240c196
+< 
+<       Ptr<Packet> packet;
+<       if (m_enableE2EStats)
+<         {
+<           // Should we add a trace for the sent tx and timestamp?
+<           E2eStatsHeader header;
+<           header.SetSeq (m_seq++);
+<           header.SetSize (toSend);
+<           NS_ABORT_IF (toSend < header.GetSerializedSize ());
+<           packet = Create<Packet> (toSend - header.GetSerializedSize ());
+<           packet->AddHeader (header);
+<           m_txTraceWithStats (packet, from, to, header);
+<         }
+<       else
+<         {
+<           packet = Create<Packet> (toSend);
+<         }
+< 
+---
+>       Ptr<Packet> packet = Create<Packet> (toSend);
+246d201
+<           m_txPackets++;
+250c205
+<       // some buffer space has freed up.
+---
+>       // some buffer space has freed ip.
+269,272c224
+<   Address from, to;
+<   socket->GetSockName (from);
+<   socket->GetPeerName (to);
+<   SendData (from, to);
+---
+>   SendData ();
+281c233
+< void BulkSendApplication::DataSend (Ptr<Socket> socket, uint32_t)
+---
+> void BulkSendApplication::DataSend (Ptr<Socket>, uint32_t)
+287,290c239
+<       Address from, to;
+<       socket->GetSockName (from);
+<       socket->GetPeerName (to);
+<       SendData (from, to);
+---
+>       SendData ();
+294,298d242
+< uint64_t
+< BulkSendApplication::GetTotalTxPackets (void) const
+< {
+<   return m_txPackets;
+< }
+300,304d243
+< uint64_t
+< BulkSendApplication::GetTotalTxBytes (void) const
+< {
+<   return m_totBytes;
+< }
+diff ../../NS3-WiGig/src/applications/model/bulk-send-application.h ../../ns-3-dev-git/src/applications/model/bulk-send-application.h
+29d28
+< #include "ns3/e2e-stats-header.h"
+68,73d66
+<  * If the attribute "EnableE2EStats" is enabled, the application will use
+<  * some byte of the payload to store an header with a sequence number,
+<  * a timestamp, and the size of the packet sent. To get these statistics,
+<  * please use PacketSink (and enable its "EnableE2EStats" attribute) or extract
+<  * the header yourself in your application (you can see how PacketSink is working
+<  * with such headers).
+109,117c102,104
+<   /**
+<    * \return the total packets transmitted
+<    */
+<   uint64_t GetTotalTxPackets (void) const;
+<   /**
+<    * \return the total bytes transmitted
+<    */
+<   uint64_t GetTotalTxBytes (void) const;
+< 
+---
+> protected:
+>   virtual void DoDispose (void);
+> private:
+122,124d108
+< protected:
+<   virtual void DoDispose (void);
+< private:
+127,128d110
+<    * \param from From address
+<    * \param to To address
+130c112
+<   void SendData (const Address &from, const Address &to);
+---
+>   void SendData ();
+134d115
+<   Address         m_local;        //!< Local address to bind to
+140,143d120
+<   uint64_t        m_txPackets;    //!< Total packets sent so far
+<   uint32_t        m_seq {0};      //!< Sequence
+<   bool            m_enableE2EStats {false}; //!< Enable or disable the e2e statistic generation
+< 
+147,149d123
+< 
+<   /// Callback for tracing the packet Tx events, includes source, destination, and the packet sent
+<   TracedCallback<Ptr<const Packet>, const Address &, const Address &, const E2eStatsHeader &> m_txTraceWithStats;
+Only in ../../NS3-WiGig/src/applications/model: e2e-stats-header.cc
+Only in ../../NS3-WiGig/src/applications/model: e2e-stats-header.h
+diff ../../NS3-WiGig/src/applications/model/onoff-application.cc ../../ns-3-dev-git/src/applications/model/onoff-application.cc
+44,45d43
+< #include "ns3/seq-ts-header.h"
+< #include "timestamp-tag.h"
+72,76d69
+<     .AddAttribute ("Local",
+<                    "The Address on which to bind the socket. If not set, it is generated automatically.",
+<                    AddressValue (),
+<                    MakeAddressAccessor (&OnOffApplication::m_local),
+<                    MakeAddressChecker ())
+85,88d77
+<     .AddAttribute ("EnableTimestamp", "Whether we add timestamp tag to each outgoing packet or not.",
+<                    BooleanValue (false),
+<                    MakeBooleanAccessor (&OnOffApplication::m_enableTimestamp),
+<                    MakeBooleanChecker ())
+96,102d84
+<     .AddAttribute ("MaxPackets",
+<                    "The total number of packets to send. Once these packets are sent, "
+<                    "no packet is sent again, even in on state. The value zero means "
+<                    "that there is no limit.",
+<                    UintegerValue (0),
+<                    MakeUintegerAccessor (&OnOffApplication::m_maxPackets),
+<                    MakeUintegerChecker<uint64_t> ())
+109,113d90
+<     .AddAttribute ("EnableE2EStats",
+<                    "Enable E2E statistics (sequences, timestamps)",
+<                    BooleanValue (false),
+<                    MakeBooleanAccessor (&OnOffApplication::m_enableE2EStats),
+<                    MakeBooleanChecker ())
+120,122d96
+<     .AddTraceSource ("TxE2EStat", "Statistic sent with the packet",
+<                      MakeTraceSourceAccessor (&OnOffApplication::m_txTraceWithStats),
+<                      "ns3::PacketSink::E2EStatCallback")
+133,134c107
+<     m_totBytes (0),
+<     m_txPackets (0)
+---
+>     m_totBytes (0)
+158,169d130
+< uint64_t
+< OnOffApplication::GetTotalTxPackets (void) const
+< {
+<   return m_txPackets;
+< }
+< 
+< uint64_t
+< OnOffApplication::GetTotalTxBytes (void) const
+< {
+<   return m_totBytes;
+< }
+< 
+184d144
+<   CancelEvents ();
+199,208c159
+<       int ret = -1;
+< 
+<       if (! m_local.IsInvalid())
+<         {
+<           NS_ABORT_MSG_IF ((Inet6SocketAddress::IsMatchingType (m_peer) && InetSocketAddress::IsMatchingType (m_local)) ||
+<                            (InetSocketAddress::IsMatchingType (m_peer) && Inet6SocketAddress::IsMatchingType (m_local)),
+<                            "Incompatible peer and local address IP version");
+<           ret = m_socket->Bind (m_local);
+<         }
+<       else
+---
+>       if (Inet6SocketAddress::IsMatchingType (m_peer))
+210c161
+<           if (Inet6SocketAddress::IsMatchingType (m_peer))
+---
+>           if (m_socket->Bind6 () == -1)
+212,217c163
+<               ret = m_socket->Bind6 ();
+<             }
+<           else if (InetSocketAddress::IsMatchingType (m_peer) ||
+<                    PacketSocketAddress::IsMatchingType (m_peer))
+<             {
+<               ret = m_socket->Bind ();
+---
+>               NS_FATAL_ERROR ("Failed to bind socket");
+220,221c166,167
+< 
+<       if (ret == -1)
+---
+>       else if (InetSocketAddress::IsMatchingType (m_peer) ||
+>                PacketSocketAddress::IsMatchingType (m_peer))
+223c169,172
+<           NS_FATAL_ERROR ("Failed to bind socket");
+---
+>           if (m_socket->Bind () == -1)
+>             {
+>               NS_FATAL_ERROR ("Failed to bind socket");
+>             }
+225d173
+< 
+297c245
+<   if ((m_maxBytes == 0 || m_totBytes < m_maxBytes) && (m_maxPackets == 0 || m_txPackets < m_maxPackets))
+---
+>   if (m_maxBytes == 0 || m_totBytes < m_maxBytes)
+337,363c285
+< 
+<   Ptr<Packet> packet;
+<   if (m_enableE2EStats)
+<     {
+<       Address from, to;
+<       m_socket->GetSockName (from);
+<       m_socket->GetPeerName (to);
+<       E2eStatsHeader header;
+<       header.SetSeq (m_seq++);
+<       header.SetSize (m_pktSize);
+<       NS_ABORT_IF (m_pktSize < header.GetSerializedSize ());
+<       packet = Create<Packet> (m_pktSize - header.GetSerializedSize ());
+<       packet->AddHeader (header);
+<       m_txTraceWithStats (packet, from, to, header);
+<     }
+<   else
+<     {
+<       packet = Create<Packet> (m_pktSize);
+<     }
+< 
+<   if (m_enableTimestamp)
+<     {
+<       TimestampTag timestamp;
+<       timestamp.SetTimestamp (Simulator::Now ());
+<       packet->AddByteTag (timestamp);
+<     }
+< 
+---
+>   Ptr<Packet> packet = Create<Packet> (m_pktSize);
+367d288
+<   m_txPackets++;
+405d325
+<   NS_FATAL_ERROR ("Can't connect");
+diff ../../NS3-WiGig/src/applications/model/onoff-application.h ../../ns-3-dev-git/src/applications/model/onoff-application.h
+34d33
+< #include "ns3/e2e-stats-header.h"
+86,92d84
+< *
+< * If the attribute "EnableE2EStats" is enabled, the application will use
+< * some byte of the payload to store an header with a sequence number,
+< * a timestamp, and the size of the packet sent. To get these statistics,
+< * please use PacketSink (and enable its "EnableE2EStats" attribute) or extract
+< * the header yourself in your application (you can see how PacketSink is working
+< * with such headers).
+123,131d114
+<   /**
+<    * \return the total packets transmitted
+<    */
+<   uint64_t GetTotalTxPackets (void) const;
+<   /**
+<    * \return the total bytes transmitted
+<    */
+<   uint64_t GetTotalTxBytes (void) const;
+< 
+140a124,126
+> protected:
+>   virtual void DoDispose (void);
+> private:
+145,147d130
+< protected:
+<   virtual void DoDispose (void);
+< private:
+170d152
+<   Address         m_local;        //!< Local address to bind to
+180d161
+<   uint64_t        m_maxPackets;   //!< Limit total number of packets sent
+182d162
+<   uint64_t        m_txPackets;     //!< Total packets sent so far
+186,189d165
+<   bool            m_enableTimestamp; //!< Add timestamp to each outgoing packet.
+<   uint32_t        m_seq {0};      //!< Sequence
+<   bool            m_enableE2EStats {false}; //!< Enable or disable the e2e statistic generation
+< 
+196,198d171
+< 
+<   /// Callback for tracing the packet Tx events, includes source, destination, and the packet sent
+<   TracedCallback<Ptr<const Packet>, const Address &, const Address &, const E2eStatsHeader &> m_txTraceWithStats;
+diff ../../NS3-WiGig/src/applications/model/packet-loss-counter.h ../../ns-3-dev-git/src/applications/model/packet-loss-counter.h
+43c43
+<  * (i.e., too old with respect to the last sequence number seen) are considered lost,
+---
+>  * (i.e., too old wit respect to the last sequence number seen) are considered lost,
+diff ../../NS3-WiGig/src/applications/model/packet-sink.cc ../../ns-3-dev-git/src/applications/model/packet-sink.cc
+34,40d33
+< #include "timestamp-tag.h"
+< 
+< 
+< #include <iostream>
+< #include <fstream>
+< using namespace ns3;
+< using namespace std;
+65,69d57
+<     .AddAttribute ("EnableE2EStats",
+<                    "Enable E2E statistics (sequences, timestamps)",
+<                    BooleanValue (false),
+<                    MakeBooleanAccessor (&PacketSink::m_enableE2EStats),
+<                    MakeBooleanChecker ())
+77,80d64
+<     .AddTraceSource ("RxE2EStat",
+<                      "A sequence number and a timestamp have been received",
+<                      MakeTraceSourceAccessor (&PacketSink::m_rxTraceWithAddressesAndSeqTs),
+<                      "ns3::PacketSink::E2EStatCallback")
+90d73
+<   m_totalPackets = 0;
+104,110d86
+< uint64_t
+< PacketSink::GetTotalReceivedPackets (void) const
+< {
+<   NS_LOG_FUNCTION (this);
+<   return m_totalPackets;
+< }
+< 
+224,295d199
+< 
+<       if (m_enableE2EStats)
+<         {
+<           PacketReceived (packet, from, localAddress);
+<         }
+<      TimestampTag timestamp;
+<      if (packet->FindFirstMatchingByteTag (timestamp))
+<        {
+<          Time tx = timestamp.GetTimestamp ();
+<          accummulator += Simulator::Now () - tx;
+<          if (Simulator::Now ().GetSeconds () > 1.9)
+<          {
+<            ofstream fout;
+<            fout.open( "0_packet_latency.txt" ,ios::app);
+<            fout << Simulator::Now ().GetSeconds ()  <<  " "  << (Simulator::Now () - tx).GetMicroSeconds() << " " << std::abs(49152-(InetSocketAddress::ConvertFrom (from).GetPort ()))<< "\n";
+<            fout.close();
+<          }
+< 
+<        }
+<       m_totalPackets++;
+<     }
+< }
+< 
+< void
+< PacketSink::PacketReceived (const Ptr<Packet> &p, const Address &from,
+<                             const Address &localAddress)
+< {
+<   E2eStatsHeader header;
+<   Ptr<Packet> buffer;
+< 
+<   auto itBuffer = m_buffer.find (from);
+<   if (itBuffer == m_buffer.end ())
+<     {
+<       itBuffer = m_buffer.insert (std::make_pair (from, Create<Packet> (0))).first;
+<     }
+< 
+<   buffer = itBuffer->second;
+<   buffer->AddAtEnd (p);
+<   buffer->PeekHeader (header);
+< 
+<   NS_ABORT_IF (header.GetSize () == 0);
+< 
+<   while (buffer->GetSize () >= header.GetSize ())
+<     {
+<       Ptr<Packet> complete = buffer->CreateFragment (0, static_cast<uint32_t> (header.GetSize ()));
+<       buffer->RemoveAtStart (static_cast<uint32_t> (header.GetSize ()));
+< 
+<       complete->RemoveHeader (header);
+< 
+<       m_rxTraceWithAddressesAndSeqTs (complete, from, localAddress, header);
+< 
+<       if (buffer->GetSize () > 0)
+<         {
+<           buffer->PeekHeader (header);
+<         }
+<       else
+<         {
+<           break;
+<         }
+<     }
+< }
+< 
+< Time
+< PacketSink::GetAverageDelay (void) const
+< {
+<   if (m_totalPackets != 0)
+<     {
+<       return accummulator/m_totalPackets;
+<     }
+<   else
+<     {
+<       return Seconds (0);
+diff ../../NS3-WiGig/src/applications/model/packet-sink.h ../../ns-3-dev-git/src/applications/model/packet-sink.h
+29,31d28
+< #include "ns3/inet-socket-address.h"
+< #include "ns3/e2e-stats-header.h"
+< #include <unordered_map>
+80c77
+<   
+---
+> 
+87,90d83
+<   /**
+<    * \return the total number of received
+<    */
+<   uint64_t GetTotalReceivedPackets (void) const;
+92d84
+<   Time GetAverageDelay (void) const;
+102,114c94
+< 
+<   /**
+<    * TracedCallback signature for an E2E stat callback
+<    *
+<    * \param p The packet received
+<    * \param from From address
+<    * \param to Local address
+<    * \param seq The sequence received
+<    * \param time The delay the sequence has needed from the sender to the receiver
+<    */
+<   typedef void (* E2EStatCallback)(Ptr<const Packet> p, const Address &from, const Address & to,
+<                                    const E2eStatsHeader &header);
+< 
+---
+>  
+144,181c124
+<   /**
+<    * \brief Packet received: calculation of the e2e statistics
+<    * \param p received packet
+<    * \param from from address
+<    * \param localAddress local address
+<    *
+<    * The method calculates e2e statistics about the received packet. If
+<    * the transport protocol is stream-based, then reconstruct first the
+<    * original packet, and then extract the statistic header from it.
+<    */
+<   void PacketReceived (const Ptr<Packet> &p, const Address &from, const Address &localAddress);
+< 
+<   /**
+<    * \brief Hashing for the Address class
+<    */
+<   struct AddressHash
+<   {
+<     /**
+<      * \brief operator ()
+<      * \param x the address of which calculate the hash
+<      * \return the hash of x
+<      *
+<      * Should this method go in address.h?
+<      *
+<      * It calculates the hash taking the uint32_t hash value of the ipv4 address.
+<      * It works only for InetSocketAddresses (Ipv4 version)
+<      */
+<     size_t operator() (const Address &x) const
+<     {
+<       NS_ABORT_IF (!InetSocketAddress::IsMatchingType (x));
+<       InetSocketAddress a = InetSocketAddress::ConvertFrom (x);
+<       return std::hash<uint32_t>()(a.GetIpv4 ().Get ());
+<     }
+<   };
+< 
+<   std::unordered_map<Address, Ptr<Packet>, AddressHash> m_buffer; //!< Buffer for received packets
+< 
+<   // In the case of TCP, each socket accept returns a new socket, so the
+---
+>   // In the case of TCP, each socket accept returns a new socket, so the 
+189,191d131
+<   uint64_t        m_totalPackets; //!< Total received packets.
+< 
+<   bool            m_enableE2EStats {false}; //!< Enable or disable the E2E statistics generation
+194a135
+> 
+197,199c138
+<   /// Callback for tracing the packet Rx events, includes source, destination addresses, sequence and timestamp
+<   TracedCallback<Ptr<const Packet>, const Address &, const Address &, const E2eStatsHeader&> m_rxTraceWithAddressesAndSeqTs;
+<   Time accummulator;
+---
+> 
+diff ../../NS3-WiGig/src/applications/model/seq-ts-header.h ../../ns-3-dev-git/src/applications/model/seq-ts-header.h
+34,35c34
+<  * a 64bits time stamp. If you need to use this header with a transport protocol
+<  * such as TCP, please consider to use SizeHeader.
+---
+>  * a 64bits time stamp.
+Only in ../../NS3-WiGig/src/applications/model: timestamp-tag.cc
+Only in ../../NS3-WiGig/src/applications/model: timestamp-tag.h

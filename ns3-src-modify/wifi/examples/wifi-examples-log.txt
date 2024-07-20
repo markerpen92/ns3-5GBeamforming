@@ -1,0 +1,254 @@
+Only in ../../NS3-WiGig/src/wifi/examples: reference
+Only in ../../ns-3-dev-git/src/wifi/examples: test-interference-helper.cc
+Only in ../../NS3-WiGig/src/wifi/examples: wifi-bianchi.cc
+diff ../../NS3-WiGig/src/wifi/examples/wifi-manager-example.cc ../../ns-3-dev-git/src/wifi/examples/wifi-manager-example.cc
+57,58d56
+< #include "ns3/ht-configuration.h"
+< #include "ns3/he-configuration.h"
+73a72
+>   NS_LOG_DEBUG ("Received size " << pkt->GetSize ());
+136c135
+<   rateDataset.Add (snr, g_intervalRate / 1e6);
+---
+>   rateDataset.Add (snr, g_intervalRate / 1000000.0);
+141c140
+<   NS_LOG_INFO ("At time " << Simulator::Now ().As (Time::S) << "; selected rate " << (g_intervalRate / 1e6) << "; observed rate " << currentRate << "; setting new power to " << rss - step.stepSize);
+---
+>   NS_LOG_INFO ("At time " << Simulator::Now ().As (Time::S) << "; observed rate " << currentRate << "; setting new power to " << rss - step.stepSize);
+175c174
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+177c176
+<   cmd.AddValue ("maxSlrc", "The maximum number of retransmission attempts for a Data packet", maxSlrc);
+---
+>   cmd.AddValue ("maxSlrc", "The maximum number of retransmission attempts for a DATA packet", maxSlrc);
+241a241,272
+>   std::string plotName = "wifi-manager-example-";
+>   std::string dataName = "wifi-manager-example-";
+>   plotName += wifiManager;
+>   dataName += wifiManager;
+>   plotName += "-";
+>   dataName += "-";
+>   plotName += standard;
+>   dataName += standard;
+>   if (standard == "802.11n-5GHz"
+>       || standard == "802.11n-2.4GHz"
+>       || standard == "802.11ac"
+>       || standard == "802.11ax-5GHz"
+>       || standard == "802.11ax-2.4GHz")
+>     {
+>       plotName += "-server=";
+>       dataName += "-server=";
+>       std::ostringstream oss;
+>       oss << serverChannelWidth << "MHz_" << serverShortGuardInterval << "ns_" << serverNss << "SS";
+>       plotName += oss.str ();
+>       dataName += oss.str ();
+>       plotName += "-client=";
+>       dataName += "-client=";
+>       oss.str ("");
+>       oss << clientChannelWidth << "MHz_" << clientShortGuardInterval << "ns_" << clientNss << "SS";
+>       plotName += oss.str ();
+>       dataName += oss.str ();
+>     }
+>   plotName += ".eps";
+>   dataName += ".plt";
+>   std::ofstream outfile (dataName.c_str ());
+>   Gnuplot gnuplot = Gnuplot (plotName);
+> 
+254c285
+<   serverStandards.push_back (StandardInfo ("802.11ac", WIFI_PHY_STANDARD_80211ac, serverChannelWidth, 5, 50, 0, 55, 120 * channelRateFactor));
+---
+>   serverStandards.push_back (StandardInfo ("802.11ac", WIFI_PHY_STANDARD_80211ac, serverChannelWidth, 5, 35, 0, 40, 120 * channelRateFactor));
+266c297
+<   clientStandards.push_back (StandardInfo ("802.11ac", WIFI_PHY_STANDARD_80211ac, clientChannelWidth, 5, 50, 0, 55, 120 * channelRateFactor));
+---
+>   clientStandards.push_back (StandardInfo ("802.11ac", WIFI_PHY_STANDARD_80211ac, clientChannelWidth, 5, 35, 0, 40, 120 * channelRateFactor));
+270,271c301,302
+<   clientStandards.push_back (StandardInfo ("802.11ax-5GHz", WIFI_PHY_STANDARD_80211ax_5GHZ, clientChannelWidth, 5, 55, 0, 60, 160 * channelRateFactor));
+<   clientStandards.push_back (StandardInfo ("802.11ax-2.4GHz", WIFI_PHY_STANDARD_80211ax_2_4GHZ, clientChannelWidth, 5, 55, 0, 60, 160 * channelRateFactor));
+---
+>   clientStandards.push_back (StandardInfo ("802.11ax-5GHz", WIFI_PHY_STANDARD_80211ax_5GHZ, clientChannelWidth, 5, 45, 0, 50, 160 * channelRateFactor));
+>   clientStandards.push_back (StandardInfo ("802.11ax-2.4GHz", WIFI_PHY_STANDARD_80211ax_2_4GHZ, clientChannelWidth, 5, 45, 0, 50, 160 * channelRateFactor));
+288,289c319,320
+<   NS_ABORT_MSG_IF (serverSelectedStandard.m_name == "none", "Standard " << standard << " not found");
+<   NS_ABORT_MSG_IF (clientSelectedStandard.m_name == "none", "Standard " << standard << " not found");
+---
+>   NS_ABORT_IF (serverSelectedStandard.m_name == "none");
+>   NS_ABORT_IF (clientSelectedStandard.m_name == "none");
+297,328d327
+<   std::string plotName = "wifi-manager-example-";
+<   std::string dataName = "wifi-manager-example-";
+<   plotName += wifiManager;
+<   dataName += wifiManager;
+<   plotName += "-";
+<   dataName += "-";
+<   plotName += standard;
+<   dataName += standard;
+<   if (standard == "802.11n-5GHz"
+<       || standard == "802.11n-2.4GHz"
+<       || standard == "802.11ac"
+<       || standard == "802.11ax-5GHz"
+<       || standard == "802.11ax-2.4GHz")
+<     {
+<       plotName += "-server_";
+<       dataName += "-server_";
+<       std::ostringstream oss;
+<       oss << serverChannelWidth << "MHz_" << serverShortGuardInterval << "ns_" << serverNss << "SS";
+<       plotName += oss.str ();
+<       dataName += oss.str ();
+<       plotName += "-client_";
+<       dataName += "-client_";
+<       oss.str ("");
+<       oss << clientChannelWidth << "MHz_" << clientShortGuardInterval << "ns_" << clientNss << "SS";
+<       plotName += oss.str ();
+<       dataName += oss.str ();
+<     }
+<   plotName += ".eps";
+<   dataName += ".plt";
+<   std::ofstream outfile (dataName.c_str ());
+<   Gnuplot gnuplot = Gnuplot (plotName);
+< 
+337a337,339
+>   wifiPhy.Set ("RxNoiseFigure", DoubleValue (0.0));
+>   wifiPhy.Set ("EnergyDetectionThreshold", DoubleValue (-110.0));
+>   wifiPhy.Set ("CcaMode1Threshold", DoubleValue (-110.0));
+356c358,359
+<                        "Ssid", SsidValue (ssid));
+---
+>                        "Ssid", SsidValue (ssid),
+>                        "BE_MaxAmpduSize", UintegerValue (maxAmpduSize));
+359c362,363
+<                        "Ssid", SsidValue (ssid));
+---
+>                        "Ssid", SsidValue (ssid),
+>                        "BE_MaxAmpduSize", UintegerValue (maxAmpduSize));
+364c368,369
+<       wifiMac.SetType ("ns3::AdhocWifiMac");
+---
+>       wifiMac.SetType ("ns3::AdhocWifiMac",
+>                        "BE_MaxAmpduSize", UintegerValue (maxAmpduSize));
+374,375d378
+<   Config::Set ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Mac/BE_MaxAmpduSize", UintegerValue (maxAmpduSize));
+< 
+419a423
+>       wifiPhyPtrServer->SetShortGuardInterval (serverShortGuardInterval == 400);
+421,424c425
+<       Ptr<HtConfiguration> clientHtConfiguration = wndClient->GetHtConfiguration ();
+<       clientHtConfiguration->SetShortGuardIntervalSupported (clientShortGuardInterval == 400);
+<       Ptr<HtConfiguration> serverHtConfiguration = wndServer->GetHtConfiguration ();
+<       serverHtConfiguration->SetShortGuardIntervalSupported (serverShortGuardInterval == 400);
+---
+>       wifiPhyPtrClient->SetShortGuardInterval (clientShortGuardInterval == 400);
+429a431
+>       wifiPhyPtrServer->SetGuardInterval (NanoSeconds (serverShortGuardInterval));
+431,432c433
+<       wndServer->GetHeConfiguration ()->SetGuardInterval (NanoSeconds (clientShortGuardInterval));
+<       wndClient->GetHeConfiguration ()->SetGuardInterval (NanoSeconds (clientShortGuardInterval));
+---
+>       wifiPhyPtrClient->SetGuardInterval (NanoSeconds (clientShortGuardInterval));
+diff ../../NS3-WiGig/src/wifi/examples/wifi-phy-configuration.cc ../../ns-3-dev-git/src/wifi/examples/wifi-phy-configuration.cc
+65c65
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+diff ../../NS3-WiGig/src/wifi/examples/wifi-phy-test.cc ../../ns-3-dev-git/src/wifi/examples/wifi-phy-test.cc
+31d30
+< #include "ns3/wifi-psdu.h"
+68c67
+<    * \param psdu the PSDU
+---
+>    * \param p the packet
+71d69
+<    * \param statusPerMpdu reception status per MPDU
+73c71
+<   void Receive (Ptr<WifiPsdu> psdu, double snr, WifiTxVector txVector, std::vector<bool> statusPerMpdu);
+---
+>   void Receive (Ptr<Packet> p, double snr, WifiTxVector txVector);
+82c80
+<   Ptr<WifiPsdu> psdu = Create<WifiPsdu> (Create<Packet> (m_input.packetSize), WifiMacHeader ());
+---
+>   Ptr<Packet> p = Create<Packet> (m_input.packetSize);
+88c86
+<   m_tx->Send (psdu, txVector);
+---
+>   m_tx->SendPacket (p, txVector);
+92c90
+< PsrExperiment::Receive (Ptr<WifiPsdu> psdu, double snr, WifiTxVector txVector, std::vector<bool> statusPerMpdu)
+---
+> PsrExperiment::Receive (Ptr<Packet> p, double snr, WifiTxVector txVector)
+190c188
+<    * \param psdu the PSDU
+---
+>    * \param p the packet
+193d190
+<    * \param statusPerMpdu reception status per MPDU
+195c192
+<   void Receive (Ptr<WifiPsdu> psdu, double snr, WifiTxVector txVector, std::vector<bool> statusPerMpdu);
+---
+>   void Receive (Ptr<Packet> p, double snr, WifiTxVector txVector);
+207,208c204,205
+<   Ptr<WifiPsdu> psdu = Create<WifiPsdu> (Create<Packet> (m_input.packetSizeA), WifiMacHeader ());
+<   (*psdu->begin ())->GetPacket ()->AddByteTag (FlowIdTag (m_flowIdA));
+---
+>   Ptr<Packet> p = Create<Packet> (m_input.packetSizeA);
+>   p->AddByteTag (FlowIdTag (m_flowIdA));
+213c210
+<   m_txA->Send (psdu, txVector);
+---
+>   m_txA->SendPacket (p, txVector);
+219,220c216,217
+<   Ptr<WifiPsdu> psdu = Create<WifiPsdu> (Create<Packet> (m_input.packetSizeB), WifiMacHeader ());
+<   (*psdu->begin ())->GetPacket ()->AddByteTag (FlowIdTag (m_flowIdB));
+---
+>   Ptr<Packet> p = Create<Packet> (m_input.packetSizeB);
+>   p->AddByteTag (FlowIdTag (m_flowIdB));
+225c222
+<   m_txB->Send (psdu, txVector);
+---
+>   m_txB->SendPacket (p, txVector);
+229c226
+< CollisionExperiment::Receive (Ptr<WifiPsdu> psdu, double snr, WifiTxVector txVector, std::vector<bool> statusPerMpdu)
+---
+> CollisionExperiment::Receive (Ptr<Packet> p, double snr, WifiTxVector txVector)
+232c229
+<   if ((*psdu->begin ())->GetPacket ()->FindFirstMatchingByteTag (tag))
+---
+>   if (p->FindFirstMatchingByteTag (tag))
+326c323
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+353c350
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+406c403
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+443c440
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+Only in ../../NS3-WiGig/src/wifi/examples: wifi-test-interference-helper.cc
+diff ../../NS3-WiGig/src/wifi/examples/wifi-trans-example.cc ../../ns-3-dev-git/src/wifi/examples/wifi-trans-example.cc
+60c60
+<   CommandLine cmd (__FILE__);
+---
+>   CommandLine cmd;
+diff ../../NS3-WiGig/src/wifi/examples/wscript ../../ns-3-dev-git/src/wifi/examples/wscript
+11c11
+<     obj = bld.create_ns3_program('wifi-test-interference-helper',
+---
+>     obj = bld.create_ns3_program('test-interference-helper',
+13c13
+<     obj.source = 'wifi-test-interference-helper.cc'
+---
+>     obj.source = 'test-interference-helper.cc'
+26,29d25
+< 
+<     obj = bld.create_ns3_program('wifi-bianchi',
+<         ['wifi', 'applications', 'internet-apps' ])
+<     obj.source = 'wifi-bianchi.cc'
+\ No newline at end of file

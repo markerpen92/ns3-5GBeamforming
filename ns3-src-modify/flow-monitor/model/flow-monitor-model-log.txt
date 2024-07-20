@@ -1,0 +1,63 @@
+diff ../../NS3-WiGig/src/flow-monitor/model/flow-monitor.cc ../../ns-3-dev-git/src/flow-monitor/model/flow-monitor.cc
+85c85
+<   NS_LOG_FUNCTION (this);
+---
+>   // m_histogramBinWidth=DEFAULT_BIN_WIDTH;
+91,93d90
+<   NS_LOG_FUNCTION (this);
+<   Simulator::Cancel (m_startEvent);
+<   Simulator::Cancel (m_stopEvent);
+111d107
+<   NS_LOG_FUNCTION (this);
+142d137
+<   NS_LOG_FUNCTION (this << probe << flowId << packetId << packetSize);
+145d139
+<       NS_LOG_DEBUG ("FlowMonitor not enabled; returning");
+172d165
+<   NS_LOG_FUNCTION (this << probe << flowId << packetId << packetSize);
+175d167
+<       NS_LOG_DEBUG ("FlowMonitor not enabled; returning");
+198d189
+<   NS_LOG_FUNCTION (this << probe << flowId << packetId << packetSize);
+201d191
+<       NS_LOG_DEBUG ("FlowMonitor not enabled; returning");
+264d253
+<   NS_LOG_FUNCTION (this << probe << flowId << packetId << packetSize << reasonCode);
+267d255
+<       NS_LOG_DEBUG ("FlowMonitor not enabled; returning");
+305d292
+<   NS_LOG_FUNCTION (this << maxDelay.GetSeconds ());
+365d351
+<   NS_LOG_FUNCTION (this << time.GetSeconds ());
+368d353
+<       NS_LOG_DEBUG ("FlowMonitor already enabled; returning");
+372d356
+<   NS_LOG_DEBUG ("Scheduling start at " << time.GetSeconds ());
+379c363,366
+<   NS_LOG_FUNCTION (this << time.GetSeconds ());
+---
+>   if (!m_enabled)
+>     {
+>       return;
+>     }
+381d367
+<   NS_LOG_DEBUG ("Scheduling stop at " << time.GetSeconds ());
+389d374
+<   NS_LOG_FUNCTION (this);
+392d376
+<       NS_LOG_DEBUG ("FlowMonitor already enabled; returning");
+402d385
+<   NS_LOG_FUNCTION (this);
+405d387
+<       NS_LOG_DEBUG ("FlowMonitor not enabled; returning");
+421d402
+<   NS_LOG_FUNCTION (this << indent << enableHistograms << enableProbes);
+506d486
+<   NS_LOG_FUNCTION (this << indent << enableHistograms << enableProbes);
+516d495
+<   NS_LOG_FUNCTION (this << fileName << enableHistograms << enableProbes);
+diff ../../NS3-WiGig/src/flow-monitor/model/flow-monitor.h ../../ns-3-dev-git/src/flow-monitor/model/flow-monitor.h
+154d153
+<   /// This method overwrites any previous calls to Start()
+158d156
+<   /// This method overwrites any previous calls to Stop()

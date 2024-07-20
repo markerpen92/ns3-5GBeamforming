@@ -1,0 +1,46 @@
+diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.cc ../../ns-3-dev-git/src/point-to-point/helper/point-to-point-helper.cc
+28d27
+< #include "ns3/net-device-queue-interface.h"
+48d46
+<   m_snaplen = std::numeric_limits<uint32_t>::max ();
+80,90d77
+< void
+< PointToPointHelper::SetSnapshotLength (uint32_t length)
+< {
+<   m_snaplen = length;
+< }
+< uint32_t
+< PointToPointHelper::GetSnapshotLength (void) const
+< {
+<   return m_snaplen;
+< }
+< 
+119c106
+<                                                      PcapHelper::DLT_PPP, m_snaplen);
+---
+>                                                      PcapHelper::DLT_PPP);
+254,261d240
+<   // Aggregate NetDeviceQueueInterface objects
+<   Ptr<NetDeviceQueueInterface> ndqiA = CreateObject<NetDeviceQueueInterface> ();
+<   ndqiA->GetTxQueue (0)->ConnectQueueTraces (queueA);
+<   devA->AggregateObject (ndqiA);
+<   Ptr<NetDeviceQueueInterface> ndqiB = CreateObject<NetDeviceQueueInterface> ();
+<   ndqiB->GetTxQueue (0)->ConnectQueueTraces (queueB);
+<   devB->AggregateObject (ndqiB);
+< 
+diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.h ../../ns-3-dev-git/src/point-to-point/helper/point-to-point-helper.h
+152,163d151
+<   /**
+<    * Set the maximum length of packet data stored in the PCAP file.
+<    *
+<    * \param length The length of the snapshot in bytes.
+<    */
+<   void SetSnapshotLength (uint32_t length);
+<   /**
+<    * Get the maximum length of packet data stored in the PCAP file.
+<    *
+<    * \return length The length of the snapshot in bytes.
+<    */
+<   uint32_t GetSnapshotLength (void) const;
+200d187
+<   uint32_t m_snaplen;                   //!< Snapshot length in bytes.

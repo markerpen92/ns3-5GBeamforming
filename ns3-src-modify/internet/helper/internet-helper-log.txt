@@ -1,0 +1,68 @@
+diff ../../NS3-WiGig/src/internet/helper/ipv4-address-helper.cc ../../ns-3-dev-git/src/internet/helper/ipv4-address-helper.cc
+30d29
+< #include "ns3/net-device-queue-interface.h"
+171,183c170,172
+<           Ptr<NetDeviceQueueInterface> ndqi = device->GetObject<NetDeviceQueueInterface> ();
+<           // It is useless to install a queue disc if the device has no
+<           // NetDeviceQueueInterface attached: the device queue is never
+<           // stopped and every packet enqueued in the queue disc is
+<           // immediately dequeued, hence there will never be backlog
+<           if (ndqi)
+<             {
+<               std::size_t nTxQueues = ndqi->GetNTxQueues ();
+<               NS_LOG_LOGIC ("Installing default traffic control configuration ("
+<                             << nTxQueues << " device queue(s))");
+<               TrafficControlHelper tcHelper = TrafficControlHelper::Default (nTxQueues);
+<               tcHelper.Install (device);
+<             }
+---
+>           NS_LOG_LOGIC ("Installing default traffic control configuration");
+>           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
+>           tcHelper.Install (device);
+diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.cc ../../ns-3-dev-git/src/internet/helper/ipv6-address-helper.cc
+34d33
+< #include "ns3/net-device-queue-interface.h"
+234,236d232
+<       // the first round is to make sure that the interface is set up, including its link-local addresses.
+<       ipv6->SetUp (ifIndex);
+< 
+250,262c246,248
+<           Ptr<NetDeviceQueueInterface> ndqi = device->GetObject<NetDeviceQueueInterface> ();
+<           // It is useless to install a queue disc if the device has no
+<           // NetDeviceQueueInterface attached: the device queue is never
+<           // stopped and every packet enqueued in the queue disc is
+<           // immediately dequeued, hence there will never be backlog
+<           if (ndqi)
+<             {
+<               std::size_t nTxQueues = ndqi->GetNTxQueues ();
+<               NS_LOG_LOGIC ("Installing default traffic control configuration ("
+<                             << nTxQueues << " device queue(s))");
+<               TrafficControlHelper tcHelper = TrafficControlHelper::Default (nTxQueues);
+<               tcHelper.Install (device);
+<             }
+---
+>           NS_LOG_LOGIC ("Installing default traffic control configuration");
+>           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
+>           tcHelper.Install (device);
+290,292d275
+<       // the first round is to make sure that the interface is set up, including its link-local addresses.
+<       ipv6->SetUp (ifIndex);
+< 
+310,322c293,295
+<           Ptr<NetDeviceQueueInterface> ndqi = device->GetObject<NetDeviceQueueInterface> ();
+<           // It is useless to install a queue disc if the device has no
+<           // NetDeviceQueueInterface attached: the device queue is never
+<           // stopped and every packet enqueued in the queue disc is
+<           // immediately dequeued, hence there will never be backlog
+<           if (ndqi)
+<             {
+<               std::size_t nTxQueues = ndqi->GetNTxQueues ();
+<               NS_LOG_LOGIC ("Installing default traffic control configuration ("
+<                             << nTxQueues << " device queue(s))");
+<               TrafficControlHelper tcHelper = TrafficControlHelper::Default (nTxQueues);
+<               tcHelper.Install (device);
+<             }
+---
+>           NS_LOG_LOGIC ("Installing default traffic control configuration");
+>           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
+>           tcHelper.Install (device);

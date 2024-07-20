@@ -1,0 +1,22 @@
+diff ../../NS3-WiGig/src/applications/doc/applications.rst ../../ns-3-dev-git/src/applications/doc/applications.rst
+111,118c111,116
+<    
+<     * If at least one embedded object is determined, the application requests
+<        the first embedded object from the server. The request for the next
+<        embedded object follows after the previous embedded object has been
+<        completely received.
+<     * If there is no more embedded object to request, the application enters
+<        the *reading time*.
+<        
+---
+>     - If at least one embedded object is determined, the application requests
+>       the first embedded object from the server. The request for the next
+>       embedded object follows after the previous embedded object has been
+>       completely received.
+>     - If there is no more embedded object to request, the application enters
+>       the *reading time*.
+Only in ../../ns-3-dev-git/src/applications/doc: http-embedded-object-size.png
+Only in ../../ns-3-dev-git/src/applications/doc: http-main-object-size.png
+Only in ../../ns-3-dev-git/src/applications/doc: http-num-of-embedded-objects.png
+Only in ../../ns-3-dev-git/src/applications/doc: http-parsing-time.png
+Only in ../../ns-3-dev-git/src/applications/doc: http-reading-time.png

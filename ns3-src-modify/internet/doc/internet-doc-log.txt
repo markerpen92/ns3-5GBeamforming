@@ -1,0 +1,733 @@
+Only in ../../ns-3-dev-git/src/internet/doc: figures
+diff ../../NS3-WiGig/src/internet/doc/ipv4.rst ../../ns-3-dev-git/src/internet/doc/ipv4.rst
+224,235d223
+< 
+< RFC 6621 duplicate packet detection 
+< ***********************************
+< To support mesh network protocols over broadcast-capable networks (e.g. Wi-Fi),
+< it is useful to have support for duplicate packet detection and filtering,
+< since nodes in a network may receive multiple copies of flooded multicast
+< packets arriving on different paths.  The ``Ipv4L3Protocol`` model in |ns3| 
+< has a model for hash-based duplicate packet detection (DPD) based on 
+< Section 6.2.2 of (:rfc:`6621`).  The model, disabled by default, must be
+< enabled by setting ``EnableRFC6621`` to true.  A second attribute, 
+< ``DuplicateExpire``, sets the expiration delay for erasing the cache entry
+< of a packet in the duplicate cache; the delay value defaults to 1ms. 
+diff ../../NS3-WiGig/src/internet/doc/tcp.rst ../../ns-3-dev-git/src/internet/doc/tcp.rst
+18c18
+< * class :cpp:class:`TcpSocket`: This is defined in
+---
+> * class :cpp:class:`TcpSocket`:  This is defined in
+23c23
+< * class :cpp:class:`TcpSocketFactory`: This is used by the layer-4 protocol
+---
+> * class :cpp:class:`TcpSocketFactory`:  This is used by the layer-4 protocol
+43c43
+< connection setup and close logic. Several congestion control algorithms
+---
+> connection setup and close logic.  Several congestion control algorithms
+47c47
+< (LEDBAT), TCP Low Priority (TCP-LP) and and Data Center TCP (DCTCP) also supported. The model also supports
+---
+> (LEDBAT) and TCP Low Priority (TCP-LP) also supported. The model also supports
+82c82
+< the years. Several publications exist on aspects of |ns3| TCP, and users
+---
+> the years.  Several publications exist on aspects of |ns3| TCP, and users 
+120c120
+< |ns3| that it wants the native |ns3| TCP vs. some other one? Well, when
+---
+> |ns3| that it wants the native |ns3| TCP vs. some other one?  Well, when
+122c122
+< aggregated to the node is the |ns3| TCP. This can be overridden as we show
+---
+> aggregated to the node is the |ns3| TCP.  This can be overridden as we show
+129,130c129,130
+< <http://www.nsnam.org/doxygen/classns3_1_1_tcp_socket.html>`_ for class
+< :cpp:class:`TcpSocket`. For example, the maximum segment size is a
+---
+> <http://www.nsnam.org/doxygen/classns3_1_1_tcp_socket.html>` for class
+> :cpp:class:`TcpSocket`.  For example, the maximum segment size is a
+142c142
+< ``Socket::CreateSocket()`` method. The TypeId passed to CreateSocket()
+---
+> ``Socket::CreateSocket()`` method.  The TypeId passed to CreateSocket()
+145,146c145,146
+< underlying TcpL4Protocol object. The easiest way to get at this would be
+< through the attribute configuration system. In the below example,
+---
+> underlying TcpL4Protocol object.  The easiest way to get at this would be 
+> through the attribute configuration system.  In the below example,
+158c158
+< NewReno, not just on node 'n0n1.Get (0)'. If one wants to limit it to just
+---
+> NewReno, not just on node 'n0n1.Get (0)'.  If one wants to limit it to just 
+174c174
+< and so is not straightforward to connect directly to them using pointers. Please
+---
+> and so is not straightforward to connect direcly to them using pointers. Please
+242c242
+<   Signal a termination of send, or in other words prevents data from being added
+---
+>   Signal a termination of send, or in other words revents data from being added
+313,315c313,315
+<   have sent the SYN, and we received the SYN-ACK: the socket prepares the
+<   sequence numbers, sends the ACK for the SYN-ACK, tries to send out more data (in
+<   another segment) and then invokes this callback. After this callback, it
+---
+>   have sent the SYN, and we received the SYN-ACK: the socket prepare the
+>   sequence numbers, send the ACK for the SYN-ACK, try to send out more data (in
+>   another segment) and then invoke this callback. After this callback, it
+320c320
+<   multiple times, and the socket gives up.
+---
+>   multiple time, and the socket give up.
+342c342
+<   up the congestion control, the sequence numbers, and processing the incoming
+---
+>   up the congestion control, the sequence numbers, and processed the incoming
+348c348
+<   The Socket notifies the application that some bytes have been transmitted on
+---
+>   The Socket notifies the application that some bytes has been transmitted on
+355c355
+<   succeeds (e.g. after the SYN-ACK is received) and after each new ACK (i.e.
+---
+>   succeeds (e.g. after the SYN-ACK is received) and after each new ack (i.e.
+359c359
+<   Called when in the receiver buffer there are in-order bytes, and when in
+---
+>   Called when in the receiver buffere there are in-order bytes, and when in
+370c370
+< NewReno
+---
+> New Reno
+372c372
+< NewReno algorithm introduces partial ACKs inside the well-established Reno
+---
+> New Reno algorithm introduces partial ACKs inside the well-established Reno
+378c378
+<   each ACK received that cumulatively acknowledges new data. Slow
+---
+>   each ACK received that cumulatively acknowledges new data.  Slow
+380c380
+<   reaches it, as noted above) or when congestion is observed. While
+---
+>   reaches it, as noted above) or when congestion is observed.  While
+394c394
+< HighSpeed
+---
+> High Speed
+402c402
+< certain threshold, which allows TCP HighSpeed to be friendly with standard
+---
+> certain threshold, which allows TCP Highspeed to be friendly with standard
+409d408
+<    :label: highspeedcwndincrement
+418d416
+<    :label: highspeedcwnddecrement
+454,456c452,454
+< the actual throughput a connection achieves using Equation :eq:`vegasactual` and compares it
+< with the expected throughput calculated in Equation :eq:`vegasexpected`. The difference between
+< these 2 sending rates in Equation :eq:`vegasdiff` reflects the amount of extra packets being
+---
+> the actual throughput a connection achieves using Equation (1) and compares it
+> with the expected throughput calculated in Equation (2). The difference between
+> these 2 sending rates in Equation (3) reflects the amount of extra packets being
+459,463c457
+< .. math::   actual &= \frac{cWnd}{RTT}
+<    :label: vegasactual
+< 
+< .. math::   expected &= \frac{cWnd}{BaseRTT}
+<    :label: vegasexpected
+---
+> .. math::
+465,466c459,461
+< .. math::   diff &= expected - actual
+<    :label: vegasdiff
+---
+>    actual &= \frac{cWnd}{RTT}        \\
+>    expected &= \frac{cWnd}{BaseRTT}  \\
+>    diff &= expected - actual
+469c464
+< to ensure the diff value falls between the two predefined thresholds, alpha and
+---
+> to ensure the diff value fall between the two predefined thresholds, alpha and
+482c477
+< algorithm. When congestion has not been detected, for each ACK received in an
+---
+> algorithm.  When congestion has not been detected, for each ACK received in an
+486d480
+<    :label: scalablecwndincrement
+495d488
+<    :label: scalablecwnddecrement
+508c501
+< calculated using Equation :eq:`venoN`:
+---
+> calculated using Equation (1):
+513d505
+<    :label: venoN
+520d511
+<    :label: venoDiff
+528c519
+< been fully utilized, i.e. when N exceeds beta. Otherwise, Veno increases
+---
+> been fully utilized, i.e. when N exceeds beta.  Otherwise, Veno increases
+534c525
+< congestion-based. Only when N is greater than beta, Veno halves its sending
+---
+> congestion-based.  Only when N is greater than beta, Veno halves its sending
+539c530
+< BIC
+---
+> Bic
+542c533
+< In TCP BIC the congestion control problem is viewed as a search
+---
+> In TCP Bic the congestion control problem is viewed as a search
+575c566
+< YeAH operates between 2 modes: Fast and Slow mode. In the Fast mode when the queue
+---
+> YeAH operates between 2 modes: Fast and Slow mode.  In the Fast mode when the queue
+577c568
+< its congestion window according to the aggressive HSTCP rule. When the number of packets
+---
+> its congestion window according to the aggressive STCP rule.  When the number of packets
+579,580c570,571
+< its Slow mode, acting as Reno with a decongestion algorithm. YeAH employs Vegas' mechanism
+< for calculating the backlog as in Equation :eq:`q_yeah`. The estimation of the network congestion
+---
+> its Slow mode, acting as Reno with a decongestion algorithm.  YeAH employs Vegas' mechanism
+> for calculating the backlog as in Equation :eq:`q_yeah`.  The estimation of the network congestion
+590,591c581,582
+< Reno flows. Upon the receipt of 3 duplicate ACKs, YeAH decreases its slow start threshold
+< according to Equation :eq:`yeahssthresh` if it's not competing with Reno flows. Otherwise, the ssthresh is
+---
+> Reno flows.  Upon the receipt of 3 duplicate ACKs, YeAH decreases its slow start threshold
+> according to Equation (3) if it's not competing with Reno flows.  Otherwise,  the ssthresh is
+595d585
+<    :label: yeahssthresh
+603c593
+< high-speed networks. Illinois implements a Concave-AIMD (or C-AIMD)
+---
+> high-speed networks.  Illinois implements a Concave-AIMD (or C-AIMD)
+610c600
+< delay da as shown in Equations :eq:`illinoisalpha` and :eq:`illinoisbeta`. To improve the protocol
+---
+> delay da as shown in Equations (1) and (2).  To improve the protocol
+620,623c610,611
+<    \end{cases}
+<    :label: illinoisalpha
+< 
+< .. math::
+---
+>    \end{cases} \\
+>    \\
+630d617
+<    :label: illinoisbeta
+634,641c621
+< .. math::   k1 &= \frac{(dm - d1) \cdot alphaMin \cdot alphaMax}{alphaMax - alphaMin}
+<    :label: illinoisk1
+< 
+< .. math::   k2 &= \frac{(dm - d1) \cdot alphaMin}{alphaMax - alphaMin} - d1
+<    :label: illinoisk2
+< 
+< .. math::   k3 &= \frac{alphaMin \cdot d3 - alphaMax \cdot d2}{d3 - d2}
+<    :label: illinoisk3
+---
+> .. math::
+643,644c623,629
+< .. math::   k4 &= \frac{alphaMax - alphaMin}{d3 - d2}
+<    :label: illinoisk4
+---
+>    k1 &= \frac{(dm - d1) \cdot alphaMin \cdot alphaMax}{alphaMax - alphaMin} \\
+>    \\
+>    k2 &= \frac{(dm - d1) \cdot alphaMin}{alphaMax - alphaMin} - d1 \\
+>    \\
+>    k3 &= \frac{alphaMin \cdot d3 - alphaMax \cdot d2}{d3 - d2} \\
+>    \\
+>    k4 &= \frac{alphaMax - alphaMin}{d3 - d2}
+652,653c637,639
+< .. math::   da &= Ta - Tmin
+<    :label: illinoisda
+---
+> .. math::
+> 
+>    da &= Ta - Tmin
+655,656c641
+< .. math::   dm &= Tmax - Tmin
+<    :label: illinoisdm
+---
+>    dm &= Tmax - Tmin
+658,659c643
+< .. math::   d_i &= eta_i \cdot dm
+<    :label: illinoisdi
+---
+>    d_i &= eta_i \cdot dm
+690,691c674,676
+< .. math::   alpha(delta)=1+10(delta-deltal)+0.5(delta-deltal)^2
+<    :label: htcpalpha
+---
+> .. math::
+> 
+>         alpha(delta)=1+10(delta-deltal)+0.5(delta-deltal)^2 
+696c681
+< in the reference paper. The calculated throughput between the last two
+---
+> in the reference paper.  The calculated throughput between the last two 
+700c685
+< ``examples/tcp/tcp-variants-comparison.cc`` to perform an experiment with H-TCP,
+---
+> ``examples/tcp/tcp-variants/comparison`` to perform an experiment with H-TCP,
+708c693
+< More information (paper): http://www.hamilton.ie/net/htcp3.pdf
+---
+> More information (paper):  http://www.hamilton.ie/net/htcp3.pdf
+710c695
+< More information (Internet Draft): https://tools.ietf.org/html/draft-leith-tcp-htcp-06
+---
+> More information (Internet Draft):  https://tools.ietf.org/html/draft-leith-tcp-htcp-06
+723c708
+< On receipt of an ACK:
+---
+> on receipt of an ACK:
+725c710
+< ::
+---
+> .. math::
+734c719
+< queueing delay; ``offtarget`` is a normalized value representing the difference between
+---
+> queueing delay;  ``offtarget`` is a normalized value representing the difference between
+776c761
+< TCP-Low Priority (TCP-LP) is a delay based congestion control protocol in which the low
+---
+> TCP-Low priority is a delay based congestion control protocol in which the low
+781c766
+< On receipt of an ACK:
+---
+> On acknowledgement:
+800,906d784
+< Data Center TCP (DCTCP)
+< ^^^^^^^^^^^^^^^^^^^^^^^^
+< 
+< DCTCP is an enhancement to the TCP congestion control algorithm for data center
+< networks and leverages Explicit Congestion Notification (ECN) to provide more fine-grained congestion
+< feedback to the end hosts. DCTCP extends the Explicit Congestion Notification
+< to estimate the fraction of bytes that encounter congestion, rather than simply
+< detecting that the congestion has occurred. DCTCP then scales the congestion
+< window based on this estimate. This approach achieves high burst tolerance, low
+< latency, and high throughput with shallow-buffered switches.
+< 
+< * Receiver functionality: If CE is set in IP header of incoming packet, send congestion notification to the sender by setting ECE in TCP header. This processing is different from standard ECN processing which sets ECE bit for every ACK until it observes CWR
+< 
+< * Sender functionality: The sender makes use of the modified receiver ECE semantics to maintain an average of fraction of packets marked (:math:`\alpha`) by using the exponential weighted moving average as shown below:
+< 
+< .. math::
+< 
+<                \alpha = (1 - g) x \alpha + g x F
+< 
+< where
+< 
+< * g is the estimation gain (between 0 and 1)
+< * F is the fraction of packets marked in current RTT.
+< 
+< For windows in which at least one ACK was received with ECE set,
+< the sender should respond by reducing the congestion
+< window as follows, once for every window of data:
+< 
+< .. math::
+< 
+<                cwnd = cwnd * (1 - \alpha / 2)
+< 
+< Following the recommendation of RFC 8257, the default values of the parameters are:
+< 
+< .. math::
+< 
+<   g = 0.0625 (i.e., 1/16)
+< 
+<   initial alpha (\alpha) = 1
+< 
+< 
+< 
+< To enable DCTCP on all TCP sockets, the following configuration can be used:
+< 
+< ::
+< 
+<   Config::SetDefault ("ns3::TcpL4Protocol::SocketType", TypeIdValue (TcpDctcp::GetTypeId ()));
+< 
+< To enable DCTCP on a chosen TCP socket, the following configuration can be used:
+< 
+< ::
+< 
+<   Config::Set ("$ns3::NodeListPriv/NodeList/1/$ns3::TcpL4Protocol/SocketType", TypeIdValue (TcpDctcp::GetTypeId ()));
+< 
+< This will take effect only if socket has already instantiated.
+< 
+< The ECN is enabled automatically when DCTCP is used, even if the user has not explicitly enabled it.
+< 
+< DCTCP depends on a simple queue management algorithm in routers / switches to
+< mark packets. The current implementation of DCTCP in ns-3 uses RED with a simple
+< configuration to achieve the behavior of desired queue management algorithm.
+< 
+< To configure RED router for DCTCP:
+< 
+< ::
+< 
+<   Config::SetDefault ("ns3::RedQueueDisc::UseEcn", BooleanValue (true));
+<   Config::SetDefault ("ns3::RedQueueDisc::QW", DoubleValue (1.0));
+<   Config::SetDefault ("ns3::RedQueueDisc::MinTh", DoubleValue (16));
+<   Config::SetDefault ("ns3::RedQueueDisc::MaxTh", DoubleValue (16));
+< 
+< 
+< The following unit tests have been written to validate the implementation of DCTCP:
+< 
+< * ECT flags should be set for SYN, SYN+ACK, ACK and data packets for DCTCP traffic
+< * ECT flags should not be set for SYN, SYN+ACK and pure ACK packets, but should be set on data packets for ECN enabled traditional TCP flows
+< * ECE should be set only when CE flags are received at receiver and even if sender doesn’t send CWR, receiver should not send ECE if it doesn’t receive packets with CE flags
+< * DCTCP follows NewReno behavior for slow start
+< * Test to validate cwnd decrement in DCTCP
+< 
+< An example program based on an experimental topology found in the original
+< DCTCP SIGCOMM paper is provided in ``examples/tcp/dctcp-example.cc``.
+< This example uses a simple topology consisting of forty DCTCP senders
+< and receivers and two ECN-enabled switches to examine throughput,
+< fairness, and queue delay properties of the network.
+< 
+< This implementation was tested extensively against a version of DCTCP in
+< the Linux kernel version 4.4 using the ns-3 direct code execution (DCE)
+< environment. Some differences were noted:
+< 
+< * Linux maintains its congestion window in segments and not bytes, and
+<   the arithmetic is not floating point, so some differences in the
+<   evolution of congestion window have been observed.
+< * Linux uses pacing, while ns-3 currently does not provide a dynamically
+<   adjusting pacing implementation; segments are sent out at the line rate
+<   unless the user has enabled pacing and set the maximum pacing rate to
+<   less than the line rate.
+< * Linux implements a state called 'Congestion Window Reduced' (CWR) 
+<   immediately following a cwnd reduction, and performs proportional rate
+<   reduction similar to how a fast retransmit event is handled.  During
+<   CWR, no cwnd additive increases are performed.  This implementation does
+<   not implement CWR and performs additive increase during the round trip
+<   time that immediately follows a cwnd reduction.
+< 
+< More information about DCTCP is available in the RFC 8257:
+< https://tools.ietf.org/html/rfc8257
+< 
+917c795
+< The following ECN states are declared in ``src/internet/model/tcp-socket-state.h``
+---
+> The following ECN states are declared in ``src/internet/model/tcp-socket.h``
+939,940c817,818
+<       ClassicEcn,  //!< ECN functionality as described in RFC 3168.
+<       DctcpEcn,    //!< ECN functionality as described in RFC 8257. Note: this mode is specific to DCTCP.
+---
+>       NoEcn = 0,   //!< ECN is not enabled.
+>       ClassicEcn   //!< ECN functionality as described in RFC 3168.
+943,945c821
+< The following are some important ECN parameters:
+< 
+< ::
+---
+> The following are some important ECN parameters
+947,948c823,824
+<   EcnMode_t              m_ecnMode {ClassicEcn}; //!< ECN mode
+<   UseEcn_t               m_useEcn {Off};         //!< Socket ECN capability
+---
+>   EcnMode_t                     m_ecnMode;    //!< Socket ECN capability
+>   TracedValue<SequenceNumber32> m_ecnEchoSeq; //!< Sequence number of the last received ECN Echo
+953,956c829,830
+< By default, support for ECN is disabled in TCP sockets. To enable, change
+< the value of the attribute ``ns3::TcpSocketBase::UseEcn`` to ``On``.
+< Following are supported values for the same, this functionality is aligned with
+< Linux: https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+---
+> By default, support for ECN is disabled in TCP sockets.  To enable, change
+> the value of the attribute ``ns3::TcpSocketBase::EcnMode`` from NoEcn to ClassicEcn.
+960,971c834
+<   typedef enum
+<     {
+<       Off        = 0,   //!< Disable
+<       On         = 1,   //!< Enable
+<       AcceptOnly = 2,   //!< Enable only when the peer endpoint is ECN capable
+<     } UseEcn_t;
+< 
+< For example:
+< 
+< ::
+< 
+<   Config::SetDefault ("ns3::TcpSocketBase::UseEcn", StringValue ("On"))
+---
+>   Config::SetDefault ("ns3::TcpSocketBase::EcnMode", StringValue ("ClassicEcn"))
+982c845
+<     if (m_useEcn == UseEcn_t::On)
+---
+>     if (m_ecnMode == EcnMode_t::ClassicEcn)
+996c859
+<     if (m_useEcn != UseEcn_t::Off && (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+---
+>     if (m_ecnMode == EcnMode_t::ClassicEcn && (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+1011c874
+<     if (m_useEcn != UseEcn_t::Off &&  (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::ECE))
+---
+>     if (m_ecnMode == EcnMode_t::ClassicEcn &&  (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::ECE))
+1023c886
+< Note: As mentioned in `Section 6.1.1 of RFC 3168 <https://tools.ietf.org/html/rfc3168#section-6.1.1>`_, ECT bits should not be set
+---
+> Note: As mentioned in Section 6.1.1 of RFC 3168, ECT bits should not be set
+1041c904
+<    following which, its state changes to ECN_ECE_RCVD.
+---
+>    following which, it's state changes to ECN_ECE_RCVD.
+1049c912
+< 1. Pure ACK packets should not have the ECT bit set (`Section 6.1.4 <https://tools.ietf.org/html/rfc3168#section-6.1.4>`_).
+---
+> 1. Pure ACK packets should not have the ECT bit set (Section 6.1.4).
+1052c915
+<    window (`Section 6.1.2 <https://tools.ietf.org/html/rfc3168#section-6.1.2>`_).
+---
+>    window (Section 6.1.2).
+1054c917
+<    window (`Section 6.1.5 <https://tools.ietf.org/html/rfc3168#section-6.1.5>`_).
+---
+>    window (Section 6.1.5).
+1056c919
+<    window (`Section 6.1.2 <https://tools.ietf.org/html/rfc3168#section-6.1.2>`_).
+---
+>    window (Section 6.1.2).
+1063c926
+< 1. Retransmitted packets should not have the CWR bit set (`Section 6.1.5 <https://tools.ietf.org/html/rfc3168#section-6.1.5>`_).
+---
+> 1. Retransmitted packets should not have the CWR bit set (Section 6.1.5).
+1068,1069c931,932
+<    the congestion window is one. The sending TCP will then be able to send a
+<    new packet only when the retransmit timer expires (`Section 6.1.2 <https://tools.ietf.org/html/rfc3168#section-6.1.2>`_).
+---
+>    the congestion window is one.  The sending TCP will then be able to send a
+>    new packet only when the retransmit timer expires (Section 6.1.2).
+1078c941
+< The following tests are found in the ``src/internet/test`` directory. In
+---
+> The following tests are found in the ``src/internet/test`` directory.  In
+1081c944
+< objects. For more information on how to write new tests, see the
+---
+> objects.  For more information on how to write new tests, see the
+1091c954
+< * **tcp-highspeed-test:** Unit tests on the HighSpeed congestion control
+---
+> * **tcp-highspeed-test:** Unit tests on the Highspeed congestion control
+1102d964
+< * **tcp-dctcp-test:** Unit tests on the DCTCP congestion control
+1105c967
+< * **tcp-rto-test:** Unit test behavior after a RTO occurs
+---
+> * **tcp-rto-test:** Unit test behavior after a RTO timeout occurs
+1112c974
+< * **tcp-ecn-test:** Unit tests on Explicit Congestion Notification
+---
+> * **tcp-ecn-test:** Unit tests on explicit congestion notification
+1115c977
+< are located in a system test directory called ``src/test/ns3tcp``. Three
+---
+> are located in a system test directory called ``src/test/ns3tcp``.  Three
+1123c985
+< * **ns3-tcp-no-delay:** Check that ns-3 TCP Nagle's algorithm works correctly and that it can be disabled
+---
+> * **ns3-tcp-no-delay:** Check that ns-3 TCP Nagle"s algorithm works correctly and that it can be disabled
+1217c1079
+< Proportional Rate Reduction (PRR) is a loss recovery algorithm described in
+---
+> Proportional Rate Reduction (PRR) is the fast recovery algorithm described in
+1253c1115
+< More information (paper): https://dl.acm.org/citation.cfm?id=2068832
+---
+> More information (paper):  https://dl.acm.org/citation.cfm?id=2068832
+1255c1117
+< More information (RFC): https://tools.ietf.org/html/rfc6937
+---
+> More information (RFC):  https://tools.ietf.org/html/rfc6937
+1287,1315d1148
+< Delivery Rate Estimation
+< ++++++++++++++++++++++++
+< Current TCP implementation measures the approximate value of the delivery rate of
+< inflight data based on Delivery Rate Estimation.
+< 
+< As high level idea, keep in mind that the algorithm keeps track of 2 variables:
+< 
+< 1. `delivered`: Total amount of data delivered so far.
+< 
+< 2. `deliveredStamp`: Last time `delivered` was updated.
+< 
+< When a packet is transmitted, the value of `delivered (d0)` and `deliveredStamp (t0)`
+< is stored in its respective TcpTxItem.
+< 
+< When an acknowledgement comes for this packet, the value of `delivered` and `deliveredStamp`
+< is updated to `d1` and `t1` in the same TcpTxItem.
+< 
+< After processing the acknowledgement, the rate sample is calculated and then passed
+< to a congestion avoidance algorithm:
+< 
+< .. math:: delivery_rate = (d1 - d0)/(t1 - t0)
+< 
+< 
+< The implementation to estimate delivery rate is a joint work between TcpTxBuffer and TcpRateOps.
+< For more information, please take a look at their Doxygen documentation.
+< 
+< The implementation follows the Internet draft (Delivery Rate Estimation):
+< https://tools.ietf.org/html/draft-cheng-iccrg-delivery-rate-estimation-00
+< 
+1329c1162
+< case that reproduces the `Bug #1571 <https://www.nsnam.org/bugzilla/show_bug.cgi?id=1571>`_.
+---
+> case that reproduces a bug (#1571 in the project bug tracker).
+1331,1332c1164,1165
+< The bug concerns the zero window situation, which happens when the receiver
+< cannot handle more data. In this case, it advertises a zero window, which causes
+---
+> The bug concerns the zero window situation, which happens when the receiver can
+> not handle more data. In this case, it advertises a zero window, which causes
+1355c1188
+< We describe the writing of two test cases, covering both situations: the
+---
+> We describe the writing of two test case, covering both situations: the
+1400c1233
+< the method ConfigureEnvironment:
+---
+> ehe method ConfigureEnvironment:
+1419c1252
+< are meant to be called inside ConfigureProperties (). Please see the Doxygen
+---
+> are meant to be called inside ConfigureProperties (). Please see the doxygen
+1764c1597
+< extremely accurate results. NSC supports four real world stacks: FreeBSD,
+---
+> extremely accurate results.  NSC supports four real world stacks: FreeBSD,
+1771c1604
+< was added to |ns3| in September 2008 (ns-3.2 release). This section
+---
+> was added to |ns3| in September 2008 (ns-3.2 release).  This section 
+1775,1776c1608,1609
+< `Direct Code Execution (DCE) <http://www.nsnam.org/docs/dce/manual/singlehtml/index.html>`__. However, NSC is still available through the bake build
+< system. NSC supports Linux kernels 2.6.18 and 2.6.26, and an experimental
+---
+> `Direct Code Execution (DCE) <http://www.nsnam.org/docs/dce/manual/singlehtml/index.html>`__.  However, NSC is still available through the bake build
+> system.  NSC supports Linux kernels 2.6.18 and 2.6.26, and an experimental
+1785c1618
+< Linux i386 and Linux x86-64. NSC does not support powerpc. Use on
+---
+> Linux i386 and Linux x86-64.  NSC does not support powerpc.  Use on
+1799c1632
+< |ns3|.
+---
+> |ns3|.  
+1882c1715
+< with waf as without it. Once |ns3| is built, try running the following
+---
+> with waf as without it.  Once |ns3| is built, try running the following 
+1901c1734
+< There are a few example files. Try:
+---
+> There are a few example files.  Try:
+1924c1757
+< The key line is the ``SetNscStack``. This tells the InternetStack
+---
+> The key line is the ``SetNscStack``.  This tells the InternetStack
+1926c1759
+< to the remaining nodes. It is important that this function be called
+---
+> to the remaining nodes.  It is important that this function be called
+1966c1799
+< Also note that default values for TCP attributes in |ns3| TCP may differ from the NSC TCP implementation. Specifically in |ns3|:
+---
+> Also note that default values for TCP attributes in |ns3| TCP may differ from the nsc TCP implementation.  Specifically in |ns3|:
+1969c1802
+<   2) TCP Delayed ACK count is 2
+---
+>   2) TCP Delayed Ack count is 2 
+1971c1804
+< Therefore when making comparisons between results obtained using NSC and |ns3| TCP, care must be taken to ensure these values are set appropriately. See /examples/tcp/tcp-nsc-comparison.cc for an example.
+---
+> Therefore when making comparisons between results obtained using nsc and |ns3| TCP, care must be taken to ensure these values are set appropriately.  See /examples/tcp/tcp-nsc-comparision.cc for an example.
+1982c1815
+<   stack (think of this as the 'network driver interface'). There are also
+---
+>   stack (think of this as the 'network driver interface'. There are also
+1988c1821
+<   back to the receivers NSC instance via INetStack->if_receive()).
+---
+>   back to the receivers NSC instance via INetStack->if_receive() ).
+1992c1825
+< * **IInterruptCallback** This contains the wakeup() callback, which is called by
+---
+> * **IInterruptCallback** This contains the wakeup callback, which is called by
+2007c1840
+< * :cpp:class:`ns3::NscTcpL4Protocol`: a subclass of Ipv4L4Protocol (and two NSC
+---
+> * :cpp:class:`ns3::NscTcpL4Protocol`:  a subclass of Ipv4L4Protocol (and two nsc
+2010c1843
+< * :cpp:class:`ns3::NscTcpSocketFactoryImpl`: a factory to create new NSC
+---
+> * :cpp:class:`ns3::NscTcpSocketFactoryImpl`:  a factory to create new NSC
+2014c1847
+< Initialization, it loads an NSC network stack to use (via dlopen()). Each
+---
+> Initialization, it loads an nsc network stack to use (via dlopen()). Each
+2017c1850
+< via the internet stack helper). The NSC stack is then set up accordingly (timers
+---
+> via the internet stack helper). The nsc stack is then set up accordingly (timers
+2019,2021c1852,1854
+< (must be a complete TCP/IP packet) to the NSC stack for further processing. To
+< be able to send packets, this class implements the NSC send_callback() method.
+< This method is called by NSC whenever the NSC stack wishes to send a packet out
+---
+> (must be a complete tcp/ip packet) to the nsc stack for further processing.  To
+> be able to send packets, this class implements the nsc send_callback method.
+> This method is called by nsc whenever the nsc stack wishes to send a packet out
+2024,2025c1857,1858
+< a Ptr<Packet> usable by |ns3|. In order to avoid various IPv4 header issues,
+< the NSC IP header is not included. Instead, the TCP header and the actual
+---
+> a Ptr<Packet> usable by |ns3|. In order to avoid various ipv4 header issues,
+> the nsc ip header is not included. Instead, the tcp header and the actual
+2030,2031c1863,1864
+< This class calls ``ns3::NscTcpSocketImpl`` both from the NSC wakeup() callback
+< and from the receive path (to ensure that possibly queued data is scheduled for
+---
+> This class calls ``ns3::NscTcpSocketImpl`` both from the nsc wakeup() callback
+> and from the Receive path (to ensure that possibly queued data is scheduled for
+2034,2040c1867,1873
+< ``src/internet/model/nsc-tcp-socket-impl`` implements the NSC socket interface.
+< Each instance has its own m_nscTcpSocket. Data that is sent will be handed to
+< the NSC stack via m_nscTcpSocket->send_data() (and not to NscTcpL4Protocol, this
+< is the major difference compared to |ns3| TCP). The class also queues up data
+< that is sent before the underlying descriptor has entered an ESTABLISHED state.
+< This class is called from the NscTcpL4Protocol class, when the NscTcpL4Protocol
+< wakeup() callback is invoked by NSC. NscTcpSocketImpl then checks the current
+---
+> ``src/internet/model/nsc-tcp-socket-impl`` implements the nsc socket interface.
+> Each instance has its own nscTcpSocket. Data that is Send() will be handed to
+> the nsc stack via m_nscTcpSocket->send_data(). (and not to nsc-tcp-l4, this is
+> the major difference compared to |ns3| TCP). The class also queues up data that
+> is Send() before the underlying descriptor has entered an ESTABLISHED state.
+> This class is called from the nsc-tcp-l4 class, when the nsc-tcp-l4 wakeup()
+> callback is invoked by nsc. nsc-tcp-socket-impl then checks the current
+2042c1875
+< callbacks as needed, e.g. a LISTEN socket will schedule accept() to see if a new
+---
+> callbacks as needed, e.g. a LISTEN socket will schedule Accept to see if a new
+2044c1877
+< for writing, schedule a read() callback, etc.
+---
+> for writing, schedule a read callback, etc.
+2046,2048c1879,1881
+< Note that ``ns3::NscTcpSocketImpl`` does not interact with NSC TCP directly:
+< instead, data is redirected to NSC. NSC TCP calls the NSC TCP sockets of a node
+< when its wakeup() callback is invoked by NSC.
+---
+> Note that ``ns3::NscTcpSocketImpl`` does not interact with nsc-tcp directly:
+> instead, data is redirected to nsc. nsc-tcp calls the nsc-tcp-sockets of a node
+> when its wakeup callback is invoked by nsc. 
+Only in ../../ns-3-dev-git/src/internet/doc: udp.rst
