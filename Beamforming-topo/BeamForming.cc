@@ -237,7 +237,7 @@ int main(int argc , char* argv[])
     WiFi.SetRemoteStationManager( "ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode) );
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Create Nodes-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Nodes" << string(5, '-') << '\n';
 
     /*----------------Create Nodes------------------------------------------------------------------------------------------------------------------------------------------------------*/
     NodeContainer EdgeServer_NodeContainer;
@@ -287,7 +287,7 @@ int main(int argc , char* argv[])
     
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Create Ether Channel-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Ether Channel" << string(5, '-') << '\n';
 
     /*----------------Create Ether Channel--------------------------------------------------------------------------------------------------------------------------------------------------*/
     PointToPointHelper Channel_PointToPointHelper;
@@ -318,7 +318,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Create Wireless Channel from antennas1 to AP1-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Wireless Channel from antennas1 to AP1" << string(5, '-') << '\n';
 
     /*----------------Create Wireless Channel from antennas1 to AP1------------------------------------------------------------------------------------------------------------------------*/
     DmgWifiHelper WiFi_DmgWifiHelper;
@@ -384,7 +384,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Create APs Mac-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create APs Mac" << string(5, '-') << '\n';
 
     /*----------------Create APs Mac------------------------------------------------------------------------------------------------------------------------*/
     DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
@@ -439,7 +439,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Set Nodes' Location and mobility-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Set Nodes' Location and mobility" << string(5, '-') << '\n';
 
     /*----------------Set Nodes' Location and mobility------------------------------------------------------------------------------------------------------------------------*/
     Ptr<ListPositionAllocator> PositionAlloc_ListPositionAllocator = CreateObject<ListPositionAllocator>();
@@ -475,7 +475,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------IPv4 address assign-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "IPv4 address assign" << string(5, '-') << '\n';
 
     /*----------------IPv4 address assign--------------------------------------------------------------------------------------------------------------------------------------------------*/
     InternetStackHelper Stack_InternetStackHelper;
@@ -487,25 +487,28 @@ int main(int argc , char* argv[])
     Stack_InternetStackHelper.Install(UsersAntenna2_NodeContainer);
 
     Ipv4AddressHelper Address_IPv4AddressHelper;
-    Address_IPv4AddressHelper.SetBase("10.1.1.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.1.0" , "255.255.255.0");
     Ipv4InterfaceContainer ServerConnectGateway1_Ipv4InterfaceContainer   = Address_IPv4AddressHelper.Assign(
         ServerConnectGateway1_NetDeviceContainer
     );
+    cout << "Build Network 192.168.1.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.2.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.2.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway1ConnectGateway2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         Gateway1ConnectGateway2_NetDeviceContainer
     );
+    cout << "Build Network 192.168.2.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.3.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.3.0" , "255.255.255.0");
     Ipv4InterfaceContainer Gateway2ConnectAPs_NetDeviceContainer = Address_IPv4AddressHelper.Assign(
         Gateway2ConnectAP1_NetDeviceContainer
     );
     Address_IPv4AddressHelper.Assign(
         Gateway2ConnectAP2_NetDeviceContainer
     );
+    cout << "Build Network 192.168.3.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.4.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.4.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP1_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         AP1_NetDeviceContainer
     );
@@ -516,8 +519,9 @@ int main(int argc , char* argv[])
             Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx]
         );
     }
+    cout << "Build Network 192.168.4.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.5.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.5.0" , "255.255.255.0");
     Ipv4InterfaceContainer AP2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         AP2_NetDeviceContainer
     );
@@ -528,8 +532,9 @@ int main(int argc , char* argv[])
             Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx]
         );
     }
+    cout << "Build Network 192.168.5.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.6.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.6.0" , "255.255.255.0");
     Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[(int)UserNum][2];
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
@@ -540,9 +545,9 @@ int main(int argc , char* argv[])
             Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][1]
         );
     }
-    cout << "Build Network 10.1.6.0 Successfully\n";
+    cout << "Build Network 192.168.6.0 Successfully\n";
 
-    Address_IPv4AddressHelper.SetBase("10.1.7.0" , "255.255.255.0");
+    Address_IPv4AddressHelper.SetBase("192.168.7.0" , "255.255.255.0");
     NodeContainer      UsersConnectServer_NodeContainer     [(int)UserNum];
     NetDeviceContainer UsersConnectServer_NetDeviceContainer[(int)UserNum];
     Ipv4InterfaceContainer UsersConnectServer_Ipv4InterfaceContainer[(int)UserNum];
@@ -556,7 +561,7 @@ int main(int argc , char* argv[])
             UsersConnectServer_NetDeviceContainer[user_idx]
         );
     }
-    cout << "Build Network 10.1.7.0 Successfully\n";
+    cout << "Build Network 192.168.7.0 Successfully\n";
 
     /* Populate routing table */
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();
@@ -566,7 +571,7 @@ int main(int argc , char* argv[])
     cout << "ARP Disable Successfully\n";
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Install TCP Sink-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
 
     /*----------------Install TCP Sink----------------------------------------------------------------------------------------------------------------------------------------------------*/
     ApplicationContainer UsersSink_ApplicationContainer    [(int)UserNum];
@@ -599,7 +604,7 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "-----------------------------------------------Put Trace NetworkPerformance software into nodes-----------------------------------------------\n";
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Put Trace NetworkPerformance software into nodes" << string(5, '-') << '\n';
 
     /*----------------Put Trace NetworkPerformance software into nodes---------------------------------------------------------------------------------------------------------------------*/
     Ptr<WifiNetDevice> AP1_WiFiNetDevice              = StaticCast<WifiNetDevice>(AP1_NetDeviceContainer.Get(0));

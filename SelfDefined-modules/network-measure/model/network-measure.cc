@@ -52,9 +52,11 @@ namespace ns3 {
         *TotalRx           = CurrentRx;
         *Throughput        = CurrentRx/now.GetSeconds();
 
-        cout << left << "==========" << "IP<" << NodeAddress << ">" << "==========";
-        cout << setw(10) << "Total-Throughput : " << *Throughput  << "\n"   << endl;
-        cout << setw(10) << "Itval-Throughput : " << IntervalThr << "\n\n" << endl;
+        cout << "    " <<  left << "\n==========" << "IP<" << NodeAddress << ">" << "==========\n";
+        cout << "    " <<  setw(10) << "Total-Throughput : " << *Throughput  << endl         ;
+        cout << "    " <<  setw(10) << "Itval-Throughput : " << IntervalThr  << endl         ;
+        cout << "    " <<  setw(10) << "CurrentRx        : " << CurrentRx    << endl         ;
+        cout << "    " << setw(10) << "Itval            : " << Interval     << '\n' << endl ;
 
         Simulator::Schedule(
             Seconds(1.0) , 
@@ -93,11 +95,20 @@ namespace ns3 {
 
         if(AntennaxConnectAPx_SNR > -50)
         {
-            cout << "SNR is normal\n" << endl;
+            Ptr<Ipv4> Antennax_Ipv4 = AntennaxConnectAPx_DmgStaWifiMac_ForTraceLog
+                                      ->GetDevice()->GetNode()->GetObject<Ipv4>();
+
+            int32_t Antennax_Interface = Antennax_Ipv4->GetInterfaceForDevice(
+                AntennaxConnectAPx_DmgStaWifiMac_ForTraceLog->GetDevice()
+            );
+
+            cout << Antennax_Ipv4->GetAddress(Antennax_Interface , 0).GetLocal()
+            << " -> SNR is normal";
             if(AntennaxConnectAPx_SNR < 8)
             {
-                cout << "Secotr Sweep\n" << endl;
+                cout << " || Secotr Sweep";
             }
+            cout << '\n';
         }
 
         Simulator::Schedule(
@@ -131,14 +142,14 @@ namespace ns3 {
         FlowMonitor::FlowStatsContainer stats = MonitorDevice->GetFlowStats();
         for (std::map<FlowId, FlowMonitor::FlowStats>::const_iterator i = stats.begin (); i != stats.end (); ++i)
         {
-        Ipv4FlowClassifier::FiveTuple t = Classifier->FindFlow (i->first);
-        cout << "Flow " << i->first << " (" << t.sourceAddress << " -> " << t.destinationAddress << ")" << std::endl;
-        cout << "  Tx Packets: " << i->second.txPackets << std::endl;
-        cout << "  Tx Bytes:   " << i->second.txBytes << std::endl;
-        cout << "  TxOffered:  " << i->second.txBytes * 8.0 / (simulationTime * 1e6)  << " Mbps" << std::endl;
-        cout << "  Rx Packets: " << i->second.rxPackets << std::endl;
-        cout << "  Rx Bytes:   " << i->second.rxBytes << std::endl;
-        cout << "  Throughput: " << i->second.rxBytes * 8.0 / (simulationTime * 1e6)  << " Mbps" << std::endl;
+            Ipv4FlowClassifier::FiveTuple t = Classifier->FindFlow (i->first);
+            cout << "Flow " << i->first << " (" << t.sourceAddress << " -> " << t.destinationAddress << ")" << std::endl;
+            cout << "  Tx Packets: " << i->second.txPackets << std::endl;
+            cout << "  Tx Bytes:   " << i->second.txBytes << std::endl;
+            cout << "  TxOffered:  " << i->second.txBytes * 8.0 / (simulationTime * 1e6)  << " Mbps" << std::endl;
+            cout << "  Rx Packets: " << i->second.rxPackets << std::endl;
+            cout << "  Rx Bytes:   " << i->second.rxBytes << std::endl;
+            cout << "  Throughput: " << i->second.rxBytes * 8.0 / (simulationTime * 1e6)  << " Mbps" << std::endl;
         }
     }
 }
