@@ -20,23 +20,19 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/timestamp-tag.h"
 #include "ns3/flow-monitor-module.h"
+#include "ns3/ipv4-static-routing-helper.h"
+#include "ns3/ipv4-static-routing.h"
 
 
 #include "ns3/app-install.h"
 #include "ns3/network-measure.h"
 #include "ns3/event-detect.h"
 #include "ns3/datatype.h"
+#include "ns3/route-table.h"
 
 
 #include "ns3/parameters.h"
 #include "ns3/common-tools.h"
-// #include "network-tools/Parameters/BeamFormParameter.h"
-// #include "network-tools/DetectEvent/APtoUsers.h"
-// #include "network-tools/InstallApp/TCPApps.h"
-// #include "network-tools/Measurement/MeasurePerformance.h"
-// #include "network-tools/common-functions.h"
-// #include "network-tools/Dictory.h"
-
 
 
 NS_LOG_COMPONENT_DEFINE ("CompareAccessSchemes");
@@ -90,6 +86,8 @@ each action-inPurpose 1-lines interval
 
 
 
+
+
 int main(int argc , char* argv[])
 {
     /*----------------Set OuputFile Path---------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -119,8 +117,8 @@ int main(int argc , char* argv[])
     string   InputBufferSize = "4000p";
     int T_BM = BM_enable ? ( UserNum==1 ? 3 : (UserNum<6 ? 2+((int)UserNum-1)*3 : 15) ) : 500 ; /*$T(BM)*/
 
-    bool Verbose        = false;
-    bool PcapTrace      = false;
+    bool  Verbose       = false;
+    bool  PcapTrace     = true ;
     bool  EnableMACReTX = false;
     uint32_t SnapShotLength = std::numeric_limits<uint32_t>::max (); /* The maximum PCAP Snapshot Length. */
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -129,9 +127,7 @@ int main(int argc , char* argv[])
 
     /*----------------Init Parameters for measurement--------------------------------------------------------------------------------------------------------------------------------------*/
     uint64_t TotalRx          [(int)UserNum] = {0};
-    // uint64_t PktNum           [(int)UserNum] = {0};
     double   Throughput       [(int)UserNum] = {0};
-    // uint8_t  BeamFormedLinks  [(int)UserNum] = {0};  
     Ptr<PacketSink> PacketSink[(int)UserNum];
 
     ApplicationContainer SinkAPP[(int)UserNum];
@@ -201,7 +197,7 @@ int main(int argc , char* argv[])
 
 
 
-    /*----------------Network Setting------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /*----------------WiFi Setting------------------------------------------------------------------------------------------------------------------------------------------------------*/
     WifiPhyStandard NetworkStandard = WifiStandard=="802.11ay" ? WIFI_PHY_STANDARD_80211ad : WIFI_PHY_STANDARD_80211ay;
     if (WifiStandard!="802.11ay" && WifiStandard!="802.11ad")
     {
@@ -215,25 +211,6 @@ int main(int argc , char* argv[])
 
     DmgWifiHelper WiFi;
     WiFi.SetStandard (NetworkStandard);
-
-
-    /*Physical Setting*/
-    DmgWifiChannelHelper WiFiChannel;
-    WiFiChannel.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
-    WiFiChannel.AddPropagationLoss  ("ns3::FriisPropagationLossModel", "Frequency", DoubleValue (60.48e9));
-
-    DmgWifiPhyHelper WiFiPhy = DmgWifiPhyHelper::Default ();
-    WiFiPhy.SetChannel(WiFiChannel.Create());
-    WiFiPhy.Set ("TxPowerStart"  , DoubleValue (10.0) );
-    WiFiPhy.Set ("TxPowerEnd"    , DoubleValue (10.0) );
-    WiFiPhy.Set ("TxPowerLevels" , UintegerValue (1)  );
-    WiFiPhy.Set ("ChannelNumber" , UintegerValue (2)  );
-    WiFiPhy.Set ("SupportOfdmPhy", BooleanValue (true));
-    if (WifiStandard=="802.11ay")
-        WiFiPhy.SetErrorRateModel( "ns3::DmgErrorModel" , "FileName" , StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt") );
-    
-    // DmgWifiPhyHelper WiFiPhy2 = WiFiPhy;
-
     WiFi.SetRemoteStationManager( "ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode) );
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -332,19 +309,19 @@ int main(int argc , char* argv[])
         "Sectors" , UintegerValue(8)
     );
 
-    DmgWifiPhyHelper AP1Phy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
+    DmgWifiPhyHelper AP1WiFiPhy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
     DmgWifiChannelHelper AP1Channel_DmgWifiChannelHelper;
     AP1Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
     AP1Channel_DmgWifiChannelHelper.AddPropagationLoss ("ns3::FriisPropagationLossModel" , "Frequency" , DoubleValue (60.48e9));
-    AP1Phy_DmgWifiPhyHelper.SetChannel(AP1Channel_DmgWifiChannelHelper.Create());
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
-    AP1Phy_DmgWifiPhyHelper.Set("TxPowerLevels"  , UintegerValue(1)  );
-    AP1Phy_DmgWifiPhyHelper.Set("ChannelNumber"  , UintegerValue(2)  );
-    AP1Phy_DmgWifiPhyHelper.Set("SupportOfdmPhy" , BooleanValue(true));
+    AP1WiFiPhy_DmgWifiPhyHelper.SetChannel(AP1Channel_DmgWifiChannelHelper.Create());
+    AP1WiFiPhy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
+    AP1WiFiPhy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
+    AP1WiFiPhy_DmgWifiPhyHelper.Set("TxPowerLevels"  , UintegerValue(1)  );
+    AP1WiFiPhy_DmgWifiPhyHelper.Set("ChannelNumber"  , UintegerValue(2)  );
+    AP1WiFiPhy_DmgWifiPhyHelper.Set("SupportOfdmPhy" , BooleanValue(true));
     if(WifiStandard == "802.11ay")
     {
-        AP1Phy_DmgWifiPhyHelper.SetErrorRateModel(
+        AP1WiFiPhy_DmgWifiPhyHelper.SetErrorRateModel(
             "ns3::DmgErrorModel","FileName", 
             StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt")
         );
@@ -364,9 +341,8 @@ int main(int argc , char* argv[])
     );
 
     NetDeviceContainer AP1_NetDeviceContainer = WiFi_DmgWifiHelper.Install(
-        AP1Phy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , AP1_Node
+        AP1WiFiPhy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , AP1_Node
     );
-
     AP1Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgStaWifiMac" , 
         "Ssid"               , SsidValue(AP1_Ssid)                , 
@@ -379,14 +355,34 @@ int main(int argc , char* argv[])
     for(int antenna1_idx=0 ; antenna1_idx<(int)UserNum ; antenna1_idx++)
     {
         Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx] = WiFi_DmgWifiHelper.Install(
-            AP1Phy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , UsersAntenna1_Node[antenna1_idx]
+            AP1WiFiPhy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , UsersAntenna1_Node[antenna1_idx]
         );
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create APs Mac" << string(5, '-') << '\n';
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Wireless Channel from antennas2 to AP2" << string(5, '-') << '\n';
 
-    /*----------------Create APs Mac------------------------------------------------------------------------------------------------------------------------*/
+    /*----------------Create Wireless Channel from antennas2 to AP2------------------------------------------------------------------------------------------------------------------------*/
+    /*Wifi Physical Setting for AP2*/
+    DmgWifiChannelHelper AP2WiFiChannel_DmgWifiChannelHelper;
+    AP2WiFiChannel_DmgWifiChannelHelper.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
+    AP2WiFiChannel_DmgWifiChannelHelper.AddPropagationLoss  ("ns3::FriisPropagationLossModel", "Frequency", DoubleValue (60.48e9));
+
+    DmgWifiPhyHelper AP2WiFiPhy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default ();
+    AP2WiFiPhy_DmgWifiPhyHelper.SetChannel(AP2WiFiChannel_DmgWifiChannelHelper.Create());
+    AP2WiFiPhy_DmgWifiPhyHelper.Set ("TxPowerStart"  , DoubleValue (10.0) );
+    AP2WiFiPhy_DmgWifiPhyHelper.Set ("TxPowerEnd"    , DoubleValue (10.0) );
+    AP2WiFiPhy_DmgWifiPhyHelper.Set ("TxPowerLevels" , UintegerValue (1)  );
+    AP2WiFiPhy_DmgWifiPhyHelper.Set ("ChannelNumber" , UintegerValue (2)  );
+    AP2WiFiPhy_DmgWifiPhyHelper.Set ("SupportOfdmPhy", BooleanValue (true));
+    if (WifiStandard=="802.11ay")
+    {
+        AP2WiFiPhy_DmgWifiPhyHelper.SetErrorRateModel(
+            "ns3::DmgErrorModel" , "FileName" , 
+            StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt") 
+        );
+    }
+        
     DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
     DmgWifiChannelHelper AP2Channel_DmgWifiChannelHelper;
     AP2Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
@@ -565,10 +561,88 @@ int main(int argc , char* argv[])
 
     /* Populate routing table */
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();
-    cout << "Build RouteTable Successfully\n";
+    cout << "Build Each Network-Area RouteTable Successfully\n";
     /* We do not want any ARP packets */
     PopulateArpCache ();
     cout << "ARP Disable Successfully\n";
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Setting up static routing" << string(5, '-') << '\n';
+
+    /*----------Setting up static routing From 192.168.1.0 to 192.168.4.0 & 192.168.5.0----------------------------------------------------------------------------------------------------*/
+    // get ipv4
+    Ptr<Ipv4> ipv4_Server   = EdgeServer_Node->GetObject<Ipv4>();
+    Ptr<Ipv4> ipv4_Gateway1 = Gateway1_Node  ->GetObject<Ipv4>();
+    Ptr<Ipv4> ipv4_Gateway2 = Gateway2_Node  ->GetObject<Ipv4>();
+    Ptr<Ipv4> ipv4_AP1      = AP1_Node       ->GetObject<Ipv4>();
+    Ptr<Ipv4> ipv4_AP2      = AP2_Node       ->GetObject<Ipv4>();
+
+
+    // set ipv4 interface-index
+    uint32_t EdgeServer_InterfaceIDX         = ipv4_Server  ->GetInterfaceForDevice(ServerConnectGateway1_NetDeviceContainer  .Get(0));
+    uint32_t Gateway1_InterfaceIDX           = ipv4_Gateway1->GetInterfaceForDevice(Gateway1ConnectGateway2_NetDeviceContainer.Get(0));
+    uint32_t Gateway2ConnectAP1_InterfaceIDX = ipv4_Gateway2->GetInterfaceForDevice(Gateway2ConnectAP1_NetDeviceContainer     .Get(0));
+    uint32_t Gateway2ConnectAP2_InterfaceIDX = ipv4_Gateway2->GetInterfaceForDevice(Gateway2ConnectAP2_NetDeviceContainer     .Get(0));
+    uint32_t AP1_InterfaceIDX                = ipv4_AP1     ->GetInterfaceForDevice(     AP1_NetDeviceContainer               .Get(0));
+    uint32_t AP2_InterfaceIDX                = ipv4_AP2     ->GetInterfaceForDevice(     AP2_NetDeviceContainer               .Get(0));
+
+    Ipv4StaticRoutingHelper ipv4RoutingHelper;
+
+    // Server (192.168.1.0) -> Gateway1 (192.168.2.0)
+    Ptr<Ipv4StaticRouting> staticRouting_Server = ipv4RoutingHelper.GetStaticRouting(ipv4_Server);
+    staticRouting_Server->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.2.1"), EdgeServer_InterfaceIDX);
+
+    // Gateway1 (192.168.2.0) -> Gateway2 (192.168.3.0)
+    Ptr<Ipv4StaticRouting> staticRouting_Gateway1 = ipv4RoutingHelper.GetStaticRouting(ipv4_Gateway1);
+    staticRouting_Gateway1->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.3.1"), Gateway1_InterfaceIDX);
+
+    // Gateway2 (192.168.3.0) -> AP1 (192.168.4.0) and AP2 (192.168.5.0)
+    Ptr<Ipv4StaticRouting> staticRouting_Gateway2 = ipv4RoutingHelper.GetStaticRouting(ipv4_Gateway2);
+    staticRouting_Gateway2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.4.1"), Gateway2ConnectAP1_InterfaceIDX);
+    staticRouting_Gateway2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.5.1"), Gateway2ConnectAP2_InterfaceIDX);
+
+    // AP1 (192.168.4.0) -> Gateway2 (192.168.3.0) -> AP2 (192.168.5.0) -> 192.168.6.0
+    Ptr<Ipv4StaticRouting> staticRouting_AP1 = ipv4RoutingHelper.GetStaticRouting(ipv4_AP1);
+    staticRouting_AP1->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.6.1"), AP1_InterfaceIDX);
+    staticRouting_AP1->SetDefaultRoute(Ipv4Address("192.168.3.1"), AP1_InterfaceIDX);
+
+    // AP2 (192.168.5.0) -> 192.168.6.0
+    Ptr<Ipv4StaticRouting> staticRouting_AP2 = ipv4RoutingHelper.GetStaticRouting(ipv4_AP2);
+    staticRouting_AP2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.6.1"), AP2_InterfaceIDX);
+    staticRouting_AP2->SetDefaultRoute(Ipv4Address("192.168.3.1"), AP2_InterfaceIDX);
+
+
+    cout << string(10,'~') << "Server Node" << string(10,'~') << endl;
+    ns3_PrintRoutingTable_FunctionRouteTable1(EdgeServer_Node);
+    cout << "\n\n";
+
+    cout << string(10,'~') << "Gateway1" << string(10,'~') << endl;
+    ns3_PrintRoutingTable_FunctionRouteTable1(Gateway1_Node);
+    cout << "\n\n";
+
+    cout << string(10,'~') << "Gateway2" << string(10,'~') << endl;
+    ns3_PrintRoutingTable_FunctionRouteTable1(Gateway2_Node);
+    cout << "\n\n";
+
+    cout << string(10,'~') << "AP1" << string(10,'~') << endl;
+    ns3_PrintRoutingTable_FunctionRouteTable1(AP1_Node);
+    cout << "\n\n";
+
+    cout << string(10,'~') << "AP2" << string(10,'~') << endl;
+    ns3_PrintRoutingTable_FunctionRouteTable1(AP2_Node);
+    cout << "\n\n";
+
+    cout << string(10,'~') << "UsersAntennas" << string(10,'~') << endl;
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        cout << "User" << user_idx << endl;
+        ns3_PrintRoutingTable_FunctionRouteTable1(UsersAntenna1_Node[user_idx]);
+        cout << string(25,'_') <<endl;
+        ns3_PrintRoutingTable_FunctionRouteTable1(UsersAntenna2_Node[user_idx]);
+        cout << string(25,'_') <<endl;
+        ns3_PrintRoutingTable_FunctionRouteTable1(Users_Node[user_idx]);
+        cout << string(25,'_') <<endl;
+    }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
@@ -577,7 +651,7 @@ int main(int argc , char* argv[])
     ApplicationContainer UsersSink_ApplicationContainer    [(int)UserNum];
     // Ptr<PacketSink>      Users_PacketSink               [(int)UserNum];
     std::vector<ns3::Ptr<ns3::PacketSink>> Users_PacketSink((int)UserNum);
-    ApplicationContainer ServerSink_ApplicationContainer   [(int)UserNum];
+    ApplicationContainer ServerSink_ApplicationContainer   [(int)UserNum][2];
 
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
@@ -589,15 +663,15 @@ int main(int argc , char* argv[])
         );
 
         ns3_ForServer_InstallTCPTxSink_TCPApp2(
-            &(ServerSink_ApplicationContainer[user_idx])     , 
-            EdgeServer_Node , (uint32_t)((int)port-user_idx) , 
+            &(ServerSink_ApplicationContainer[user_idx][0])  , 
+            EdgeServer_Node , (uint32_t)((int)port)          , 
             PayloadSize , DataRate , 1.4 , SimulationTime    , 
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1)
         );
 
         ns3_ForServer_InstallTCPTxSink_TCPApp2(
-            &(ServerSink_ApplicationContainer[user_idx])     , 
-            EdgeServer_Node , (uint32_t)((int)port-user_idx) , 
+            &(ServerSink_ApplicationContainer[user_idx][1])  , 
+            EdgeServer_Node , (uint32_t)((int)port)          , 
             PayloadSize , DataRate , 1.4 , SimulationTime    , 
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1)
         );
@@ -682,15 +756,14 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-
-
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         Simulator::Schedule(
             Seconds(1.4) , 
             &ns3_ForEveryone_TCPThroughputMeasure_FunctionTCPMeasure1    , 
             UsersAntenna1_Ipv4InterfaceContainer[user_idx].GetAddress(0) , 
-            &(Users_PacketSink[user_idx])  ,  TotalRx  ,  Throughput 
+            UsersAntenna2_Ipv4InterfaceContainer[user_idx].GetAddress(0) , 
+            &(Users_PacketSink[user_idx])  ,  &TotalRx[user_idx]  ,  &Throughput[user_idx] 
         );
 
         Simulator::Schedule(
@@ -724,6 +797,21 @@ int main(int argc , char* argv[])
 
     FlowMonitorHelper FlowMonitorProgram;
     Ptr<FlowMonitor>  MonitorDevice = FlowMonitorProgram.InstallAll();
+
+    if(PcapTrace)
+    {
+        AP1WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+        AP2WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
+        AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP1" , AP1_NetDeviceContainer , true);
+        AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP2" , AP2_NetDeviceContainer , true);
+        for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+        {
+            string userx_antenna1_pcap = "Traces/user" + to_string(user_idx+1) + "_antenna1";
+            string userx_antenna2_pcap = "Traces/user" + to_string(user_idx+1) + "_antenna2";
+            AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap(userx_antenna1_pcap , Antenna1ConnectAP1_NetDeviceContainer[user_idx] , false);
+            AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap(userx_antenna2_pcap , Antenna2ConnectAP2_NetDeviceContainer[user_idx] , false);
+        }
+    }
 
     Simulator::Stop(Seconds(SimulationTime+0.001));
     Simulator::Run    ();
