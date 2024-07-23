@@ -22,6 +22,7 @@
 #include "ns3/flow-monitor-module.h"
 #include "ns3/ipv4-static-routing-helper.h"
 #include "ns3/ipv4-static-routing.h"
+#include "ns3/log.h"
 
 
 #include "ns3/app-install.h"
@@ -570,47 +571,63 @@ int main(int argc , char* argv[])
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Setting up static routing" << string(5, '-') << '\n';
 
     /*----------Setting up static routing From 192.168.1.0 to 192.168.4.0 & 192.168.5.0----------------------------------------------------------------------------------------------------*/
-    // get ipv4
-    Ptr<Ipv4> ipv4_Server   = EdgeServer_Node->GetObject<Ipv4>();
-    Ptr<Ipv4> ipv4_Gateway1 = Gateway1_Node  ->GetObject<Ipv4>();
-    Ptr<Ipv4> ipv4_Gateway2 = Gateway2_Node  ->GetObject<Ipv4>();
-    Ptr<Ipv4> ipv4_AP1      = AP1_Node       ->GetObject<Ipv4>();
-    Ptr<Ipv4> ipv4_AP2      = AP2_Node       ->GetObject<Ipv4>();
+    Ptr<SimpleNetDevice> EdgeServer_NetworkDevice = CreateObject<SimpleNetDevice>();
+    EdgeServer_NetworkDevice->SetAddress(Mac48Address::Allocate());
+    EdgeServer_Node         ->AddDevice(EdgeServer_NetworkDevice );
+    Ptr<Ipv4> EdgeServer_Ipv4                        = EdgeServer_Node->GetObject<Ipv4>();
+    uint32_t  EdgeServer_InterfaceIDX                = EdgeServer_Ipv4->AddInterface(EdgeServer_NetworkDevice);
+    Ipv4InterfaceAddress EdgeServer_InterfaceAddress = Ipv4InterfaceAddress(Ipv4Address("192.168.1.0") , Ipv4Mask("255.255.255.0"));
+    EdgeServer_Ipv4->AddAddress(EdgeServer_InterfaceIDX , EdgeServer_InterfaceAddress);
+    EdgeServer_Ipv4->SetMetric (EdgeServer_InterfaceIDX , 1);
+    EdgeServer_Ipv4->SetUp     (EdgeServer_InterfaceIDX);
+    
+    // Server (192.168.1.0) -> Gateway1 (192.168.6.X)
+    Ipv4StaticRoutingHelper EdgeServer_ipv4RoutingHelper;
+    Ptr<Ipv4StaticRouting> staticRouting_Server = EdgeServer_ipv4RoutingHelper.GetStaticRouting(EdgeServer_Ipv4);
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        staticRouting_Server->AddHostRouteTo(
+            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1) , 1
+        );
+    }
+    
+    // Server (192.168.1.0) -> Gateway1 (192.168.6.X)
+    Ptr<SimpleNetDevice>    Users_NetworkDevice    [(int)UserNum];
+    Ptr<Ipv4>               Users_Ipv4             [(int)UserNum];
+    int32_t                 Users_InterfaceIDX     [(int)UserNum];
+    Ipv4InterfaceAddress    Users_InterfaceAddress [(int)UserNum];
+    Ipv4StaticRoutingHelper Users_ipv4RoutingHelper[(int)UserNum];
+    Ptr<Ipv4StaticRouting>  staticRouting_Users    [(int)UserNum];
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        Users_NetworkDevice[user_idx] = CreateObject<SimpleNetDevice>();
+        Users_NetworkDevice[user_idx] ->SetAddress(Mac48Address::Allocate());
+        Users_Node         [user_idx] ->AddDevice(Users_NetworkDevice[user_idx]);
+        Users_Ipv4         [user_idx] = Users_Node[user_idx]->GetObject<Ipv4>();
+        Users_InterfaceIDX [user_idx] = Users_Ipv4[user_idx]->AddInterface(Users_NetworkDevice[user_idx]);
+        Users_InterfaceAddress[user_idx] = Ipv4InterfaceAddress(
+            Ipv4Address("192.168.6.0") , Ipv4Mask("255.255.255.0")
+        );
+        
+        Users_Ipv4[user_idx]->AddAddress(
+            Users_InterfaceIDX[user_idx] , Users_InterfaceAddress[user_idx]
+        );
+        Users_Ipv4[user_idx]->SetMetric(
+            Users_InterfaceIDX[user_idx] , 1
+        );
+        Users_Ipv4[user_idx]->SetUp(
+            Users_InterfaceIDX[user_idx]
+        );
 
+        staticRouting_Users[user_idx] = Users_ipv4RoutingHelper[user_idx].GetStaticRouting(Users_Ipv4[user_idx]);
+        staticRouting_Users[user_idx] ->AddHostRouteTo(Ipv4Address("192.168.1.1") , 3);
+    }
 
-    // set ipv4 interface-index
-    uint32_t EdgeServer_InterfaceIDX         = ipv4_Server  ->GetInterfaceForDevice(ServerConnectGateway1_NetDeviceContainer  .Get(0));
-    uint32_t Gateway1_InterfaceIDX           = ipv4_Gateway1->GetInterfaceForDevice(Gateway1ConnectGateway2_NetDeviceContainer.Get(0));
-    uint32_t Gateway2ConnectAP1_InterfaceIDX = ipv4_Gateway2->GetInterfaceForDevice(Gateway2ConnectAP1_NetDeviceContainer     .Get(0));
-    uint32_t Gateway2ConnectAP2_InterfaceIDX = ipv4_Gateway2->GetInterfaceForDevice(Gateway2ConnectAP2_NetDeviceContainer     .Get(0));
-    uint32_t AP1_InterfaceIDX                = ipv4_AP1     ->GetInterfaceForDevice(     AP1_NetDeviceContainer               .Get(0));
-    uint32_t AP2_InterfaceIDX                = ipv4_AP2     ->GetInterfaceForDevice(     AP2_NetDeviceContainer               .Get(0));
-
-    Ipv4StaticRoutingHelper ipv4RoutingHelper;
-
-    // Server (192.168.1.0) -> Gateway1 (192.168.2.0)
-    Ptr<Ipv4StaticRouting> staticRouting_Server = ipv4RoutingHelper.GetStaticRouting(ipv4_Server);
-    staticRouting_Server->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.2.1"), EdgeServer_InterfaceIDX);
-
-    // Gateway1 (192.168.2.0) -> Gateway2 (192.168.3.0)
-    Ptr<Ipv4StaticRouting> staticRouting_Gateway1 = ipv4RoutingHelper.GetStaticRouting(ipv4_Gateway1);
-    staticRouting_Gateway1->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.3.1"), Gateway1_InterfaceIDX);
-
-    // Gateway2 (192.168.3.0) -> AP1 (192.168.4.0) and AP2 (192.168.5.0)
-    Ptr<Ipv4StaticRouting> staticRouting_Gateway2 = ipv4RoutingHelper.GetStaticRouting(ipv4_Gateway2);
-    staticRouting_Gateway2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.4.1"), Gateway2ConnectAP1_InterfaceIDX);
-    staticRouting_Gateway2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.5.1"), Gateway2ConnectAP2_InterfaceIDX);
-
-    // AP1 (192.168.4.0) -> Gateway2 (192.168.3.0) -> AP2 (192.168.5.0) -> 192.168.6.0
-    Ptr<Ipv4StaticRouting> staticRouting_AP1 = ipv4RoutingHelper.GetStaticRouting(ipv4_AP1);
-    staticRouting_AP1->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.6.1"), AP1_InterfaceIDX);
-    staticRouting_AP1->SetDefaultRoute(Ipv4Address("192.168.3.1"), AP1_InterfaceIDX);
-
-    // AP2 (192.168.5.0) -> 192.168.6.0
-    Ptr<Ipv4StaticRouting> staticRouting_AP2 = ipv4RoutingHelper.GetStaticRouting(ipv4_AP2);
-    staticRouting_AP2->AddNetworkRouteTo(Ipv4Address("192.168.6.0"), Ipv4Mask("255.255.255.0"), Ipv4Address("192.168.6.1"), AP2_InterfaceIDX);
-    staticRouting_AP2->SetDefaultRoute(Ipv4Address("192.168.3.1"), AP2_InterfaceIDX);
-
+    cout << EdgeServer_NetworkDevice << '\n';
+    for(int i=0 ; i<UserNum ; i++)
+    {
+        cout << Users_NetworkDevice[i] << '\n';
+    }
 
     cout << string(10,'~') << "Server Node" << string(10,'~') << endl;
     ns3_PrintRoutingTable_FunctionRouteTable1(EdgeServer_Node);
@@ -813,6 +830,7 @@ int main(int argc , char* argv[])
         }
     }
 
+    cout << EdgeServer_NetworkDevice << '\n';
     Simulator::Stop(Seconds(SimulationTime+0.001));
     Simulator::Run    ();
     Simulator::Destroy();
