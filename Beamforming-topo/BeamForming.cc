@@ -587,7 +587,7 @@ int main(int argc , char* argv[])
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         staticRouting_Server->AddHostRouteTo(
-            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1) , 1
+            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1) , 1
         );
     }
     
@@ -660,6 +660,46 @@ int main(int argc , char* argv[])
         ns3_PrintRoutingTable_FunctionRouteTable1(Users_Node[user_idx]);
         cout << string(25,'_') <<endl;
     }
+
+
+
+    if(EdgeServer_NetworkDevice->GetChannel() == 0)
+    {
+        cout << "EdgeServer_NetworkDevice -> m_channel is NULL ptr ";
+        Ptr<SimpleChannel> EdgeServer_SimpleChannel = CreateObject<SimpleChannel>();
+        EdgeServer_NetworkDevice->SetChannel(EdgeServer_SimpleChannel);
+        cout << "====>>> Set Simple Channel : " << EdgeServer_SimpleChannel << endl;
+    }
+
+
+    vector<Ptr<SimpleChannel>> Users_SimpleChannel;
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        if(Users_NetworkDevice[user_idx]->GetChannel()==0)
+        {
+            cout << "User[" << user_idx+1 << "] : Users_NetDevice -> m_channel is NULL ptr";
+            Ptr<SimpleChannel> AUser_SimpleChannel = CreateObject<SimpleChannel>();
+            Users_SimpleChannel.push_back(AUser_SimpleChannel);
+            Users_NetworkDevice[user_idx]->SetChannel(Users_SimpleChannel[user_idx]);
+            cout << "====>>> Set Simple Channel : " << Users_SimpleChannel[user_idx] << endl;
+        }
+        else
+        {
+            Ptr<SimpleChannel> TheChannel = DynamicCast<SimpleChannel>(
+                Users_NetworkDevice[user_idx]->GetChannel()
+            );
+            Users_SimpleChannel.push_back(TheChannel);
+            cout << "User[" << user_idx+1 << "] : Already has Channel" << endl;
+        }
+    }
+
+
+    cout << "EdgeServer-Network Device   Channel : " << EdgeServer_NetworkDevice->GetChannel() << endl;
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        cout << "User-Network Device Channel : " << Users_NetworkDevice[user_idx]->GetChannel() << endl;
+    }
+
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
@@ -814,6 +854,7 @@ int main(int argc , char* argv[])
 
     FlowMonitorHelper FlowMonitorProgram;
     Ptr<FlowMonitor>  MonitorDevice = FlowMonitorProgram.InstallAll();
+    MonitorDevice->SerializeToXmlFile("Traces/FlowMonitorResults.xml", true, true);
 
     if(PcapTrace)
     {
@@ -830,7 +871,6 @@ int main(int argc , char* argv[])
         }
     }
 
-    cout << EdgeServer_NetworkDevice << '\n';
     Simulator::Stop(Seconds(SimulationTime+0.001));
     Simulator::Run    ();
     Simulator::Destroy();
