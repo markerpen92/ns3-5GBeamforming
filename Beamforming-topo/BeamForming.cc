@@ -29,7 +29,9 @@
 #include "ns3/network-measure.h"
 #include "ns3/event-detect.h"
 #include "ns3/datatype.h"
-#include "ns3/route-table.h"
+#include "ns3/layer1-info.h"
+#include "ns3/layer2-info.h"
+#include "ns3/layer3-info.h"
 
 
 #include "ns3/parameters.h"
@@ -441,35 +443,58 @@ int main(int argc , char* argv[])
     /*----------------Set Nodes' Location and mobility------------------------------------------------------------------------------------------------------------------------*/
     Ptr<ListPositionAllocator> PositionAlloc_ListPositionAllocator = CreateObject<ListPositionAllocator>();
 
-    PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 , 10.0)); //EdgeServer_Node
+    PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 , 10.0));  //EdgeServer_Node
     PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 ,  9.0));  //Gateway1_Node
     PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 ,  8.0));  //Gateway2_Node
     PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 ,  6.0));  //AP1_Node
     PositionAlloc_ListPositionAllocator->Add(Vector(0.0 , 0.0 ,  0.0));  //AP2_Node
 
-    double PositionStartPoint[3] = {0.0 , 3.0 , 1.0};
-    double radius = 1.0;
-    for(int user_idx = 0; user_idx < (int)UserNum; user_idx++)
+    for(int character_idx=1 ; character_idx<=3 ; character_idx++)
     {
-        double angle = user_idx * 2 * 3.14159 / (int)UserNum;
-        double x = PositionStartPoint[0] + radius * cos(angle);
-        double y = PositionStartPoint[2] + radius * sin(angle);
-        double z = PositionStartPoint[1];
-        PositionAlloc_ListPositionAllocator->Add(Vector(x , y , z)); // UsersAntennas
+        /*first  time is for antenna1*/
+        /*second time is for antenna2*/
+        /*third  time is for userX   */
+
+        double PositionStartPoint[3] = {0.0 , 0.0 , 3.0};
+        double radius = 1.0;
+        for(int user_idx = 0; user_idx < (int)UserNum; user_idx++)
+        {
+            double angle = user_idx * 2 * 3.14159 / (int)UserNum;
+            double x = PositionStartPoint[0] + radius * cos(angle);
+            double y = PositionStartPoint[1] + radius * sin(angle);
+            double z = PositionStartPoint[2];
+
+            PositionAlloc_ListPositionAllocator->Add(Vector(x , y , z)); // this location is for userX atanna1
+        }
     }
-
-
+    
     MobilityHelper Mobile_MobilityHelper;
     Mobile_MobilityHelper.SetPositionAllocator(PositionAlloc_ListPositionAllocator);
     Mobile_MobilityHelper.SetMobilityModel("ns3::ConstantVelocityMobilityModel"   );
-    Mobile_MobilityHelper.Install(EdgeServer_NodeContainer);
-    Mobile_MobilityHelper.Install(Gateways_NodeContainer  );
-    Mobile_MobilityHelper.Install(APs_NodeContainer       );
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
-    {
-        Mobile_MobilityHelper.Install(UsersAntennas_NodeContainer[user_idx][0]);
-        Mobile_MobilityHelper.Install(UsersAntennas_NodeContainer[user_idx][1]);
-    }
+    Mobile_MobilityHelper.Install(EdgeServer_NodeContainer   );
+    Mobile_MobilityHelper.Install(Gateways_NodeContainer     );
+    Mobile_MobilityHelper.Install(APs_NodeContainer          );
+    Mobile_MobilityHelper.Install(UsersAntenna1_NodeContainer);
+    Mobile_MobilityHelper.Install(UsersAntenna2_NodeContainer);
+    Mobile_MobilityHelper.Install(Users_NodeContainer        );
+    // for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    // {
+    //     Mobile_MobilityHelper.Install(UsersAntenna1_Node[user_idx]); // this location is for userX atanna1
+    //     Mobile_MobilityHelper.Install(UsersAntenna2_Node[user_idx]); // this location is for userX atanna2
+    //     Mobile_MobilityHelper.Install(Users_Node        [user_idx]); // this location is for userX
+    // }
+
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(EdgeServer_NodeContainer    , "EdgeServer");
+    cout << string(25 , '_') << endl;
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(Gateways_NodeContainer      , "Gateways"  );
+    cout << string(25 , '_') << endl;
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(APs_NodeContainer           , "APs"       );
+    cout << string(25 , '_') << endl;
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(Users_NodeContainer         , "Users"     );
+    cout << string(25 , '_') << endl;
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(UsersAntenna1_NodeContainer , "Antenna1"  );
+    cout << string(25 , '_') << endl;
+    ns3_PrintNodePositions_FunctionPhysicalInfo1(UsersAntenna2_NodeContainer , "Antenna2"  );
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "IPv4 address assign" << string(5, '-') << '\n';
@@ -544,6 +569,13 @@ int main(int argc , char* argv[])
     }
     cout << "Build Network 192.168.6.0 Successfully\n";
 
+    /* Populate routing table */
+    Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+    cout << "Build Each Network-Area RouteTable Successfully\n";
+    /* We do not want any ARP packets */
+    PopulateArpCache ();
+    cout << "ARP Disable Successfully\n";
+
     Address_IPv4AddressHelper.SetBase("192.168.7.0" , "255.255.255.0");
     NodeContainer      UsersConnectServer_NodeContainer     [(int)UserNum];
     NetDeviceContainer UsersConnectServer_NetDeviceContainer[(int)UserNum];
@@ -559,13 +591,6 @@ int main(int argc , char* argv[])
         );
     }
     cout << "Build Network 192.168.7.0 Successfully\n";
-
-    /* Populate routing table */
-    Ipv4GlobalRoutingHelper::PopulateRoutingTables();
-    cout << "Build Each Network-Area RouteTable Successfully\n";
-    /* We do not want any ARP packets */
-    PopulateArpCache ();
-    cout << "ARP Disable Successfully\n";
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Setting up static routing" << string(5, '-') << '\n';
@@ -702,6 +727,30 @@ int main(int argc , char* argv[])
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Get MAC Info" << string(5, '-') << '\n';
+
+    /*----------------Get MAC48Address of all nodes----------------------------------------------------------------------------------------------------------------------------------------*/
+    cout << string(10,'~') << "Server Node" << string(10,'~') << endl;
+    ns3_PrintNodeMacAddresses_FunctionLayer2Info1(EdgeServer_Node);
+    cout << string(10,'~') << "Gateway1" << string(10,'~') << endl;
+    ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Gateway1_Node  );
+    cout << string(10,'~') << "Gateway2" << string(10,'~') << endl;
+    ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Gateway2_Node  );
+    cout << string(10,'~') << "AP1     " << string(10,'~') << endl;
+    ns3_PrintNodeMacAddresses_FunctionLayer2Info1(AP1_Node       );
+    cout << string(10,'~') << "AP2     " << string(10,'~') << endl;
+    ns3_PrintNodeMacAddresses_FunctionLayer2Info1(AP2_Node       );
+
+    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    {
+        cout << string(10,'~') << "User<" << user_idx << ">" << string(10,'~') << endl;
+        ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Users_Node        [user_idx]);
+        ns3_PrintNodeMacAddresses_FunctionLayer2Info1(UsersAntenna1_Node[user_idx]);
+        ns3_PrintNodeMacAddresses_FunctionLayer2Info1(UsersAntenna2_Node[user_idx]);
+    }
+    
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
 
     /*----------------Install TCP Sink----------------------------------------------------------------------------------------------------------------------------------------------------*/

@@ -77,6 +77,7 @@ namespace ns3 {
         );
         ServerApp_OnOffHelper.SetAttribute("MaxPackets"     , UintegerValue(0));
         ServerApp_OnOffHelper.SetAttribute("PacketSize"     , UintegerValue(Server_PayloadSize));
+        ServerApp_OnOffHelper.SetAttribute("OnTime"         , StringValue("ns3::ConstantRandomVariable[Constant=1e6]"));
         ServerApp_OnOffHelper.SetAttribute("OffTime"        , StringValue("ns3::ConstantRandomVariable[Constant=0]"));
         ServerApp_OnOffHelper.SetAttribute("DataRate"       , DataRateValue(DataRate(Server_DataRate)));
         ServerApp_OnOffHelper.SetAttribute("EnableTimestamp", BooleanValue(true));

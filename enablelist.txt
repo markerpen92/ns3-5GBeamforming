@@ -14,4 +14,4 @@ event-detect
 
 parameters
 common-tools
-ipv4-config
+nodeinfo-demonstrate
