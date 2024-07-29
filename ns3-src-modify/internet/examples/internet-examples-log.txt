@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/internet/examples/main-simple.cc ../../ns-3-dev-git/src/internet/examples/main-simple.cc
+diff ../../NS3-WiGig/src/internet/examples/main-simple.cc ../../ns-3-dev/src/internet/examples/main-simple.cc
 90c90
 <   CommandLine cmd (__FILE__);
 ---

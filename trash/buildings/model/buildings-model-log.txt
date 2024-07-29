@@ -1,0 +1,250 @@
+diff ../../NS3-WiGig/src/buildings/model/building.cc ../../ns-3-dev-git/src/buildings/model/building.cc
+287,292d286
+< bool
+< Building::IsIntersect (const Vector &l1, const Vector &l2) const
+< {
+<   return m_buildingBounds.IsIntersect (l1, l2);
+< }
+< 
+diff ../../NS3-WiGig/src/buildings/model/building.h ../../ns-3-dev-git/src/buildings/model/building.h
+203,211d202
+<   /**
+<    * \brief Checks if a line-segment between position l1 and position l2
+<    *        intersects a building.
+<    *
+<    * \param l1 position
+<    * \param l2 position
+<    * \return true if there is a intersection, false otherwise
+<    */
+<   bool IsIntersect (const Vector &l1, const Vector &l2) const;
+Only in ../../NS3-WiGig/src/buildings/model: buildings-channel-condition-model.cc
+Only in ../../NS3-WiGig/src/buildings/model: buildings-channel-condition-model.h
+diff ../../NS3-WiGig/src/buildings/model/buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/buildings-propagation-loss-model.cc
+191,194c191
+<   bool isAIndoor = a->IsIndoor ();
+<   bool isBIndoor = b->IsIndoor ();
+< 
+<   if (!isAIndoor) // a is outdoor
+---
+>   if (a->IsOutdoor ())
+196c193
+<       if (!isBIndoor) // b is outdoor
+---
+>       if (b->IsOutdoor ())
+207c204
+<   if (isBIndoor) // b is indoor
+---
+>   if (b->IsIndoor ())
+diff ../../NS3-WiGig/src/buildings/model/hybrid-buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/hybrid-buildings-propagation-loss-model.cc
+156,157d155
+<   bool isAIndoor = a1->IsIndoor ();
+<   bool isBIndoor = b1->IsIndoor ();
+159,160c157
+< 
+<   if (!isAIndoor) // a is outdoor
+---
+>   if (a1->IsOutdoor ())
+162c159
+<       if (!isBIndoor) // b is outdoor
+---
+>       if (b1->IsOutdoor ())
+214c211
+<       if (isBIndoor) // b is indoor
+---
+>       if (b1->IsIndoor ())
+219c216
+<               loss = ItuR1238 (a, b) + InternalWallsLoss (a1, b1);
+---
+>               loss = ItuR1238 (a, b) + InternalWallsLoss (a1, b1);;
+253,254c250,251
+<         } // end if (isBIndoor)
+<     } // end if (!isAIndoor)
+---
+>         } // end b1->IsIndoor ()
+>     } // end a1->IsOutdoor ()
+diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.cc ../../ns-3-dev-git/src/buildings/model/mobility-building-info.cc
+24d23
+< #include <ns3/building-list.h>
+47,54d45
+< void
+< MobilityBuildingInfo::DoInitialize ()
+< {
+<   NS_LOG_FUNCTION (this);
+<   Ptr<MobilityModel> mm = this->GetObject<MobilityModel> ();
+<   MakeConsistent (mm);
+< }
+< 
+63d53
+<   m_cachedPosition = Vector (0, 0, 0);
+81,89c71
+<   Ptr<MobilityModel> mm = this->GetObject<MobilityModel> ();
+<   Vector currentPosition = mm->GetPosition ();
+<   bool posNotEqual = (currentPosition < m_cachedPosition) || (m_cachedPosition < currentPosition);
+<   if (posNotEqual)
+<     {
+<       MakeConsistent (mm);
+<     }
+< 
+<   return m_indoor;
+---
+>   return (m_indoor);
+96,97c78
+<   bool isIndoor = IsIndoor ();
+<   return (!isIndoor);
+---
+>   return (!m_indoor);
+175,203d155
+< }
+< 
+< void
+< MobilityBuildingInfo::MakeConsistent (Ptr<MobilityModel> mm)
+< {
+<   bool found = false;
+<   Vector pos = mm->GetPosition ();
+<   for (BuildingList::Iterator bit = BuildingList::Begin (); bit != BuildingList::End (); ++bit)
+<     {
+<       NS_LOG_LOGIC ("checking building " << (*bit)->GetId () << " with boundaries " << (*bit)->GetBoundaries ());
+<       if ((*bit)->IsInside (pos))
+<         {
+<           NS_LOG_LOGIC ("MobilityBuildingInfo " << this << " pos " << pos << " falls inside building " << (*bit)->GetId ());
+<           NS_ABORT_MSG_UNLESS (found == false, " MobilityBuildingInfo already inside another building!");
+<           found = true;
+<           uint16_t floor = (*bit)->GetFloor (pos);
+<           uint16_t roomX = (*bit)->GetRoomX (pos);
+<           uint16_t roomY = (*bit)->GetRoomY (pos);
+<           SetIndoor (*bit, floor, roomX, roomY);
+<         }
+<     }
+<   if (!found)
+<     {
+<       NS_LOG_LOGIC ("MobilityBuildingInfo " << this << " pos " << pos  << " is outdoor");
+<       SetOutdoor ();
+<     }
+< 
+<   m_cachedPosition = pos;
+< 
+diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.h ../../ns-3-dev-git/src/buildings/model/mobility-building-info.h
+33d32
+< #include <ns3/mobility-model.h>
+51,55d49
+<   /**
+<    * \brief Get the type ID.
+<    *
+<    * \return the object TypeId
+<    */
+59,63d52
+<   /**
+<    * \brief Parameterized constructor
+<    *
+<    * \param building The building in which the MobilityBuildingInfo instance would be placed
+<    */
+67,68c56
+<    * \brief Is indoor method.
+<    *
+---
+>    * 
+75,76d62
+<    * \brief Is outdoor function
+<    *
+78,82d63
+<    *
+<    * \deprecated This method will go away in a future release of ns-3.
+<    *  Calling \c IsIndoor () method of \c MobilityBuildingInfo class
+<    *  will satisfy the need to determine if a node is inside or outside
+<    *  a building.
+84d64
+<   NS_DEPRECATED
+88c68
+<    * \brief Mark this MobilityBuildingInfo instance as indoor
+---
+>    * Mark this MobilityBuildingInfo instance as indoor
+97,103d76
+<   /**
+<    * \brief Mark this MobilityBuildingInfo instance as indoor
+<    *
+<    * \param nfloor the floor number 1...nFloors at which the MobilityBuildingInfo instance is located
+<    * \param nroomx the X room number 1...nRoomsX at which the MobilityBuildingInfo instance is located
+<    * \param nroomy the Y room number 1...nRoomsY at which the MobilityBuildingInfo instance is located
+<    */
+108c81,82
+<    * \brief Mark this MobilityBuildingInfo instance as outdoor
+---
+>    * Mark this MobilityBuildingInfo instance as outdoor
+>    * 
+113,115c87,88
+<    * \brief Get the floor number at which the MobilityBuildingInfo instance is located
+<    *
+<    * \return The floor number
+---
+>    * 
+>    * \return 
+120d92
+<    * \brief Get the room number along x-axis at which the MobilityBuildingInfo instance is located
+122c94
+<    * \return The room number
+---
+>    * \return 
+127d98
+<    * \brief Get the room number along y-axis at which the MobilityBuildingInfo instance is located
+129c100
+<    * \return The room number
+---
+>    * \return 
+134d104
+<    * \brief Get the building in which the MobilityBuildingInfo instance is located
+136c106
+<    * \return The building in which the MobilityBuildingInfo instance is located
+---
+>    * \return 
+139,150d108
+<   /**
+<    * \brief Make the given mobility model consistent, by determining whether
+<    * its position falls inside any of the building in BuildingList, and
+<    * updating accordingly the BuildingInfo aggregated with the MobilityModel.
+<    *
+<    * \param mm the mobility model to be made consistent
+<    */
+<   void MakeConsistent (Ptr<MobilityModel> mm);
+< 
+< protected:
+<   // inherited from Object
+<   virtual void DoInitialize ();
+156,161c114,118
+<   Ptr<Building> m_myBuilding; ///< Building
+<   bool m_indoor; ///< Node position (indoor/outdoor) ?
+<   uint8_t m_nFloor; ///< The floor number at which the MobilityBuildingInfo instance is located
+<   uint8_t m_roomX; ///< The room number along x-axis at which the MobilityBuildingInfo instance is located
+<   uint8_t m_roomY; ///< The room number along y-axis at which the MobilityBuildingInfo instance is located
+<   Vector m_cachedPosition; ///< The node position cached after making its mobility model consistent
+---
+>   Ptr<Building> m_myBuilding;
+>   bool m_indoor;
+>   uint8_t m_nFloor;
+>   uint8_t m_roomX;
+>   uint8_t m_roomY;
+diff ../../NS3-WiGig/src/buildings/model/oh-buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/oh-buildings-propagation-loss-model.cc
+77,80c77
+<   bool isAIndoor = a1->IsIndoor ();
+<   bool isBIndoor = b1->IsIndoor ();
+< 
+<   if (!isAIndoor) // a is outdoor
+---
+>   if (a1->IsOutdoor ())
+82c79
+<       if (!isBIndoor) // b is outdoor
+---
+>       if (b1->IsOutdoor ())
+97c94
+<       if (isBIndoor) // b is indoor
+---
+>       if (b1->IsIndoor ())
+102c99
+<               loss = m_okumuraHata->GetLoss (a, b) + InternalWallsLoss (a1, b1);
+---
+>               loss = m_okumuraHata->GetLoss (a, b) + InternalWallsLoss (a1, b1);;
+117,118c114,115
+<         } // end if (isBIndoor)
+<     } // end if (!isAIndoor)
+---
+>         } // end b1->IsIndoor ()
+>     } // end a1->IsOutdoor ()

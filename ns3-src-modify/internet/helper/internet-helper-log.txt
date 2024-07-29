@@ -1,4 +1,25 @@
-diff ../../NS3-WiGig/src/internet/helper/ipv4-address-helper.cc ../../ns-3-dev-git/src/internet/helper/ipv4-address-helper.cc
+diff ../../NS3-WiGig/src/internet/helper/internet-stack-helper.cc ../../ns-3-dev/src/internet/helper/internet-stack-helper.cc
+354,362d353
+< 
+<   if (m_ipv4Enabled)
+<     {
+<       Ptr<ArpL3Protocol> arp = node->GetObject<ArpL3Protocol> ();
+<       Ptr<TrafficControlLayer> tc = node->GetObject<TrafficControlLayer> ();
+<       NS_ASSERT (arp);
+<       NS_ASSERT (tc);
+<       arp->SetTrafficControl (tc);
+<     }
+diff ../../NS3-WiGig/src/internet/helper/internet-stack-helper.h ../../ns-3-dev/src/internet/helper/internet-stack-helper.h
+108d107
+<    * \param o Object to copy from.
+110c109
+<   InternetStackHelper (const InternetStackHelper &o);
+---
+>   InternetStackHelper (const InternetStackHelper &);
+114,115d112
+<    * \param o Object to copy from.
+<    * \returns A copy of the InternetStackHelper.
+diff ../../NS3-WiGig/src/internet/helper/ipv4-address-helper.cc ../../ns-3-dev/src/internet/helper/ipv4-address-helper.cc
 30d29
 < #include "ns3/net-device-queue-interface.h"
 171,183c170,172
@@ -19,14 +40,308 @@ diff ../../NS3-WiGig/src/internet/helper/ipv4-address-helper.cc ../../ns-3-dev-g
 >           NS_LOG_LOGIC ("Installing default traffic control configuration");
 >           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
 >           tcHelper.Install (device);
-diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.cc ../../ns-3-dev-git/src/internet/helper/ipv6-address-helper.cc
+diff ../../NS3-WiGig/src/internet/helper/ipv4-interface-container.h ../../ns-3-dev/src/internet/helper/ipv4-interface-container.h
+164a165,166
+>    *
+>    * @see Ipv4InterfaceContainer
+172a175,176
+>    *
+>    * @see Ipv4InterfaceContainer
+182a187,188
+>    *
+>    * @see Ipv4InterfaceContainer
+190,191c196,197
+<    * \param i the index of the container entry to retrieve.
+<    * \return the std::pair of a Ptr<Ipv4> and an interface index
+---
+>    * \param i the index of the entry to retrieve.
+>    * \return the Ipv4InterfaceContainer
+193,205c199
+<    * \note The returned Ptr<Ipv4> cannot be used directly to fetch the
+<    *       Ipv4Interface using the returned index (the GetInterface () method
+<    *       is provided in class Ipv4L3Protocol, and not class Ipv4). An
+<    *       example usage is provided below.
+<    *
+<    * \code
+<    *   Ipv4InterfaceContainer c;
+<    *   ...
+<    *   std::pair<Ptr<Ipv4>, uint32_t> returnValue = c.Get (0);
+<    *   Ptr<Ipv4> ipv4 = returnValue.first;
+<    *   uint32_t index = returnValue.second;
+<    *   Ptr<Ipv4Interface> iface =  ipv4->GetObject<Ipv4L3Protocol> ()->GetInterface (index);
+<    * \endcode
+---
+>    * @see Ipv4InterfaceContainer
+diff ../../NS3-WiGig/src/internet/helper/ipv4-routing-helper.cc ../../ns-3-dev/src/internet/helper/ipv4-routing-helper.cc
+39c39
+< Ipv4RoutingHelper::PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream)
+44c44
+<       Simulator::Schedule (printTime, &Ipv4RoutingHelper::Print, node, stream, unit);
+---
+>       Simulator::Schedule (printTime, &Ipv4RoutingHelper::Print, node, stream);
+49c49
+< Ipv4RoutingHelper::PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream)
+54c54
+<       Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>       Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream);
+59c59
+< Ipv4RoutingHelper::PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+61c61
+<   Simulator::Schedule (printTime, &Ipv4RoutingHelper::Print, node, stream, unit);
+---
+>   Simulator::Schedule (printTime, &Ipv4RoutingHelper::Print, node, stream);
+65c65
+< Ipv4RoutingHelper::PrintRoutingTableEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::PrintRoutingTableEvery (Time printInterval,Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+67c67
+<   Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>   Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream);
+71c71
+< Ipv4RoutingHelper::Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+78c78
+<       rp->PrintRoutingTable (stream, unit);
+---
+>       rp->PrintRoutingTable (stream);
+83c83
+< Ipv4RoutingHelper::PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv4RoutingHelper::PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+90,91c90,91
+<       rp->PrintRoutingTable (stream, unit);
+<       Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>       rp->PrintRoutingTable (stream);
+>       Simulator::Schedule (printInterval, &Ipv4RoutingHelper::PrintEvery, printInterval, node, stream);
+diff ../../NS3-WiGig/src/internet/helper/ipv4-routing-helper.h ../../ns-3-dev/src/internet/helper/ipv4-routing-helper.h
+72d71
+<    * \param unit The time unit to be used in the report
+78c77
+<   static void PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream);
+84d82
+<    * \param unit The time unit to be used in the report
+90c88
+<   static void PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream);
+97d94
+<    * \param unit The time unit to be used in the report
+103c100
+<   static void PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+110d106
+<    * \param unit The time unit to be used in the report
+116c112
+<   static void PrintRoutingTableEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+197d192
+<    * \param unit The time unit to be used in the report
+203c198
+<   static void Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+210d204
+<    * \param unit The time unit to be used in the report
+216c210
+<   static void PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+diff ../../NS3-WiGig/src/internet/helper/ipv4-static-routing-helper.h ../../ns-3-dev/src/internet/helper/ipv4-static-routing-helper.h
+86,91d85
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param input Input NetDevice.
+<    * \param output Output NetDevices.
+100,105d93
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param input Input NetDevice.
+<    * \param output Output NetDevices.
+113,118d100
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param inputName Input NetDevice.
+<    * \param output Output NetDevices.
+127,132d108
+<    *
+<    * \param nName The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param inputName Input NetDevice.
+<    * \param output Output NetDevices.
+diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.cc ../../ns-3-dev/src/internet/helper/ipv6-address-helper.cc
 34d33
 < #include "ns3/net-device-queue-interface.h"
-234,236d232
+46,49c45
+<   m_network = Ipv6Address ("2001:db8::");
+<   m_prefix = 64;
+<   m_address = Ipv6Address ("::1");
+<   m_base = m_address;
+---
+>   Ipv6AddressGenerator::Init (Ipv6Address ("2001:db8::"), Ipv6Prefix (64));
+56,66c52
+< 
+<   m_network = network;
+<   m_prefix = prefix;
+<   m_address = base;
+<   m_base = base;
+< 
+<   NS_ASSERT_MSG (m_network == network.CombinePrefix (prefix),
+<                  "Ipv6AddressHelper: network address and prefix mismatch: " << m_network << " " << m_prefix);
+< 
+<   NS_ASSERT_MSG (base.CombinePrefix (prefix) == Ipv6Address::GetZero (),
+<                  "Ipv6AddressHelper: base address and prefix mismatch: " << base << " " << m_prefix);
+---
+>   Ipv6AddressGenerator::Init (network, prefix, base);
+70c56
+<                                  Ipv6Address base)
+---
+>                             Ipv6Address base)
+73,83c59,61
+< 
+<   m_network = network;
+<   m_prefix = prefix;
+<   m_address = base;
+<   m_base = base;
+< 
+<   NS_ASSERT_MSG (m_network == network.CombinePrefix (prefix),
+<                  "Ipv6AddressHelper::SetBase(): network address and prefix mismatch: " << m_network << " " << m_prefix);
+< 
+<   NS_ASSERT_MSG (base.CombinePrefix (prefix) == Ipv6Address::GetZero (),
+<                  "Ipv6AddressHelper::SetBase(): base address and prefix mismatch: " << base << " " << m_prefix);
+---
+>   /// \todo for now we do not enforce the prefix because the underlying
+>   /// Ipv6AddressGenerator does not handle prefixes well that are not 64 bits
+>   Ipv6AddressGenerator::Init (network, Ipv6Prefix (64), base);
+92c70,71
+<       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac64Address::ConvertFrom (addr), m_network);
+---
+>       Ipv6Address network = Ipv6AddressGenerator::GetNetwork (Ipv6Prefix (64));
+>       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac64Address::ConvertFrom (addr), network);
+98c77,78
+<       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac48Address::ConvertFrom (addr), m_network);
+---
+>       Ipv6Address network = Ipv6AddressGenerator::GetNetwork (Ipv6Prefix (64));
+>       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac48Address::ConvertFrom (addr), network);
+104,110c84,85
+<       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac16Address::ConvertFrom (addr), m_network);
+<       Ipv6AddressGenerator::AddAllocated (address);
+<       return address;
+<     }
+<   else if (Mac8Address::IsMatchingType (addr))
+<     {
+<       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac8Address::ConvertFrom (addr), m_network);
+---
+>       Ipv6Address network = Ipv6AddressGenerator::GetNetwork (Ipv6Prefix (64));
+>       Ipv6Address address = Ipv6Address::MakeAutoconfiguredAddress (Mac16Address::ConvertFrom (addr), network);
+116c91
+<       NS_FATAL_ERROR ("Did not pass in a valid Mac Address (8, 16, 48 or 64 bits)");
+---
+>       NS_FATAL_ERROR ("Did not pass in a valid Mac Address (16, 48 or 64 bits)");
+131,167c106,107
+< 
+<   uint8_t netBuf[16];
+<   uint8_t hostBuf[16];
+<   uint8_t addrBuf[16];
+<   m_network.GetBytes (netBuf);
+<   m_address.GetBytes (hostBuf);
+< 
+<   NS_ASSERT_MSG (m_address.CombinePrefix (m_prefix) == Ipv6Address::GetZero (),
+<                  "Ipv6AddressHelper::NewAddress(): Too many hosts in the network: " << m_address << " " << m_prefix);
+< 
+<   for (uint8_t i=0; i<16; i++)
+<     {
+<       addrBuf[i] = netBuf[i] | hostBuf[i];
+<     }
+< 
+<   Ipv6Address addr = Ipv6Address (addrBuf);
+< 
+<   // Remember: hostBuf[15] is the Least Significant Byte.
+<   uint16_t sum;
+<   sum = static_cast<uint16_t> (hostBuf[15]) + 1;
+<   hostBuf[15] += 1;
+<   for (uint8_t index=0; index<15; index++)
+<     {
+<       if (sum > hostBuf[15-index])
+<         {
+<           sum = static_cast<uint16_t> (hostBuf[14-index]) + 1;
+<           hostBuf[14-index] += 1;
+<         }
+<       else
+<         {
+<           break;
+<         }
+<     }
+<   m_address = Ipv6Address (hostBuf);
+< 
+<   Ipv6AddressGenerator::AddAllocated (addr);
+<   return addr;
+---
+> //
+>   return Ipv6AddressGenerator::NextAddress (Ipv6Prefix (64));
+173,207c113
+< 
+<   uint8_t netBuf[16];
+<   uint8_t addBuf[16];
+<   m_network.GetBytes (netBuf);
+< 
+<   uint8_t prefixIndex = (m_prefix.GetPrefixLength ()-1)/8;
+<   uint8_t prefixPosition = (8-(m_prefix.GetPrefixLength ()%8))%8;
+< 
+<   for (uint8_t index=0; index<16; index++)
+<     {
+<       addBuf[index] = 0;
+<       if (index==prefixIndex)
+<         {
+<           addBuf[index] = (1<<prefixPosition);
+<         }
+<     }
+< 
+<   uint16_t sum[16];
+<   for (uint8_t index=0; index<16; index++)
+<     {
+<       sum[index] = static_cast<uint16_t> (netBuf[index]) + static_cast<uint16_t> (addBuf[index]);
+<       netBuf[index] += addBuf[index];
+<     }
+< 
+<   for (uint8_t index=0; index<15; index++)
+<     {
+<       if (sum[15-index] > netBuf[15-index])
+<         {
+<           sum[14-index] = static_cast<uint16_t> (netBuf[14-index]) + 1;
+<           netBuf[14-index] += 1;
+<         }
+<     }
+< 
+<   m_network = Ipv6Address (netBuf);
+<   m_address = m_base;
+---
+>   Ipv6AddressGenerator::NextNetwork (Ipv6Prefix (64));
+234,236d139
 <       // the first round is to make sure that the interface is set up, including its link-local addresses.
 <       ipv6->SetUp (ifIndex);
 < 
-250,262c246,248
+250,262c153,155
 <           Ptr<NetDeviceQueueInterface> ndqi = device->GetObject<NetDeviceQueueInterface> ();
 <           // It is useless to install a queue disc if the device has no
 <           // NetDeviceQueueInterface attached: the device queue is never
@@ -44,11 +359,11 @@ diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.cc ../../ns-3-dev-g
 >           NS_LOG_LOGIC ("Installing default traffic control configuration");
 >           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
 >           tcHelper.Install (device);
-290,292d275
+290,292d182
 <       // the first round is to make sure that the interface is set up, including its link-local addresses.
 <       ipv6->SetUp (ifIndex);
 < 
-310,322c293,295
+310,322c200,202
 <           Ptr<NetDeviceQueueInterface> ndqi = device->GetObject<NetDeviceQueueInterface> ();
 <           // It is useless to install a queue disc if the device has no
 <           // NetDeviceQueueInterface attached: the device queue is never
@@ -66,3 +381,149 @@ diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.cc ../../ns-3-dev-g
 >           NS_LOG_LOGIC ("Installing default traffic control configuration");
 >           TrafficControlHelper tcHelper = TrafficControlHelper::Default ();
 >           tcHelper.Install (device);
+diff ../../NS3-WiGig/src/internet/helper/ipv6-address-helper.h ../../ns-3-dev/src/internet/helper/ipv6-address-helper.h
+170,174d169
+< private:
+<   Ipv6Address m_network; //!< network address
+<   Ipv6Prefix m_prefix;   //!< prefix length
+<   Ipv6Address m_address; //!< host address
+<   Ipv6Address m_base;    //!< host base address
+diff ../../NS3-WiGig/src/internet/helper/ipv6-routing-helper.cc ../../ns-3-dev/src/internet/helper/ipv6-routing-helper.cc
+39c39
+< Ipv6RoutingHelper::PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream)
+44c44
+<       Simulator::Schedule (printTime, &Ipv6RoutingHelper::Print, node, stream, unit);
+---
+>       Simulator::Schedule (printTime, &Ipv6RoutingHelper::Print, node, stream);
+49c49
+< Ipv6RoutingHelper::PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream)
+54c54
+<       Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>       Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream);
+59c59
+< Ipv6RoutingHelper::PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+61c61
+<   Simulator::Schedule (printTime, &Ipv6RoutingHelper::Print, node, stream, unit);
+---
+>   Simulator::Schedule (printTime, &Ipv6RoutingHelper::Print, node, stream);
+65c65
+< Ipv6RoutingHelper::PrintRoutingTableEvery (Time printInterval,Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::PrintRoutingTableEvery (Time printInterval,Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+67c67
+<   Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>   Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream);
+71c71
+< Ipv6RoutingHelper::Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+78c78
+<       rp->PrintRoutingTable (stream, unit);
+---
+>       rp->PrintRoutingTable (stream);
+83c83
+< Ipv6RoutingHelper::PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit)
+---
+> Ipv6RoutingHelper::PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream)
+90,91c90,91
+<       rp->PrintRoutingTable (stream, unit);
+<       Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream, unit);
+---
+>       rp->PrintRoutingTable (stream);
+>       Simulator::Schedule (printInterval, &Ipv6RoutingHelper::PrintEvery, printInterval, node, stream);
+diff ../../NS3-WiGig/src/internet/helper/ipv6-routing-helper.h ../../ns-3-dev/src/internet/helper/ipv6-routing-helper.h
+73d72
+<    * \param unit The time unit to be used in the report
+79c78
+<   static void PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAllAt (Time printTime, Ptr<OutputStreamWrapper> stream);;
+85d83
+<    * \param unit The time unit to be used in the report
+91c89
+<   static void PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAllEvery (Time printInterval, Ptr<OutputStreamWrapper> stream);
+98d95
+<    * \param unit The time unit to be used in the report
+104c101
+<   static void PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableAt (Time printTime, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+111d107
+<    * \param unit The time unit to be used in the report
+117c113
+<   static void PrintRoutingTableEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit = Time::S);
+---
+>   static void PrintRoutingTableEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+198d193
+<    * \param unit The time unit to be used in the report
+204c199
+<   static void Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit);
+---
+>   static void Print (Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+211d205
+<    * \param unit The time unit to be used in the report
+217c211
+<   static void PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream, Time::Unit unit);
+---
+>   static void PrintEvery (Time printInterval, Ptr<Node> node, Ptr<OutputStreamWrapper> stream);
+diff ../../NS3-WiGig/src/internet/helper/ipv6-static-routing-helper.h ../../ns-3-dev/src/internet/helper/ipv6-static-routing-helper.h
+83,88d82
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param input Input NetDevice.
+<    * \param output Output NetDevices.
+97,102d90
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param input Input NetDevice.
+<    * \param output Output NetDevices.
+110,115d97
+<    *
+<    * \param n The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param inputName Input NetDevice.
+<    * \param output Output NetDevices.
+124,129d105
+<    *
+<    * \param nName The node.
+<    * \param source Source address.
+<    * \param group Multicast group.
+<    * \param inputName Input NetDevice.
+<    * \param output Output NetDevices.
+diff ../../NS3-WiGig/src/internet/helper/rip-helper.h ../../ns-3-dev/src/internet/helper/rip-helper.h
+52d51
+<    * \param o The object to copy from.
+54c53
+<   RipHelper (const RipHelper &o);
+---
+>   RipHelper (const RipHelper &);
+138,140d136
+<    *
+<    * \param o The object to copy from.
+<    * \returns pointer to clone of this RipNgHelper
+diff ../../NS3-WiGig/src/internet/helper/ripng-helper.h ../../ns-3-dev/src/internet/helper/ripng-helper.h
+52d51
+<    * \param o The object to copy from.
+54c53
+<   RipNgHelper (const RipNgHelper &o);
+---
+>   RipNgHelper (const RipNgHelper &);
+138,140d136
+<    *
+<    * \param o The object to copy from.
+<    * \returns pointer to clone of this RipNgHelper

@@ -1,0 +1,2411 @@
+diff ../../NS3-WiGig/src/point-to-point/bindings/callbacks_list.py ../../ns-3-dev-git/src/point-to-point/bindings/callbacks_list.py
+12d11
+<     ['void', 'ns3::Ptr<const ns3::QueueDiscItem>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'],
+diff ../../NS3-WiGig/src/point-to-point/bindings/modulegen__gcc_ILP32.py ../../ns-3-dev-git/src/point-to-point/bindings/modulegen__gcc_ILP32.py
+34c34
+<     module.add_class('AsciiTraceHelperForDevice', import_from_module='ns.network', allow_subclassing=True)
+---
+>     module.add_class('AsciiTraceHelperForDevice', allow_subclassing=True, import_from_module='ns.network')
+39,41c39,41
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator', 'ns3::AttributeConstructionList::CIterator')
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator*', 'ns3::AttributeConstructionList::CIterator*')
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator&', 'ns3::AttributeConstructionList::CIterator&')
+---
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator', u'ns3::AttributeConstructionList::CIterator')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator*', u'ns3::AttributeConstructionList::CIterator*')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator&', u'ns3::AttributeConstructionList::CIterator&')
+78,79d77
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem> [struct]
+<     module.add_class('DefaultDeleter', import_from_module='ns.core', template_parameters=['ns3::QueueItem'])
+100,102c98,100
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >', 'ns3::LogComponent::ComponentList')
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >*', 'ns3::LogComponent::ComponentList*')
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >&', 'ns3::LogComponent::ComponentList&')
+---
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >', u'ns3::LogComponent::ComponentList')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >*', u'ns3::LogComponent::ComponentList*')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >&', u'ns3::LogComponent::ComponentList&')
+105,107c103,105
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )', 'ns3::Mac48Address::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )*', 'ns3::Mac48Address::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )&', 'ns3::Mac48Address::TracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )', u'ns3::Mac48Address::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )*', u'ns3::Mac48Address::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )&', u'ns3::Mac48Address::TracedCallback&')
+116,118c114,116
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', 'ns3::NetDeviceContainer::Iterator')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', 'ns3::NetDeviceContainer::Iterator*')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', 'ns3::NetDeviceContainer::Iterator&')
+---
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', u'ns3::NetDeviceContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', u'ns3::NetDeviceContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', u'ns3::NetDeviceContainer::Iterator&')
+121,123c119,121
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator', 'ns3::NodeContainer::Iterator')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator*', 'ns3::NodeContainer::Iterator*')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator&', 'ns3::NodeContainer::Iterator&')
+---
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator', u'ns3::NodeContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator*', u'ns3::NodeContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator&', u'ns3::NodeContainer::Iterator&')
+125c123
+<     module.add_class('ObjectBase', import_from_module='ns.core', allow_subclassing=True)
+---
+>     module.add_class('ObjectBase', allow_subclassing=True, import_from_module='ns.core')
+155c153
+<     module.add_class('PcapHelperForDevice', import_from_module='ns.network', allow_subclassing=True)
+---
+>     module.add_class('PcapHelperForDevice', allow_subclassing=True, import_from_module='ns.network')
+161c159
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::ObjectBase'], template_parameters=['ns3::Object', 'ns3::ObjectBase', 'ns3::ObjectDeleter'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Object', 'ns3::ObjectBase', 'ns3::ObjectDeleter'], parent=root_module['ns3::ObjectBase'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+163c161
+<     module.add_class('Simulator', import_from_module='ns.core', destructor_visibility='private')
+---
+>     module.add_class('Simulator', destructor_visibility='private', import_from_module='ns.core')
+184,186c182,184
+<     typehandlers.add_type_alias('uint32_t', 'ns3::TypeId::hash_t')
+<     typehandlers.add_type_alias('uint32_t*', 'ns3::TypeId::hash_t*')
+<     typehandlers.add_type_alias('uint32_t&', 'ns3::TypeId::hash_t&')
+---
+>     typehandlers.add_type_alias(u'uint32_t', u'ns3::TypeId::hash_t')
+>     typehandlers.add_type_alias(u'uint32_t*', u'ns3::TypeId::hash_t*')
+>     typehandlers.add_type_alias(u'uint32_t&', u'ns3::TypeId::hash_t&')
+212c210
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeAccessor>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeAccessor>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+214c212
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeChecker', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeChecker>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeChecker', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeChecker>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+216c214
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeValue', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeValue>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeValue', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeValue>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+218c216
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::CallbackImplBase', 'ns3::empty', 'ns3::DefaultDeleter<ns3::CallbackImplBase>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::CallbackImplBase', 'ns3::empty', 'ns3::DefaultDeleter<ns3::CallbackImplBase>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+220c218
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::EventImpl', 'ns3::empty', 'ns3::DefaultDeleter<ns3::EventImpl>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::EventImpl', 'ns3::empty', 'ns3::DefaultDeleter<ns3::EventImpl>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+222c220
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::Hash::Implementation', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Hash::Implementation>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Hash::Implementation', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Hash::Implementation>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+224c222
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::NixVector', 'ns3::empty', 'ns3::DefaultDeleter<ns3::NixVector>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::NixVector', 'ns3::empty', 'ns3::DefaultDeleter<ns3::NixVector>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+226c224
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::OutputStreamWrapper', 'ns3::empty', 'ns3::DefaultDeleter<ns3::OutputStreamWrapper>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::OutputStreamWrapper', 'ns3::empty', 'ns3::DefaultDeleter<ns3::OutputStreamWrapper>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+228,230c226
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::Packet', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Packet>'])
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> > [class]
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::QueueItem', 'ns3::empty', 'ns3::DefaultDeleter<ns3::QueueItem>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Packet', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Packet>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+232c228
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::TraceSourceAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::TraceSourceAccessor>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::TraceSourceAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::TraceSourceAccessor>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+237,239c233,235
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )', 'ns3::Time::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )*', 'ns3::Time::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )&', 'ns3::Time::TracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )', u'ns3::Time::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )*', u'ns3::Time::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )&', u'ns3::Time::TracedCallback&')
+259c255
+<     module.add_class('AttributeChecker', import_from_module='ns.core', automatic_type_narrowing=True, allow_subclassing=False, parent=root_module['ns3::SimpleRefCount< ns3::AttributeChecker, ns3::empty, ns3::DefaultDeleter<ns3::AttributeChecker> >'])
+---
+>     module.add_class('AttributeChecker', allow_subclassing=False, automatic_type_narrowing=True, import_from_module='ns.core', parent=root_module['ns3::SimpleRefCount< ns3::AttributeChecker, ns3::empty, ns3::DefaultDeleter<ns3::AttributeChecker> >'])
+261c257
+<     module.add_class('AttributeValue', import_from_module='ns.core', automatic_type_narrowing=True, allow_subclassing=False, parent=root_module['ns3::SimpleRefCount< ns3::AttributeValue, ns3::empty, ns3::DefaultDeleter<ns3::AttributeValue> >'])
+---
+>     module.add_class('AttributeValue', allow_subclassing=False, automatic_type_narrowing=True, import_from_module='ns.core', parent=root_module['ns3::SimpleRefCount< ns3::AttributeValue, ns3::empty, ns3::DefaultDeleter<ns3::AttributeValue> >'])
+336,344c332,340
+<     typehandlers.add_type_alias('void ( * ) (  )', 'ns3::NetDevice::LinkChangeTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) (  )*', 'ns3::NetDevice::LinkChangeTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) (  )&', 'ns3::NetDevice::LinkChangeTracedCallback&')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', 'ns3::NetDevice::ReceiveCallback')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::NetDevice::ReceiveCallback*')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::NetDevice::ReceiveCallback&')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', 'ns3::NetDevice::PromiscReceiveCallback')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::NetDevice::PromiscReceiveCallback*')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::NetDevice::PromiscReceiveCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::NetDevice::LinkChangeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::NetDevice::LinkChangeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::NetDevice::LinkChangeTracedCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::ReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::ReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::ReceiveCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::PromiscReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::PromiscReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::PromiscReceiveCallback&')
+349,354c345,350
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', 'ns3::Node::ProtocolHandler')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::Node::ProtocolHandler*')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::Node::ProtocolHandler&')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', 'ns3::Node::DeviceAdditionListener')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::Node::DeviceAdditionListener*')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::Node::DeviceAdditionListener&')
+---
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::ProtocolHandler')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::ProtocolHandler*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::ProtocolHandler&')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::DeviceAdditionListener')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::DeviceAdditionListener*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::DeviceAdditionListener&')
+365,382c361,378
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )', 'ns3::Packet::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )*', 'ns3::Packet::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )&', 'ns3::Packet::TracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', 'ns3::Packet::AddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', 'ns3::Packet::AddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', 'ns3::Packet::AddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', 'ns3::Packet::TwoAddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', 'ns3::Packet::TwoAddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', 'ns3::Packet::TwoAddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', 'ns3::Packet::Mac48AddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', 'ns3::Packet::Mac48AddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', 'ns3::Packet::Mac48AddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )', 'ns3::Packet::SizeTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )*', 'ns3::Packet::SizeTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )&', 'ns3::Packet::SizeTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', 'ns3::Packet::SinrTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', 'ns3::Packet::SinrTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', 'ns3::Packet::SinrTracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )', u'ns3::Packet::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )*', u'ns3::Packet::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )&', u'ns3::Packet::TracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', u'ns3::Packet::AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', u'ns3::Packet::AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', u'ns3::Packet::AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', u'ns3::Packet::TwoAddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', u'ns3::Packet::TwoAddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', u'ns3::Packet::TwoAddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', u'ns3::Packet::Mac48AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', u'ns3::Packet::Mac48AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', u'ns3::Packet::Mac48AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::Packet::SizeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::Packet::SizeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::Packet::SizeTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', u'ns3::Packet::SinrTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', u'ns3::Packet::SinrTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', u'ns3::Packet::SinrTracedCallback&')
+392,408c388
+<     module.add_class('Queue', import_from_module='ns.network', parent=root_module['ns3::QueueBase'], template_parameters=['ns3::Packet'])
+<     typehandlers.add_type_alias('ns3::Packet', 'ns3::Queue< ns3::Packet > ItemType')
+<     typehandlers.add_type_alias('ns3::Packet*', 'ns3::Queue< ns3::Packet > ItemType*')
+<     typehandlers.add_type_alias('ns3::Packet&', 'ns3::Queue< ns3::Packet > ItemType&')
+<     module.add_typedef(root_module['ns3::Packet'], 'ItemType')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem> [class]
+<     module.add_class('Queue', import_from_module='ns.network', parent=root_module['ns3::QueueBase'], template_parameters=['ns3::QueueDiscItem'])
+<     typehandlers.add_type_alias('ns3::QueueDiscItem', 'ns3::Queue< ns3::QueueDiscItem > ItemType')
+<     typehandlers.add_type_alias('ns3::QueueDiscItem*', 'ns3::Queue< ns3::QueueDiscItem > ItemType*')
+<     typehandlers.add_type_alias('ns3::QueueDiscItem&', 'ns3::Queue< ns3::QueueDiscItem > ItemType&')
+<     ## queue-item.h (module 'network'): ns3::QueueItem [class]
+<     module.add_class('QueueItem', import_from_module='ns.network', parent=root_module['ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >'])
+<     ## queue-item.h (module 'network'): ns3::QueueItem::Uint8Values [enumeration]
+<     module.add_enum('Uint8Values', ['IP_DSFIELD'], outer_class=root_module['ns3::QueueItem'], import_from_module='ns.network')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )', 'ns3::QueueItem::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )*', 'ns3::QueueItem::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )&', 'ns3::QueueItem::TracedCallback&')
+---
+>     module.add_class('Queue', import_from_module='ns.network', template_parameters=['ns3::Packet'], parent=root_module['ns3::QueueBase'])
+436c416
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['ns3::ObjectBase *', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['ns3::ObjectBase *', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+438c418
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Time', 'ns3::Time', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Time', 'ns3::Time', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+440,442c420
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> [class]
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::QueueDiscItem>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+444c422
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<const ns3::Packet>', 'unsigned short', 'const ns3::Address &', 'const ns3::Address &', 'ns3::NetDevice::PacketType', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<const ns3::Packet>', 'unsigned short', 'const ns3::Address &', 'const ns3::Address &', 'ns3::NetDevice::PacketType', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+446c424
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+448c426
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+450,460c428,436
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'unsigned int', 'unsigned int', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+<     ## queue-item.h (module 'network'): ns3::QueueDiscItem [class]
+<     module.add_class('QueueDiscItem', import_from_module='ns.network', parent=root_module['ns3::QueueItem'])
+<     module.add_container('std::map< std::string, ns3::LogComponent * >', ('std::string', 'ns3::LogComponent *'), container_type='map')
+<     module.add_container('std::list< unsigned int >', 'unsigned int', container_type='list')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )', 'ns3::TimePrinter')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )*', 'ns3::TimePrinter*')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )&', 'ns3::TimePrinter&')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )', 'ns3::NodePrinter')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )*', 'ns3::NodePrinter*')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )&', 'ns3::NodePrinter&')
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'unsigned int', 'unsigned int', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+>     module.add_container('std::map< std::string, ns3::LogComponent * >', ('std::string', 'ns3::LogComponent *'), container_type=u'map')
+>     module.add_container('std::list< unsigned int >', 'unsigned int', container_type=u'list')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )', u'ns3::LogTimePrinter')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )*', u'ns3::LogTimePrinter*')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )&', u'ns3::LogTimePrinter&')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )', u'ns3::LogNodePrinter')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )*', u'ns3::LogNodePrinter*')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )&', u'ns3::LogNodePrinter&')
+495,500c471,476
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )', 'ns3::Hash::Hash32Function_ptr')
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )*', 'ns3::Hash::Hash32Function_ptr*')
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )&', 'ns3::Hash::Hash32Function_ptr&')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )', 'ns3::Hash::Hash64Function_ptr')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )*', 'ns3::Hash::Hash64Function_ptr*')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )&', 'ns3::Hash::Hash64Function_ptr&')
+---
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash32Function_ptr')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash64Function_ptr')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+523,552c499,528
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )', 'ns3::TracedValueCallback::Time')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )*', 'ns3::TracedValueCallback::Time*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )&', 'ns3::TracedValueCallback::Time&')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )', 'ns3::TracedValueCallback::Bool')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )*', 'ns3::TracedValueCallback::Bool*')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )&', 'ns3::TracedValueCallback::Bool&')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )', 'ns3::TracedValueCallback::Int8')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )*', 'ns3::TracedValueCallback::Int8*')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )&', 'ns3::TracedValueCallback::Int8&')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )', 'ns3::TracedValueCallback::Uint8')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )*', 'ns3::TracedValueCallback::Uint8*')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )&', 'ns3::TracedValueCallback::Uint8&')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )', 'ns3::TracedValueCallback::Int16')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )*', 'ns3::TracedValueCallback::Int16*')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )&', 'ns3::TracedValueCallback::Int16&')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )', 'ns3::TracedValueCallback::Uint16')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )*', 'ns3::TracedValueCallback::Uint16*')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )&', 'ns3::TracedValueCallback::Uint16&')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )', 'ns3::TracedValueCallback::Int32')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )*', 'ns3::TracedValueCallback::Int32*')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )&', 'ns3::TracedValueCallback::Int32&')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )', 'ns3::TracedValueCallback::Uint32')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )*', 'ns3::TracedValueCallback::Uint32*')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )&', 'ns3::TracedValueCallback::Uint32&')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )', 'ns3::TracedValueCallback::Double')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )*', 'ns3::TracedValueCallback::Double*')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )&', 'ns3::TracedValueCallback::Double&')
+<     typehandlers.add_type_alias('void ( * ) (  )', 'ns3::TracedValueCallback::Void')
+<     typehandlers.add_type_alias('void ( * ) (  )*', 'ns3::TracedValueCallback::Void*')
+<     typehandlers.add_type_alias('void ( * ) (  )&', 'ns3::TracedValueCallback::Void&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )', u'ns3::TracedValueCallback::Time')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )*', u'ns3::TracedValueCallback::Time*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )&', u'ns3::TracedValueCallback::Time&')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )', u'ns3::TracedValueCallback::Bool')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )*', u'ns3::TracedValueCallback::Bool*')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )&', u'ns3::TracedValueCallback::Bool&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )', u'ns3::TracedValueCallback::Int8')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )*', u'ns3::TracedValueCallback::Int8*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )&', u'ns3::TracedValueCallback::Int8&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )', u'ns3::TracedValueCallback::Uint8')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )*', u'ns3::TracedValueCallback::Uint8*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )&', u'ns3::TracedValueCallback::Uint8&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )', u'ns3::TracedValueCallback::Int16')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )*', u'ns3::TracedValueCallback::Int16*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )&', u'ns3::TracedValueCallback::Int16&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )', u'ns3::TracedValueCallback::Uint16')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )*', u'ns3::TracedValueCallback::Uint16*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )&', u'ns3::TracedValueCallback::Uint16&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )', u'ns3::TracedValueCallback::Int32')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )*', u'ns3::TracedValueCallback::Int32*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )&', u'ns3::TracedValueCallback::Int32&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::TracedValueCallback::Uint32')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::TracedValueCallback::Uint32*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::TracedValueCallback::Uint32&')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )', u'ns3::TracedValueCallback::Double')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )*', u'ns3::TracedValueCallback::Double*')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )&', u'ns3::TracedValueCallback::Double&')
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::TracedValueCallback::Void')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::TracedValueCallback::Void*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::TracedValueCallback::Void&')
+582d557
+<     register_Ns3DefaultDeleter__Ns3QueueItem_methods(root_module, root_module['ns3::DefaultDeleter< ns3::QueueItem >'])
+640d614
+<     register_Ns3SimpleRefCount__Ns3QueueItem_Ns3Empty_Ns3DefaultDeleter__lt__ns3QueueItem__gt___methods(root_module, root_module['ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >'])
+701,702d674
+<     register_Ns3Queue__Ns3QueueDiscItem_methods(root_module, root_module['ns3::Queue< ns3::QueueDiscItem >'])
+<     register_Ns3QueueItem_methods(root_module, root_module['ns3::QueueItem'])
+718d689
+<     register_Ns3CallbackImpl__Void_Ns3Ptr__lt__const_ns3QueueDiscItem__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, root_module['ns3::CallbackImpl< void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >'])
+723d693
+<     register_Ns3QueueDiscItem_methods(root_module, root_module['ns3::QueueDiscItem'])
+917c887
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+1355c1325
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+1471,1482d1440
+< def register_Ns3DefaultDeleter__Ns3QueueItem_methods(root_module, cls):
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem>::DefaultDeleter() [constructor]
+<     cls.add_constructor([])
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem>::DefaultDeleter(ns3::DefaultDeleter<ns3::QueueItem> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::DefaultDeleter< ns3::QueueItem > const &', 'arg0')])
+<     ## default-deleter.h (module 'core'): static void ns3::DefaultDeleter<ns3::QueueItem>::Delete(ns3::QueueItem * object) [member function]
+<     cls.add_method('Delete', 
+<                    'void', 
+<                    [param('ns3::QueueItem *', 'object')], 
+<                    is_static=True)
+<     return
+< 
+1642c1600
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1734c1692
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1766c1724
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Address ns3::Ipv6Address::CombinePrefix(ns3::Ipv6Prefix const & prefix) const [member function]
+---
+>     ## ipv6-address.h (module 'network'): ns3::Ipv6Address ns3::Ipv6Address::CombinePrefix(ns3::Ipv6Prefix const & prefix) [member function]
+1769,1770c1727
+<                    [param('ns3::Ipv6Prefix const &', 'prefix')], 
+<                    is_const=True)
+---
+>                    [param('ns3::Ipv6Prefix const &', 'prefix')])
+1826,1830d1782
+<     ## ipv6-address.h (module 'network'): bool ns3::Ipv6Address::HasPrefix(ns3::Ipv6Prefix const & prefix) const [member function]
+<     cls.add_method('HasPrefix', 
+<                    'bool', 
+<                    [param('ns3::Ipv6Prefix const &', 'prefix')], 
+<                    is_const=True)
+1835c1787
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+1860c1812
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1896,1900d1847
+<     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredAddress(ns3::Address addr, ns3::Ipv6Address prefix) [member function]
+<     cls.add_method('MakeAutoconfiguredAddress', 
+<                    'ns3::Ipv6Address', 
+<                    [param('ns3::Address', 'addr'), param('ns3::Ipv6Address', 'prefix')], 
+<                    is_static=True)
+1921,1925d1867
+<     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredLinkLocalAddress(ns3::Address mac) [member function]
+<     cls.add_method('MakeAutoconfiguredLinkLocalAddress', 
+<                    'ns3::Ipv6Address', 
+<                    [param('ns3::Address', 'mac')], 
+<                    is_static=True)
+1986,1989d1927
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Prefix::Ipv6Prefix(uint8_t * prefix, uint8_t prefixLength) [constructor]
+<     cls.add_constructor([param('uint8_t *', 'prefix'), param('uint8_t', 'prefixLength')])
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Prefix::Ipv6Prefix(char const * prefix, uint8_t prefixLength) [constructor]
+<     cls.add_constructor([param('char const *', 'prefix'), param('uint8_t', 'prefixLength')])
+2006,2010d1943
+<     ## ipv6-address.h (module 'network'): uint8_t ns3::Ipv6Prefix::GetMinimumPrefixLength() const [member function]
+<     cls.add_method('GetMinimumPrefixLength', 
+<                    'uint8_t', 
+<                    [], 
+<                    is_const=True)
+2030c1963
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+2041,2044d1973
+<     ## ipv6-address.h (module 'network'): void ns3::Ipv6Prefix::SetPrefixLength(uint8_t prefixLength) [member function]
+<     cls.add_method('SetPrefixLength', 
+<                    'void', 
+<                    [param('uint8_t', 'prefixLength')])
+2343c2272
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2382c2311
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+2415,2419d2343
+<     ## object-factory.h (module 'core'): bool ns3::ObjectFactory::IsTypeIdSet() const [member function]
+<     cls.add_method('IsTypeIdSet', 
+<                    'bool', 
+<                    [], 
+<                    is_const=True)
+2784c2708
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+2828c2752
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+2833c2757
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+2894,2898d2817
+<     ## simulator.h (module 'core'): static uint64_t ns3::Simulator::GetEventCount() [member function]
+<     cls.add_method('GetEventCount', 
+<                    'uint64_t', 
+<                    [], 
+<                    is_static=True)
+2965c2884
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+2970c2889
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2980c2899
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2985c2904
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3265c3184
+<                    template_parameters=['ns3::QueueBase'])
+---
+>                    template_parameters=[u'ns3::QueueBase'])
+3327,3331c3246,3249
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::int64x64_t'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('+', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('-', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+---
+>     cls.add_binary_numeric_operator('+', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('-', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('*', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+3339,3342c3257,3260
+<     cls.add_inplace_numeric_operator('+=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('-=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('*=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('/=', param('ns3::int64x64_t const &', 'right'))
+---
+>     cls.add_inplace_numeric_operator('+=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('-=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('*=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('/=', param('ns3::int64x64_t const &', u'right'))
+3403c3321
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3418c3336
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3431c3349
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3436c3354
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3446c3364
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3451c3369
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3496c3414
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3501c3419
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3506c3424
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3770c3688
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3775c3693
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3886,3892d3803
+< def register_Ns3SimpleRefCount__Ns3QueueItem_Ns3Empty_Ns3DefaultDeleter__lt__ns3QueueItem__gt___methods(root_module, cls):
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >::SimpleRefCount() [constructor]
+<     cls.add_constructor([])
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >::SimpleRefCount(ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> > const & o) [constructor]
+<     cls.add_constructor([param('ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter< ns3::QueueItem > > const &', 'o')])
+<     return
+< 
+3907,3915c3818,3823
+<     cls.add_binary_numeric_operator('+', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('-', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('+=', param('ns3::Time const &', 'right'))
+<     cls.add_inplace_numeric_operator('-=', param('ns3::Time const &', 'right'))
+---
+>     cls.add_binary_numeric_operator('+', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', u'right'))
+>     cls.add_binary_numeric_operator('-', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', u'right'))
+>     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('+=', param('ns3::Time const &', u'right'))
+>     cls.add_inplace_numeric_operator('-=', param('ns3::Time const &', u'right'))
+4110c4018
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4115c4023
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4120c4028
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4125c4033
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4138c4046
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+4148c4056
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4158c4066
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4163c4071
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4370c4278
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4375c4283
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4380c4288
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4385c4293
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4397c4305
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4402c4310
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4407c4315
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4417c4325
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4422c4330
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4427c4335
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4439c4347
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4444c4352
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+4449c4357
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4509c4417
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4514c4422
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4524c4432
+<                    is_static=True, template_parameters=['ns3::ObjectBase*'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::ObjectBase*'])
+4529c4437
+<                    is_static=True, template_parameters=['void'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'void'])
+4534c4442
+<                    is_static=True, template_parameters=['unsigned int'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'unsigned int'])
+4539c4447
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::Packet const> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::Packet const> '])
+4544c4452
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::NetDevice> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::NetDevice> '])
+4549c4457
+<                    is_static=True, template_parameters=['ns3::Time'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Time'])
+4554c4462
+<                    is_static=True, template_parameters=['unsigned short'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'unsigned short'])
+4559c4467
+<                    is_static=True, template_parameters=['ns3::Address const&'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Address const&'])
+4564,4569c4472
+<                    is_static=True, template_parameters=['ns3::NetDevice::PacketType'], visibility='protected')
+<     ## callback.h (module 'core'): static std::string ns3::CallbackImplBase::GetCppTypeid() [member function]
+<     cls.add_method('GetCppTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::QueueDiscItem const> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::NetDevice::PacketType'])
+4609c4512
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4619c4522
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4783c4686
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4788c4691
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4864c4767
+<                    is_const=True, is_virtual=True, visibility='private')
+---
+>                    is_const=True, visibility='private', is_virtual=True)
+4869c4772
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4874c4777
+<                    is_const=True, is_virtual=True, visibility='private')
+---
+>                    is_const=True, visibility='private', is_virtual=True)
+5028c4931
+<                    is_virtual=True, is_pure_virtual=True, visibility='private')
+---
+>                    is_pure_virtual=True, visibility='private', is_virtual=True)
+5033c4936
+<                    is_virtual=True, is_pure_virtual=True, visibility='private')
+---
+>                    is_pure_virtual=True, visibility='private', is_virtual=True)
+5057c4960
+<                    is_virtual=True, is_pure_virtual=True, visibility='protected')
+---
+>                    is_pure_virtual=True, visibility='protected', is_virtual=True)
+5352c5255
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+5357c5260
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+5447c5350
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5452c5355
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5457c5360
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5462c5365
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5467c5370
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5472c5375
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5477c5380
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5482c5385
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5487c5390
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5497c5400
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5502c5405
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5507c5410
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5512c5415
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5517c5420
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5522c5425
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5527c5430
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5532c5435
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5537c5440
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5542c5445
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5547c5450
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5552c5455
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5557c5460
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5562c5465
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5567c5470
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5694c5597
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+5699c5602
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+5821,5825d5723
+<     ## packet.h (module 'network'): void ns3::Packet::AddByteTag(ns3::Tag const & tag, uint32_t start, uint32_t end) const [member function]
+<     cls.add_method('AddByteTag', 
+<                    'void', 
+<                    [param('ns3::Tag const &', 'tag'), param('uint32_t', 'start'), param('uint32_t', 'end')], 
+<                    is_const=True)
+6011c5909
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+6264a6163,6172
+>     ## point-to-point-net-device.h (module 'point-to-point'): void ns3::PointToPointNetDevice::DoInitialize() [member function]
+>     cls.add_method('DoInitialize', 
+>                    'void', 
+>                    [], 
+>                    visibility='protected', is_virtual=True)
+>     ## point-to-point-net-device.h (module 'point-to-point'): void ns3::PointToPointNetDevice::NotifyNewAggregate() [member function]
+>     cls.add_method('NotifyNewAggregate', 
+>                    'void', 
+>                    [], 
+>                    visibility='protected', is_virtual=True)
+6269c6177
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6301c6209
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6306c6214
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6311c6219
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6316c6224
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+6321c6229
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Queue(ns3::Queue<ns3::Packet> const & arg0) [constructor]
+---
+>     ## point-to-point-net-device.h (module 'point-to-point'): ns3::Queue<ns3::Packet>::Queue(ns3::Queue<ns3::Packet> const & arg0) [constructor]
+6323,6324c6231,6232
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::begin() const [member function]
+<     cls.add_method('begin', 
+---
+>     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::Head() const [member function]
+>     cls.add_method('Head', 
+6328,6334c6236,6237
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Iterator ns3::Queue<ns3::Packet>::begin() [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::Packet > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::end() const [member function]
+<     cls.add_method('end', 
+---
+>     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::Tail() const [member function]
+>     cls.add_method('Tail', 
+6338,6342d6240
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Iterator ns3::Queue<ns3::Packet>::end() [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::Packet > Iterator', 
+<                    [], 
+<                    visibility='protected')
+6375,6486d6272
+< def register_Ns3Queue__Ns3QueueDiscItem_methods(root_module, cls):
+<     ## queue.h (module 'network'): static ns3::TypeId ns3::Queue<ns3::QueueDiscItem>::GetTypeId() [member function]
+<     cls.add_method('GetTypeId', 
+<                    'ns3::TypeId', 
+<                    [], 
+<                    is_static=True)
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Queue() [constructor]
+<     cls.add_constructor([])
+<     ## queue.h (module 'network'): bool ns3::Queue<ns3::QueueDiscItem>::Enqueue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('Enqueue', 
+<                    'bool', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Dequeue() [member function]
+<     cls.add_method('Dequeue', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Remove() [member function]
+<     cls.add_method('Remove', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<const ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Peek() const [member function]
+<     cls.add_method('Peek', 
+<                    'ns3::Ptr< ns3::QueueDiscItem const >', 
+<                    [], 
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::Flush() [member function]
+<     cls.add_method('Flush', 
+<                    'void', 
+<                    [])
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Queue(ns3::Queue<ns3::QueueDiscItem> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::Queue< ns3::QueueDiscItem > const &', 'arg0')])
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::ConstIterator ns3::Queue<ns3::QueueDiscItem>::begin() const [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::QueueDiscItem > ConstIterator', 
+<                    [], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Iterator ns3::Queue<ns3::QueueDiscItem>::begin() [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::QueueDiscItem > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::ConstIterator ns3::Queue<ns3::QueueDiscItem>::end() const [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::QueueDiscItem > ConstIterator', 
+<                    [], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Iterator ns3::Queue<ns3::QueueDiscItem>::end() [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::QueueDiscItem > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): bool ns3::Queue<ns3::QueueDiscItem>::DoEnqueue(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos, ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DoEnqueue', 
+<                    'bool', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos'), param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoDequeue(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) [member function]
+<     cls.add_method('DoDequeue', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoRemove(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) [member function]
+<     cls.add_method('DoRemove', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<const ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoPeek(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) const [member function]
+<     cls.add_method('DoPeek', 
+<                    'ns3::Ptr< ns3::QueueDiscItem const >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::DropBeforeEnqueue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DropBeforeEnqueue', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::DropAfterDequeue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DropAfterDequeue', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     return
+< 
+< def register_Ns3QueueItem_methods(root_module, cls):
+<     cls.add_output_stream_operator()
+<     ## queue-item.h (module 'network'): ns3::QueueItem::QueueItem(ns3::Ptr<ns3::Packet> p) [constructor]
+<     cls.add_constructor([param('ns3::Ptr< ns3::Packet >', 'p')])
+<     ## queue-item.h (module 'network'): ns3::Ptr<ns3::Packet> ns3::QueueItem::GetPacket() const [member function]
+<     cls.add_method('GetPacket', 
+<                    'ns3::Ptr< ns3::Packet >', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint32_t ns3::QueueItem::GetSize() const [member function]
+<     cls.add_method('GetSize', 
+<                    'uint32_t', 
+<                    [], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): bool ns3::QueueItem::GetUint8Value(ns3::QueueItem::Uint8Values field, uint8_t & value) const [member function]
+<     cls.add_method('GetUint8Value', 
+<                    'bool', 
+<                    [param('ns3::QueueItem::Uint8Values', 'field'), param('uint8_t &', 'value')], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueItem::Print(std::ostream & os) const [member function]
+<     cls.add_method('Print', 
+<                    'void', 
+<                    [param('std::ostream &', 'os')], 
+<                    is_const=True, is_virtual=True)
+<     return
+< 
+6567c6353
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6572c6358
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6577c6363
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6582c6368
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6587c6373
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6613c6399
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6618c6404
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6781c6567
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6786c6572
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6824c6610
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6829c6615
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6851c6637
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6873c6659
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6895,6917c6681
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+<     return
+< 
+< def register_Ns3CallbackImpl__Void_Ns3Ptr__lt__const_ns3QueueDiscItem__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, cls):
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl() [constructor]
+<     cls.add_constructor([])
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl(ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::CallbackImpl< void, ns3::Ptr< ns3::QueueDiscItem const >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty > const &', 'arg0')])
+<     ## callback.h (module 'core'): static std::string ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::DoGetTypeid() [member function]
+<     cls.add_method('DoGetTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_static=True)
+<     ## callback.h (module 'core'): std::string ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::GetTypeid() const [member function]
+<     cls.add_method('GetTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_const=True, is_virtual=True)
+<     ## callback.h (module 'core'): void ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::operator()(ns3::Ptr<const ns3::QueueDiscItem> arg0) [member operator]
+<     cls.add_method('operator()', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem const >', 'arg0')], 
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6939c6703
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6961c6725
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6983c6747
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+7005,7058c6769
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+<     return
+< 
+< def register_Ns3QueueDiscItem_methods(root_module, cls):
+<     ## queue-item.h (module 'network'): ns3::QueueDiscItem::QueueDiscItem(ns3::Ptr<ns3::Packet> p, ns3::Address const & addr, uint16_t protocol) [constructor]
+<     cls.add_constructor([param('ns3::Ptr< ns3::Packet >', 'p'), param('ns3::Address const &', 'addr'), param('uint16_t', 'protocol')])
+<     ## queue-item.h (module 'network'): ns3::Address ns3::QueueDiscItem::GetAddress() const [member function]
+<     cls.add_method('GetAddress', 
+<                    'ns3::Address', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint16_t ns3::QueueDiscItem::GetProtocol() const [member function]
+<     cls.add_method('GetProtocol', 
+<                    'uint16_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint8_t ns3::QueueDiscItem::GetTxQueueIndex() const [member function]
+<     cls.add_method('GetTxQueueIndex', 
+<                    'uint8_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::SetTxQueueIndex(uint8_t txq) [member function]
+<     cls.add_method('SetTxQueueIndex', 
+<                    'void', 
+<                    [param('uint8_t', 'txq')])
+<     ## queue-item.h (module 'network'): ns3::Time ns3::QueueDiscItem::GetTimeStamp() const [member function]
+<     cls.add_method('GetTimeStamp', 
+<                    'ns3::Time', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::SetTimeStamp(ns3::Time t) [member function]
+<     cls.add_method('SetTimeStamp', 
+<                    'void', 
+<                    [param('ns3::Time', 't')])
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::AddHeader() [member function]
+<     cls.add_method('AddHeader', 
+<                    'void', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::Print(std::ostream & os) const [member function]
+<     cls.add_method('Print', 
+<                    'void', 
+<                    [param('std::ostream &', 'os')], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): bool ns3::QueueDiscItem::Mark() [member function]
+<     cls.add_method('Mark', 
+<                    'bool', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue-item.h (module 'network'): uint32_t ns3::QueueDiscItem::Hash(uint32_t perturbation=0) const [member function]
+<     cls.add_method('Hash', 
+<                    'uint32_t', 
+<                    [param('uint32_t', 'perturbation', default_value='0')], 
+<                    is_const=True, is_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+7070c6781
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+7080c6791
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+diff ../../NS3-WiGig/src/point-to-point/bindings/modulegen__gcc_LP64.py ../../ns-3-dev-git/src/point-to-point/bindings/modulegen__gcc_LP64.py
+34c34
+<     module.add_class('AsciiTraceHelperForDevice', import_from_module='ns.network', allow_subclassing=True)
+---
+>     module.add_class('AsciiTraceHelperForDevice', allow_subclassing=True, import_from_module='ns.network')
+39,41c39,41
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator', 'ns3::AttributeConstructionList::CIterator')
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator*', 'ns3::AttributeConstructionList::CIterator*')
+<     typehandlers.add_type_alias('std::list< ns3::AttributeConstructionList::Item > const_iterator&', 'ns3::AttributeConstructionList::CIterator&')
+---
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator', u'ns3::AttributeConstructionList::CIterator')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator*', u'ns3::AttributeConstructionList::CIterator*')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator&', u'ns3::AttributeConstructionList::CIterator&')
+78,79d77
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem> [struct]
+<     module.add_class('DefaultDeleter', import_from_module='ns.core', template_parameters=['ns3::QueueItem'])
+100,102c98,100
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >', 'ns3::LogComponent::ComponentList')
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >*', 'ns3::LogComponent::ComponentList*')
+<     typehandlers.add_type_alias('std::map< std::string, ns3::LogComponent * >&', 'ns3::LogComponent::ComponentList&')
+---
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >', u'ns3::LogComponent::ComponentList')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >*', u'ns3::LogComponent::ComponentList*')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >&', u'ns3::LogComponent::ComponentList&')
+105,107c103,105
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )', 'ns3::Mac48Address::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )*', 'ns3::Mac48Address::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Mac48Address )&', 'ns3::Mac48Address::TracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )', u'ns3::Mac48Address::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )*', u'ns3::Mac48Address::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )&', u'ns3::Mac48Address::TracedCallback&')
+116,118c114,116
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', 'ns3::NetDeviceContainer::Iterator')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', 'ns3::NetDeviceContainer::Iterator*')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', 'ns3::NetDeviceContainer::Iterator&')
+---
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', u'ns3::NetDeviceContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', u'ns3::NetDeviceContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', u'ns3::NetDeviceContainer::Iterator&')
+121,123c119,121
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator', 'ns3::NodeContainer::Iterator')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator*', 'ns3::NodeContainer::Iterator*')
+<     typehandlers.add_type_alias('std::vector< ns3::Ptr< ns3::Node > > const_iterator&', 'ns3::NodeContainer::Iterator&')
+---
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator', u'ns3::NodeContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator*', u'ns3::NodeContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator&', u'ns3::NodeContainer::Iterator&')
+125c123
+<     module.add_class('ObjectBase', import_from_module='ns.core', allow_subclassing=True)
+---
+>     module.add_class('ObjectBase', allow_subclassing=True, import_from_module='ns.core')
+155c153
+<     module.add_class('PcapHelperForDevice', import_from_module='ns.network', allow_subclassing=True)
+---
+>     module.add_class('PcapHelperForDevice', allow_subclassing=True, import_from_module='ns.network')
+161c159
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::ObjectBase'], template_parameters=['ns3::Object', 'ns3::ObjectBase', 'ns3::ObjectDeleter'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Object', 'ns3::ObjectBase', 'ns3::ObjectDeleter'], parent=root_module['ns3::ObjectBase'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+163c161
+<     module.add_class('Simulator', import_from_module='ns.core', destructor_visibility='private')
+---
+>     module.add_class('Simulator', destructor_visibility='private', import_from_module='ns.core')
+184,186c182,184
+<     typehandlers.add_type_alias('uint32_t', 'ns3::TypeId::hash_t')
+<     typehandlers.add_type_alias('uint32_t*', 'ns3::TypeId::hash_t*')
+<     typehandlers.add_type_alias('uint32_t&', 'ns3::TypeId::hash_t&')
+---
+>     typehandlers.add_type_alias(u'uint32_t', u'ns3::TypeId::hash_t')
+>     typehandlers.add_type_alias(u'uint32_t*', u'ns3::TypeId::hash_t*')
+>     typehandlers.add_type_alias(u'uint32_t&', u'ns3::TypeId::hash_t&')
+212c210
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeAccessor>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeAccessor>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+214c212
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeChecker', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeChecker>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeChecker', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeChecker>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+216c214
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::AttributeValue', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeValue>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::AttributeValue', 'ns3::empty', 'ns3::DefaultDeleter<ns3::AttributeValue>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+218c216
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::CallbackImplBase', 'ns3::empty', 'ns3::DefaultDeleter<ns3::CallbackImplBase>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::CallbackImplBase', 'ns3::empty', 'ns3::DefaultDeleter<ns3::CallbackImplBase>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+220c218
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::EventImpl', 'ns3::empty', 'ns3::DefaultDeleter<ns3::EventImpl>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::EventImpl', 'ns3::empty', 'ns3::DefaultDeleter<ns3::EventImpl>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+222c220
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::Hash::Implementation', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Hash::Implementation>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Hash::Implementation', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Hash::Implementation>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+224c222
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::NixVector', 'ns3::empty', 'ns3::DefaultDeleter<ns3::NixVector>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::NixVector', 'ns3::empty', 'ns3::DefaultDeleter<ns3::NixVector>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+226c224
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::OutputStreamWrapper', 'ns3::empty', 'ns3::DefaultDeleter<ns3::OutputStreamWrapper>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::OutputStreamWrapper', 'ns3::empty', 'ns3::DefaultDeleter<ns3::OutputStreamWrapper>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+228,230c226
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::Packet', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Packet>'])
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> > [class]
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::QueueItem', 'ns3::empty', 'ns3::DefaultDeleter<ns3::QueueItem>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::Packet', 'ns3::empty', 'ns3::DefaultDeleter<ns3::Packet>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+232c228
+<     module.add_class('SimpleRefCount', import_from_module='ns.core', memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'), automatic_type_narrowing=True, parent=root_module['ns3::empty'], template_parameters=['ns3::TraceSourceAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::TraceSourceAccessor>'])
+---
+>     module.add_class('SimpleRefCount', automatic_type_narrowing=True, import_from_module='ns.core', template_parameters=['ns3::TraceSourceAccessor', 'ns3::empty', 'ns3::DefaultDeleter<ns3::TraceSourceAccessor>'], parent=root_module['ns3::empty'], memory_policy=cppclass.ReferenceCountingMethodsPolicy(incref_method='Ref', decref_method='Unref', peekref_method='GetReferenceCount'))
+237,239c233,235
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )', 'ns3::Time::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )*', 'ns3::Time::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time )&', 'ns3::Time::TracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )', u'ns3::Time::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )*', u'ns3::Time::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )&', u'ns3::Time::TracedCallback&')
+259c255
+<     module.add_class('AttributeChecker', import_from_module='ns.core', automatic_type_narrowing=True, allow_subclassing=False, parent=root_module['ns3::SimpleRefCount< ns3::AttributeChecker, ns3::empty, ns3::DefaultDeleter<ns3::AttributeChecker> >'])
+---
+>     module.add_class('AttributeChecker', allow_subclassing=False, automatic_type_narrowing=True, import_from_module='ns.core', parent=root_module['ns3::SimpleRefCount< ns3::AttributeChecker, ns3::empty, ns3::DefaultDeleter<ns3::AttributeChecker> >'])
+261c257
+<     module.add_class('AttributeValue', import_from_module='ns.core', automatic_type_narrowing=True, allow_subclassing=False, parent=root_module['ns3::SimpleRefCount< ns3::AttributeValue, ns3::empty, ns3::DefaultDeleter<ns3::AttributeValue> >'])
+---
+>     module.add_class('AttributeValue', allow_subclassing=False, automatic_type_narrowing=True, import_from_module='ns.core', parent=root_module['ns3::SimpleRefCount< ns3::AttributeValue, ns3::empty, ns3::DefaultDeleter<ns3::AttributeValue> >'])
+336,344c332,340
+<     typehandlers.add_type_alias('void ( * ) (  )', 'ns3::NetDevice::LinkChangeTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) (  )*', 'ns3::NetDevice::LinkChangeTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) (  )&', 'ns3::NetDevice::LinkChangeTracedCallback&')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', 'ns3::NetDevice::ReceiveCallback')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::NetDevice::ReceiveCallback*')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::NetDevice::ReceiveCallback&')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', 'ns3::NetDevice::PromiscReceiveCallback')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::NetDevice::PromiscReceiveCallback*')
+<     typehandlers.add_type_alias('ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::NetDevice::PromiscReceiveCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::NetDevice::LinkChangeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::NetDevice::LinkChangeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::NetDevice::LinkChangeTracedCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::ReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::ReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::ReceiveCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::PromiscReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::PromiscReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::PromiscReceiveCallback&')
+349,354c345,350
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', 'ns3::Node::ProtocolHandler')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::Node::ProtocolHandler*')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::Node::ProtocolHandler&')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', 'ns3::Node::DeviceAdditionListener')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', 'ns3::Node::DeviceAdditionListener*')
+<     typehandlers.add_type_alias('ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', 'ns3::Node::DeviceAdditionListener&')
+---
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::ProtocolHandler')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::ProtocolHandler*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::ProtocolHandler&')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::DeviceAdditionListener')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::DeviceAdditionListener*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::DeviceAdditionListener&')
+365,382c361,378
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )', 'ns3::Packet::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )*', 'ns3::Packet::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > )&', 'ns3::Packet::TracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', 'ns3::Packet::AddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', 'ns3::Packet::AddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', 'ns3::Packet::AddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', 'ns3::Packet::TwoAddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', 'ns3::Packet::TwoAddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', 'ns3::Packet::TwoAddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', 'ns3::Packet::Mac48AddressTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', 'ns3::Packet::Mac48AddressTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', 'ns3::Packet::Mac48AddressTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )', 'ns3::Packet::SizeTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )*', 'ns3::Packet::SizeTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )&', 'ns3::Packet::SizeTracedCallback&')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', 'ns3::Packet::SinrTracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', 'ns3::Packet::SinrTracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', 'ns3::Packet::SinrTracedCallback&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )', u'ns3::Packet::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )*', u'ns3::Packet::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )&', u'ns3::Packet::TracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', u'ns3::Packet::AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', u'ns3::Packet::AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', u'ns3::Packet::AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', u'ns3::Packet::TwoAddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', u'ns3::Packet::TwoAddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', u'ns3::Packet::TwoAddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', u'ns3::Packet::Mac48AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', u'ns3::Packet::Mac48AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', u'ns3::Packet::Mac48AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::Packet::SizeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::Packet::SizeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::Packet::SizeTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', u'ns3::Packet::SinrTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', u'ns3::Packet::SinrTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', u'ns3::Packet::SinrTracedCallback&')
+392,408c388
+<     module.add_class('Queue', import_from_module='ns.network', parent=root_module['ns3::QueueBase'], template_parameters=['ns3::Packet'])
+<     typehandlers.add_type_alias('ns3::Packet', 'ns3::Queue< ns3::Packet > ItemType')
+<     typehandlers.add_type_alias('ns3::Packet*', 'ns3::Queue< ns3::Packet > ItemType*')
+<     typehandlers.add_type_alias('ns3::Packet&', 'ns3::Queue< ns3::Packet > ItemType&')
+<     module.add_typedef(root_module['ns3::Packet'], 'ItemType')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem> [class]
+<     module.add_class('Queue', import_from_module='ns.network', parent=root_module['ns3::QueueBase'], template_parameters=['ns3::QueueDiscItem'])
+<     typehandlers.add_type_alias('ns3::QueueDiscItem', 'ns3::Queue< ns3::QueueDiscItem > ItemType')
+<     typehandlers.add_type_alias('ns3::QueueDiscItem*', 'ns3::Queue< ns3::QueueDiscItem > ItemType*')
+<     typehandlers.add_type_alias('ns3::QueueDiscItem&', 'ns3::Queue< ns3::QueueDiscItem > ItemType&')
+<     ## queue-item.h (module 'network'): ns3::QueueItem [class]
+<     module.add_class('QueueItem', import_from_module='ns.network', parent=root_module['ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >'])
+<     ## queue-item.h (module 'network'): ns3::QueueItem::Uint8Values [enumeration]
+<     module.add_enum('Uint8Values', ['IP_DSFIELD'], outer_class=root_module['ns3::QueueItem'], import_from_module='ns.network')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )', 'ns3::QueueItem::TracedCallback')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )*', 'ns3::QueueItem::TracedCallback*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Ptr< ns3::QueueItem const > )&', 'ns3::QueueItem::TracedCallback&')
+---
+>     module.add_class('Queue', import_from_module='ns.network', template_parameters=['ns3::Packet'], parent=root_module['ns3::QueueBase'])
+436c416
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['ns3::ObjectBase *', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['ns3::ObjectBase *', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+438c418
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Time', 'ns3::Time', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Time', 'ns3::Time', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+440,442c420
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> [class]
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<const ns3::QueueDiscItem>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<const ns3::Packet>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+444c422
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<const ns3::Packet>', 'unsigned short', 'const ns3::Address &', 'const ns3::Address &', 'ns3::NetDevice::PacketType', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::Ptr<const ns3::Packet>', 'unsigned short', 'const ns3::Address &', 'const ns3::Address &', 'ns3::NetDevice::PacketType', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+446c424
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::NetDevice>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+448c426
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+450,460c428,436
+<     module.add_class('CallbackImpl', import_from_module='ns.core', parent=root_module['ns3::CallbackImplBase'], template_parameters=['void', 'unsigned int', 'unsigned int', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'])
+<     ## queue-item.h (module 'network'): ns3::QueueDiscItem [class]
+<     module.add_class('QueueDiscItem', import_from_module='ns.network', parent=root_module['ns3::QueueItem'])
+<     module.add_container('std::map< std::string, ns3::LogComponent * >', ('std::string', 'ns3::LogComponent *'), container_type='map')
+<     module.add_container('std::list< unsigned int >', 'unsigned int', container_type='list')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )', 'ns3::TimePrinter')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )*', 'ns3::TimePrinter*')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )&', 'ns3::TimePrinter&')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )', 'ns3::NodePrinter')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )*', 'ns3::NodePrinter*')
+<     typehandlers.add_type_alias('void ( * ) ( std::ostream & )&', 'ns3::NodePrinter&')
+---
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'unsigned int', 'unsigned int', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+>     module.add_container('std::map< std::string, ns3::LogComponent * >', ('std::string', 'ns3::LogComponent *'), container_type=u'map')
+>     module.add_container('std::list< unsigned int >', 'unsigned int', container_type=u'list')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )', u'ns3::LogTimePrinter')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )*', u'ns3::LogTimePrinter*')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )&', u'ns3::LogTimePrinter&')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )', u'ns3::LogNodePrinter')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )*', u'ns3::LogNodePrinter*')
+>     typehandlers.add_type_alias(u'void ( * ) ( std::ostream & )&', u'ns3::LogNodePrinter&')
+495,500c471,476
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )', 'ns3::Hash::Hash32Function_ptr')
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )*', 'ns3::Hash::Hash32Function_ptr*')
+<     typehandlers.add_type_alias('uint32_t ( * ) ( char const *, std::size_t const )&', 'ns3::Hash::Hash32Function_ptr&')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )', 'ns3::Hash::Hash64Function_ptr')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )*', 'ns3::Hash::Hash64Function_ptr*')
+<     typehandlers.add_type_alias('uint64_t ( * ) ( char const *, std::size_t const )&', 'ns3::Hash::Hash64Function_ptr&')
+---
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash32Function_ptr')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash64Function_ptr')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+523,552c499,528
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )', 'ns3::TracedValueCallback::Time')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )*', 'ns3::TracedValueCallback::Time*')
+<     typehandlers.add_type_alias('void ( * ) ( ns3::Time, ns3::Time )&', 'ns3::TracedValueCallback::Time&')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )', 'ns3::TracedValueCallback::Bool')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )*', 'ns3::TracedValueCallback::Bool*')
+<     typehandlers.add_type_alias('void ( * ) ( bool, bool )&', 'ns3::TracedValueCallback::Bool&')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )', 'ns3::TracedValueCallback::Int8')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )*', 'ns3::TracedValueCallback::Int8*')
+<     typehandlers.add_type_alias('void ( * ) ( int8_t, int8_t )&', 'ns3::TracedValueCallback::Int8&')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )', 'ns3::TracedValueCallback::Uint8')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )*', 'ns3::TracedValueCallback::Uint8*')
+<     typehandlers.add_type_alias('void ( * ) ( uint8_t, uint8_t )&', 'ns3::TracedValueCallback::Uint8&')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )', 'ns3::TracedValueCallback::Int16')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )*', 'ns3::TracedValueCallback::Int16*')
+<     typehandlers.add_type_alias('void ( * ) ( int16_t, int16_t )&', 'ns3::TracedValueCallback::Int16&')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )', 'ns3::TracedValueCallback::Uint16')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )*', 'ns3::TracedValueCallback::Uint16*')
+<     typehandlers.add_type_alias('void ( * ) ( uint16_t, uint16_t )&', 'ns3::TracedValueCallback::Uint16&')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )', 'ns3::TracedValueCallback::Int32')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )*', 'ns3::TracedValueCallback::Int32*')
+<     typehandlers.add_type_alias('void ( * ) ( int32_t, int32_t )&', 'ns3::TracedValueCallback::Int32&')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )', 'ns3::TracedValueCallback::Uint32')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )*', 'ns3::TracedValueCallback::Uint32*')
+<     typehandlers.add_type_alias('void ( * ) ( uint32_t, uint32_t )&', 'ns3::TracedValueCallback::Uint32&')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )', 'ns3::TracedValueCallback::Double')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )*', 'ns3::TracedValueCallback::Double*')
+<     typehandlers.add_type_alias('void ( * ) ( double, double )&', 'ns3::TracedValueCallback::Double&')
+<     typehandlers.add_type_alias('void ( * ) (  )', 'ns3::TracedValueCallback::Void')
+<     typehandlers.add_type_alias('void ( * ) (  )*', 'ns3::TracedValueCallback::Void*')
+<     typehandlers.add_type_alias('void ( * ) (  )&', 'ns3::TracedValueCallback::Void&')
+---
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )', u'ns3::TracedValueCallback::Time')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )*', u'ns3::TracedValueCallback::Time*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time, ns3::Time )&', u'ns3::TracedValueCallback::Time&')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )', u'ns3::TracedValueCallback::Bool')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )*', u'ns3::TracedValueCallback::Bool*')
+>     typehandlers.add_type_alias(u'void ( * ) ( bool, bool )&', u'ns3::TracedValueCallback::Bool&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )', u'ns3::TracedValueCallback::Int8')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )*', u'ns3::TracedValueCallback::Int8*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int8_t, int8_t )&', u'ns3::TracedValueCallback::Int8&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )', u'ns3::TracedValueCallback::Uint8')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )*', u'ns3::TracedValueCallback::Uint8*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint8_t, uint8_t )&', u'ns3::TracedValueCallback::Uint8&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )', u'ns3::TracedValueCallback::Int16')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )*', u'ns3::TracedValueCallback::Int16*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int16_t, int16_t )&', u'ns3::TracedValueCallback::Int16&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )', u'ns3::TracedValueCallback::Uint16')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )*', u'ns3::TracedValueCallback::Uint16*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint16_t, uint16_t )&', u'ns3::TracedValueCallback::Uint16&')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )', u'ns3::TracedValueCallback::Int32')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )*', u'ns3::TracedValueCallback::Int32*')
+>     typehandlers.add_type_alias(u'void ( * ) ( int32_t, int32_t )&', u'ns3::TracedValueCallback::Int32&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::TracedValueCallback::Uint32')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::TracedValueCallback::Uint32*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::TracedValueCallback::Uint32&')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )', u'ns3::TracedValueCallback::Double')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )*', u'ns3::TracedValueCallback::Double*')
+>     typehandlers.add_type_alias(u'void ( * ) ( double, double )&', u'ns3::TracedValueCallback::Double&')
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::TracedValueCallback::Void')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::TracedValueCallback::Void*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::TracedValueCallback::Void&')
+582d557
+<     register_Ns3DefaultDeleter__Ns3QueueItem_methods(root_module, root_module['ns3::DefaultDeleter< ns3::QueueItem >'])
+640d614
+<     register_Ns3SimpleRefCount__Ns3QueueItem_Ns3Empty_Ns3DefaultDeleter__lt__ns3QueueItem__gt___methods(root_module, root_module['ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >'])
+701,702d674
+<     register_Ns3Queue__Ns3QueueDiscItem_methods(root_module, root_module['ns3::Queue< ns3::QueueDiscItem >'])
+<     register_Ns3QueueItem_methods(root_module, root_module['ns3::QueueItem'])
+718d689
+<     register_Ns3CallbackImpl__Void_Ns3Ptr__lt__const_ns3QueueDiscItem__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, root_module['ns3::CallbackImpl< void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >'])
+723d693
+<     register_Ns3QueueDiscItem_methods(root_module, root_module['ns3::QueueDiscItem'])
+917c887
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+1355c1325
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+1471,1482d1440
+< def register_Ns3DefaultDeleter__Ns3QueueItem_methods(root_module, cls):
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem>::DefaultDeleter() [constructor]
+<     cls.add_constructor([])
+<     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::QueueItem>::DefaultDeleter(ns3::DefaultDeleter<ns3::QueueItem> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::DefaultDeleter< ns3::QueueItem > const &', 'arg0')])
+<     ## default-deleter.h (module 'core'): static void ns3::DefaultDeleter<ns3::QueueItem>::Delete(ns3::QueueItem * object) [member function]
+<     cls.add_method('Delete', 
+<                    'void', 
+<                    [param('ns3::QueueItem *', 'object')], 
+<                    is_static=True)
+<     return
+< 
+1642c1600
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1734c1692
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1766c1724
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Address ns3::Ipv6Address::CombinePrefix(ns3::Ipv6Prefix const & prefix) const [member function]
+---
+>     ## ipv6-address.h (module 'network'): ns3::Ipv6Address ns3::Ipv6Address::CombinePrefix(ns3::Ipv6Prefix const & prefix) [member function]
+1769,1770c1727
+<                    [param('ns3::Ipv6Prefix const &', 'prefix')], 
+<                    is_const=True)
+---
+>                    [param('ns3::Ipv6Prefix const &', 'prefix')])
+1826,1830d1782
+<     ## ipv6-address.h (module 'network'): bool ns3::Ipv6Address::HasPrefix(ns3::Ipv6Prefix const & prefix) const [member function]
+<     cls.add_method('HasPrefix', 
+<                    'bool', 
+<                    [param('ns3::Ipv6Prefix const &', 'prefix')], 
+<                    is_const=True)
+1835c1787
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+1860c1812
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+1896,1900d1847
+<     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredAddress(ns3::Address addr, ns3::Ipv6Address prefix) [member function]
+<     cls.add_method('MakeAutoconfiguredAddress', 
+<                    'ns3::Ipv6Address', 
+<                    [param('ns3::Address', 'addr'), param('ns3::Ipv6Address', 'prefix')], 
+<                    is_static=True)
+1921,1925d1867
+<     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredLinkLocalAddress(ns3::Address mac) [member function]
+<     cls.add_method('MakeAutoconfiguredLinkLocalAddress', 
+<                    'ns3::Ipv6Address', 
+<                    [param('ns3::Address', 'mac')], 
+<                    is_static=True)
+1986,1989d1927
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Prefix::Ipv6Prefix(uint8_t * prefix, uint8_t prefixLength) [constructor]
+<     cls.add_constructor([param('uint8_t *', 'prefix'), param('uint8_t', 'prefixLength')])
+<     ## ipv6-address.h (module 'network'): ns3::Ipv6Prefix::Ipv6Prefix(char const * prefix, uint8_t prefixLength) [constructor]
+<     cls.add_constructor([param('char const *', 'prefix'), param('uint8_t', 'prefixLength')])
+2006,2010d1943
+<     ## ipv6-address.h (module 'network'): uint8_t ns3::Ipv6Prefix::GetMinimumPrefixLength() const [member function]
+<     cls.add_method('GetMinimumPrefixLength', 
+<                    'uint8_t', 
+<                    [], 
+<                    is_const=True)
+2030c1963
+<                    is_const=True, deprecated=True)
+---
+>                    is_const=True)
+2041,2044d1973
+<     ## ipv6-address.h (module 'network'): void ns3::Ipv6Prefix::SetPrefixLength(uint8_t prefixLength) [member function]
+<     cls.add_method('SetPrefixLength', 
+<                    'void', 
+<                    [param('uint8_t', 'prefixLength')])
+2343c2272
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2382c2311
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+2415,2419d2343
+<     ## object-factory.h (module 'core'): bool ns3::ObjectFactory::IsTypeIdSet() const [member function]
+<     cls.add_method('IsTypeIdSet', 
+<                    'bool', 
+<                    [], 
+<                    is_const=True)
+2784c2708
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+2828c2752
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+2833c2757
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+2894,2898d2817
+<     ## simulator.h (module 'core'): static uint64_t ns3::Simulator::GetEventCount() [member function]
+<     cls.add_method('GetEventCount', 
+<                    'uint64_t', 
+<                    [], 
+<                    is_static=True)
+2965c2884
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+2970c2889
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2980c2899
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+2985c2904
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3265c3184
+<                    template_parameters=['ns3::QueueBase'])
+---
+>                    template_parameters=[u'ns3::QueueBase'])
+3327,3331c3246,3249
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::int64x64_t'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('+', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('-', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', 'right'))
+---
+>     cls.add_binary_numeric_operator('+', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('-', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('*', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::int64x64_t'], param('ns3::int64x64_t const &', u'right'))
+3339,3342c3257,3260
+<     cls.add_inplace_numeric_operator('+=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('-=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('*=', param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('/=', param('ns3::int64x64_t const &', 'right'))
+---
+>     cls.add_inplace_numeric_operator('+=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('-=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('*=', param('ns3::int64x64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('/=', param('ns3::int64x64_t const &', u'right'))
+3403c3321
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3418c3336
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3431c3349
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3436c3354
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3446c3364
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3451c3369
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+3496c3414
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3501c3419
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3506c3424
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+3770c3688
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3775c3693
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+3886,3892d3803
+< def register_Ns3SimpleRefCount__Ns3QueueItem_Ns3Empty_Ns3DefaultDeleter__lt__ns3QueueItem__gt___methods(root_module, cls):
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >::SimpleRefCount() [constructor]
+<     cls.add_constructor([])
+<     ## simple-ref-count.h (module 'core'): ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> >::SimpleRefCount(ns3::SimpleRefCount<ns3::QueueItem, ns3::empty, ns3::DefaultDeleter<ns3::QueueItem> > const & o) [constructor]
+<     cls.add_constructor([param('ns3::SimpleRefCount< ns3::QueueItem, ns3::empty, ns3::DefaultDeleter< ns3::QueueItem > > const &', 'o')])
+<     return
+< 
+3907,3915c3818,3823
+<     cls.add_binary_numeric_operator('+', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('-', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::int64x64_t'], root_module['ns3::Time'], param('ns3::Time const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', 'right'))
+<     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::int64x64_t const &', 'right'))
+<     cls.add_inplace_numeric_operator('+=', param('ns3::Time const &', 'right'))
+<     cls.add_inplace_numeric_operator('-=', param('ns3::Time const &', 'right'))
+---
+>     cls.add_binary_numeric_operator('+', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', u'right'))
+>     cls.add_binary_numeric_operator('-', root_module['ns3::Time'], root_module['ns3::Time'], param('ns3::Time const &', u'right'))
+>     cls.add_binary_numeric_operator('*', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', u'right'))
+>     cls.add_binary_numeric_operator('/', root_module['ns3::Time'], root_module['ns3::Time'], param('int64_t const &', u'right'))
+>     cls.add_inplace_numeric_operator('+=', param('ns3::Time const &', u'right'))
+>     cls.add_inplace_numeric_operator('-=', param('ns3::Time const &', u'right'))
+4110c4018
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4115c4023
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4120c4028
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4125c4033
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4138c4046
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+4148c4056
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4158c4066
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4163c4071
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4370c4278
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4375c4283
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4380c4288
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4385c4293
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4397c4305
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4402c4310
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4407c4315
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4417c4325
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4422c4330
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4427c4335
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4439c4347
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4444c4352
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+4449c4357
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4509c4417
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4514c4422
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4524c4432
+<                    is_static=True, template_parameters=['ns3::ObjectBase*'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::ObjectBase*'])
+4529c4437
+<                    is_static=True, template_parameters=['void'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'void'])
+4534c4442
+<                    is_static=True, template_parameters=['unsigned int'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'unsigned int'])
+4539c4447
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::Packet const> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::Packet const> '])
+4544c4452
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::NetDevice> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::NetDevice> '])
+4549c4457
+<                    is_static=True, template_parameters=['ns3::Time'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Time'])
+4554c4462
+<                    is_static=True, template_parameters=['unsigned short'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'unsigned short'])
+4559c4467
+<                    is_static=True, template_parameters=['ns3::Address const&'], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Address const&'])
+4564,4569c4472
+<                    is_static=True, template_parameters=['ns3::NetDevice::PacketType'], visibility='protected')
+<     ## callback.h (module 'core'): static std::string ns3::CallbackImplBase::GetCppTypeid() [member function]
+<     cls.add_method('GetCppTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_static=True, template_parameters=['ns3::Ptr<ns3::QueueDiscItem const> '], visibility='protected')
+---
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::NetDevice::PacketType'])
+4609c4512
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4619c4522
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+4783c4686
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4788c4691
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4864c4767
+<                    is_const=True, is_virtual=True, visibility='private')
+---
+>                    is_const=True, visibility='private', is_virtual=True)
+4869c4772
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+4874c4777
+<                    is_const=True, is_virtual=True, visibility='private')
+---
+>                    is_const=True, visibility='private', is_virtual=True)
+5028c4931
+<                    is_virtual=True, is_pure_virtual=True, visibility='private')
+---
+>                    is_pure_virtual=True, visibility='private', is_virtual=True)
+5033c4936
+<                    is_virtual=True, is_pure_virtual=True, visibility='private')
+---
+>                    is_pure_virtual=True, visibility='private', is_virtual=True)
+5057c4960
+<                    is_virtual=True, is_pure_virtual=True, visibility='protected')
+---
+>                    is_pure_virtual=True, visibility='protected', is_virtual=True)
+5352c5255
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+5357c5260
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+5447c5350
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5452c5355
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5457c5360
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5462c5365
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5467c5370
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5472c5375
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5477c5380
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5482c5385
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5487c5390
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5497c5400
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5502c5405
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5507c5410
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5512c5415
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5517c5420
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5522c5425
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5527c5430
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5532c5435
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5537c5440
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5542c5445
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5547c5450
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5552c5455
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5557c5460
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5562c5465
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+5567c5470
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+5694c5597
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+5699c5602
+<                    is_virtual=True, visibility='protected')
+---
+>                    visibility='protected', is_virtual=True)
+5821,5825d5723
+<     ## packet.h (module 'network'): void ns3::Packet::AddByteTag(ns3::Tag const & tag, uint32_t start, uint32_t end) const [member function]
+<     cls.add_method('AddByteTag', 
+<                    'void', 
+<                    [param('ns3::Tag const &', 'tag'), param('uint32_t', 'start'), param('uint32_t', 'end')], 
+<                    is_const=True)
+6011c5909
+<                    is_const=True, deprecated=True)
+---
+>                    deprecated=True, is_const=True)
+6264a6163,6172
+>     ## point-to-point-net-device.h (module 'point-to-point'): void ns3::PointToPointNetDevice::DoInitialize() [member function]
+>     cls.add_method('DoInitialize', 
+>                    'void', 
+>                    [], 
+>                    visibility='protected', is_virtual=True)
+>     ## point-to-point-net-device.h (module 'point-to-point'): void ns3::PointToPointNetDevice::NotifyNewAggregate() [member function]
+>     cls.add_method('NotifyNewAggregate', 
+>                    'void', 
+>                    [], 
+>                    visibility='protected', is_virtual=True)
+6269c6177
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6301c6209
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6306c6214
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6311c6219
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+6316c6224
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_const=True, is_virtual=True)
+6321c6229
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Queue(ns3::Queue<ns3::Packet> const & arg0) [constructor]
+---
+>     ## point-to-point-net-device.h (module 'point-to-point'): ns3::Queue<ns3::Packet>::Queue(ns3::Queue<ns3::Packet> const & arg0) [constructor]
+6323,6324c6231,6232
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::begin() const [member function]
+<     cls.add_method('begin', 
+---
+>     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::Head() const [member function]
+>     cls.add_method('Head', 
+6328,6334c6236,6237
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Iterator ns3::Queue<ns3::Packet>::begin() [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::Packet > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::end() const [member function]
+<     cls.add_method('end', 
+---
+>     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::ConstIterator ns3::Queue<ns3::Packet>::Tail() const [member function]
+>     cls.add_method('Tail', 
+6338,6342d6240
+<     ## queue.h (module 'network'): ns3::Queue<ns3::Packet>::Iterator ns3::Queue<ns3::Packet>::end() [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::Packet > Iterator', 
+<                    [], 
+<                    visibility='protected')
+6375,6486d6272
+< def register_Ns3Queue__Ns3QueueDiscItem_methods(root_module, cls):
+<     ## queue.h (module 'network'): static ns3::TypeId ns3::Queue<ns3::QueueDiscItem>::GetTypeId() [member function]
+<     cls.add_method('GetTypeId', 
+<                    'ns3::TypeId', 
+<                    [], 
+<                    is_static=True)
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Queue() [constructor]
+<     cls.add_constructor([])
+<     ## queue.h (module 'network'): bool ns3::Queue<ns3::QueueDiscItem>::Enqueue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('Enqueue', 
+<                    'bool', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Dequeue() [member function]
+<     cls.add_method('Dequeue', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Remove() [member function]
+<     cls.add_method('Remove', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): ns3::Ptr<const ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::Peek() const [member function]
+<     cls.add_method('Peek', 
+<                    'ns3::Ptr< ns3::QueueDiscItem const >', 
+<                    [], 
+<                    is_const=True, is_virtual=True, is_pure_virtual=True)
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::Flush() [member function]
+<     cls.add_method('Flush', 
+<                    'void', 
+<                    [])
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Queue(ns3::Queue<ns3::QueueDiscItem> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::Queue< ns3::QueueDiscItem > const &', 'arg0')])
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::ConstIterator ns3::Queue<ns3::QueueDiscItem>::begin() const [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::QueueDiscItem > ConstIterator', 
+<                    [], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Iterator ns3::Queue<ns3::QueueDiscItem>::begin() [member function]
+<     cls.add_method('begin', 
+<                    'ns3::Queue< ns3::QueueDiscItem > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::ConstIterator ns3::Queue<ns3::QueueDiscItem>::end() const [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::QueueDiscItem > ConstIterator', 
+<                    [], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): ns3::Queue<ns3::QueueDiscItem>::Iterator ns3::Queue<ns3::QueueDiscItem>::end() [member function]
+<     cls.add_method('end', 
+<                    'ns3::Queue< ns3::QueueDiscItem > Iterator', 
+<                    [], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): bool ns3::Queue<ns3::QueueDiscItem>::DoEnqueue(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos, ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DoEnqueue', 
+<                    'bool', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos'), param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoDequeue(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) [member function]
+<     cls.add_method('DoDequeue', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoRemove(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) [member function]
+<     cls.add_method('DoRemove', 
+<                    'ns3::Ptr< ns3::QueueDiscItem >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): ns3::Ptr<const ns3::QueueDiscItem> ns3::Queue<ns3::QueueDiscItem>::DoPeek(ns3::Queue<ns3::QueueDiscItem>::ConstIterator pos) const [member function]
+<     cls.add_method('DoPeek', 
+<                    'ns3::Ptr< ns3::QueueDiscItem const >', 
+<                    [param('std::list< ns3::Ptr< ns3::QueueDiscItem > > const_iterator', 'pos')], 
+<                    is_const=True, visibility='protected')
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::DropBeforeEnqueue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DropBeforeEnqueue', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     ## queue.h (module 'network'): void ns3::Queue<ns3::QueueDiscItem>::DropAfterDequeue(ns3::Ptr<ns3::QueueDiscItem> item) [member function]
+<     cls.add_method('DropAfterDequeue', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem >', 'item')], 
+<                    visibility='protected')
+<     return
+< 
+< def register_Ns3QueueItem_methods(root_module, cls):
+<     cls.add_output_stream_operator()
+<     ## queue-item.h (module 'network'): ns3::QueueItem::QueueItem(ns3::Ptr<ns3::Packet> p) [constructor]
+<     cls.add_constructor([param('ns3::Ptr< ns3::Packet >', 'p')])
+<     ## queue-item.h (module 'network'): ns3::Ptr<ns3::Packet> ns3::QueueItem::GetPacket() const [member function]
+<     cls.add_method('GetPacket', 
+<                    'ns3::Ptr< ns3::Packet >', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint32_t ns3::QueueItem::GetSize() const [member function]
+<     cls.add_method('GetSize', 
+<                    'uint32_t', 
+<                    [], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): bool ns3::QueueItem::GetUint8Value(ns3::QueueItem::Uint8Values field, uint8_t & value) const [member function]
+<     cls.add_method('GetUint8Value', 
+<                    'bool', 
+<                    [param('ns3::QueueItem::Uint8Values', 'field'), param('uint8_t &', 'value')], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueItem::Print(std::ostream & os) const [member function]
+<     cls.add_method('Print', 
+<                    'void', 
+<                    [param('std::ostream &', 'os')], 
+<                    is_const=True, is_virtual=True)
+<     return
+< 
+6567c6353
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6572c6358
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6577c6363
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6582c6368
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6587c6373
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6613c6399
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6618c6404
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6781c6567
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6786c6572
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6824c6610
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6829c6615
+<                    is_virtual=True, visibility='private')
+---
+>                    visibility='private', is_virtual=True)
+6851c6637
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6873c6659
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6895,6917c6681
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+<     return
+< 
+< def register_Ns3CallbackImpl__Void_Ns3Ptr__lt__const_ns3QueueDiscItem__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, cls):
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl() [constructor]
+<     cls.add_constructor([])
+<     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl(ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> const & arg0) [constructor]
+<     cls.add_constructor([param('ns3::CallbackImpl< void, ns3::Ptr< ns3::QueueDiscItem const >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty > const &', 'arg0')])
+<     ## callback.h (module 'core'): static std::string ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::DoGetTypeid() [member function]
+<     cls.add_method('DoGetTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_static=True)
+<     ## callback.h (module 'core'): std::string ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::GetTypeid() const [member function]
+<     cls.add_method('GetTypeid', 
+<                    'std::string', 
+<                    [], 
+<                    is_const=True, is_virtual=True)
+<     ## callback.h (module 'core'): void ns3::CallbackImpl<void, ns3::Ptr<const ns3::QueueDiscItem>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::operator()(ns3::Ptr<const ns3::QueueDiscItem> arg0) [member operator]
+<     cls.add_method('operator()', 
+<                    'void', 
+<                    [param('ns3::Ptr< ns3::QueueDiscItem const >', 'arg0')], 
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6939c6703
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6961c6725
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+6983c6747
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+7005,7058c6769
+<                    custom_name='__call__', is_virtual=True, is_pure_virtual=True)
+<     return
+< 
+< def register_Ns3QueueDiscItem_methods(root_module, cls):
+<     ## queue-item.h (module 'network'): ns3::QueueDiscItem::QueueDiscItem(ns3::Ptr<ns3::Packet> p, ns3::Address const & addr, uint16_t protocol) [constructor]
+<     cls.add_constructor([param('ns3::Ptr< ns3::Packet >', 'p'), param('ns3::Address const &', 'addr'), param('uint16_t', 'protocol')])
+<     ## queue-item.h (module 'network'): ns3::Address ns3::QueueDiscItem::GetAddress() const [member function]
+<     cls.add_method('GetAddress', 
+<                    'ns3::Address', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint16_t ns3::QueueDiscItem::GetProtocol() const [member function]
+<     cls.add_method('GetProtocol', 
+<                    'uint16_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): uint8_t ns3::QueueDiscItem::GetTxQueueIndex() const [member function]
+<     cls.add_method('GetTxQueueIndex', 
+<                    'uint8_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::SetTxQueueIndex(uint8_t txq) [member function]
+<     cls.add_method('SetTxQueueIndex', 
+<                    'void', 
+<                    [param('uint8_t', 'txq')])
+<     ## queue-item.h (module 'network'): ns3::Time ns3::QueueDiscItem::GetTimeStamp() const [member function]
+<     cls.add_method('GetTimeStamp', 
+<                    'ns3::Time', 
+<                    [], 
+<                    is_const=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::SetTimeStamp(ns3::Time t) [member function]
+<     cls.add_method('SetTimeStamp', 
+<                    'void', 
+<                    [param('ns3::Time', 't')])
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::AddHeader() [member function]
+<     cls.add_method('AddHeader', 
+<                    'void', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue-item.h (module 'network'): void ns3::QueueDiscItem::Print(std::ostream & os) const [member function]
+<     cls.add_method('Print', 
+<                    'void', 
+<                    [param('std::ostream &', 'os')], 
+<                    is_const=True, is_virtual=True)
+<     ## queue-item.h (module 'network'): bool ns3::QueueDiscItem::Mark() [member function]
+<     cls.add_method('Mark', 
+<                    'bool', 
+<                    [], 
+<                    is_virtual=True, is_pure_virtual=True)
+<     ## queue-item.h (module 'network'): uint32_t ns3::QueueDiscItem::Hash(uint32_t perturbation=0) const [member function]
+<     cls.add_method('Hash', 
+<                    'uint32_t', 
+<                    [param('uint32_t', 'perturbation', default_value='0')], 
+<                    is_const=True, is_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+7070c6781
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)
+7080c6791
+<                    is_virtual=True, is_pure_virtual=True)
+---
+>                    is_pure_virtual=True, is_virtual=True)

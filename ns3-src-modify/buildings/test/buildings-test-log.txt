@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/buildings/test/building-position-allocator-test.cc ../../ns-3-dev-git/src/buildings/test/building-position-allocator-test.cc
+diff ../../NS3-WiGig/src/buildings/test/building-position-allocator-test.cc ../../ns-3-dev/src/buildings/test/building-position-allocator-test.cc
 103a104,105
 >   BuildingsHelper::MakeMobilityModelConsistent ();
 > 
@@ -6,22 +6,22 @@ diff ../../NS3-WiGig/src/buildings/test/building-position-allocator-test.cc ../.
 > 
 >   BuildingsHelper::MakeMobilityModelConsistent ();
 Only in ../../NS3-WiGig/src/buildings/test: buildings-channel-condition-model-test.cc
-diff ../../NS3-WiGig/src/buildings/test/buildings-helper-test.cc ../../ns-3-dev-git/src/buildings/test/buildings-helper-test.cc
+diff ../../NS3-WiGig/src/buildings/test/buildings-helper-test.cc ../../ns-3-dev/src/buildings/test/buildings-helper-test.cc
 152a153
 >   BuildingsHelper::MakeMobilityModelConsistent ();
-diff ../../NS3-WiGig/src/buildings/test/buildings-pathloss-test.cc ../../ns-3-dev-git/src/buildings/test/buildings-pathloss-test.cc
+diff ../../NS3-WiGig/src/buildings/test/buildings-pathloss-test.cc ../../ns-3-dev/src/buildings/test/buildings-pathloss-test.cc
 270c270
 <   buildingInfo->MakeConsistent (mm);
 ---
 >   BuildingsHelper::MakeConsistent (mm); 
-diff ../../NS3-WiGig/src/buildings/test/buildings-shadowing-test.cc ../../ns-3-dev-git/src/buildings/test/buildings-shadowing-test.cc
+diff ../../NS3-WiGig/src/buildings/test/buildings-shadowing-test.cc ../../ns-3-dev/src/buildings/test/buildings-shadowing-test.cc
 226c226
 <   buildingInfo->MakeConsistent (mm);
 ---
 >   BuildingsHelper::MakeConsistent (mm); 
-diff ../../NS3-WiGig/src/buildings/test/examples-to-run.py ../../ns-3-dev-git/src/buildings/test/examples-to-run.py
+diff ../../NS3-WiGig/src/buildings/test/examples-to-run.py ../../ns-3-dev/src/buildings/test/examples-to-run.py
 1c1
 < #! /usr/bin/env python3
 ---
 > #! /usr/bin/env python
-Common subdirectories: ../../NS3-WiGig/src/buildings/test/reference and ../../ns-3-dev-git/src/buildings/test/reference
+Common subdirectories: ../../NS3-WiGig/src/buildings/test/reference and ../../ns-3-dev/src/buildings/test/reference

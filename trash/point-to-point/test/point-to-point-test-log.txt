@@ -1,0 +1,14 @@
+diff ../../NS3-WiGig/src/point-to-point/test/examples-to-run.py ../../ns-3-dev-git/src/point-to-point/test/examples-to-run.py
+1c1
+< #! /usr/bin/env python3
+---
+> #! /usr/bin/env python
+diff ../../NS3-WiGig/src/point-to-point/test/point-to-point-test.cc ../../ns-3-dev-git/src/point-to-point/test/point-to-point-test.cc
+89a90,96
+>   Ptr<NetDeviceQueueInterface> ifaceA = CreateObject<NetDeviceQueueInterface> ();
+>   devA->AggregateObject (ifaceA);
+>   ifaceA->CreateTxQueues ();
+>   Ptr<NetDeviceQueueInterface> ifaceB = CreateObject<NetDeviceQueueInterface> ();
+>   devB->AggregateObject (ifaceB);
+>   ifaceB->CreateTxQueues ();
+> 

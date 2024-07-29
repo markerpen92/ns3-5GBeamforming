@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/flow-monitor/doc/flow-monitor.rst ../../ns-3-dev-git/src/flow-monitor/doc/flow-monitor.rst
+diff ../../NS3-WiGig/src/flow-monitor/doc/flow-monitor.rst ../../ns-3-dev/src/flow-monitor/doc/flow-monitor.rst
 21c21
 < a number of parameters. Packets are divided according to the flow they belong
 ---

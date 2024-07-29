@@ -1,0 +1,27 @@
+diff ../../NS3-WiGig/src/point-to-point/examples/main-attribute-value.cc ../../ns-3-dev-git/src/point-to-point/examples/main-attribute-value.cc
+58c58
+<   // DropTailQueue<Packet> class has a MaxSize attribute that can
+---
+>   // queue base class ns3::QueueBase has a MaxSize attribute that can
+62c62
+<   // (this default can be observed in the function DropTail<Item>::GetTypeId)
+---
+>   // (this default can be observed in the function QueueBase::GetTypeId)
+66c66
+<   Config::SetDefault ("ns3::DropTailQueue<Packet>::MaxSize", StringValue ("80p"));
+---
+>   Config::SetDefault ("ns3::QueueBase::MaxSize", StringValue ("80p"));
+68c68
+<   Config::SetDefault ("ns3::DropTailQueue<Packet>::MaxSize", QueueSizeValue (QueueSize (QueueSizeUnit::PACKETS, 80)));
+---
+>   Config::SetDefault ("ns3::QueueBase::MaxSize", QueueSizeValue (QueueSize (QueueSizeUnit::PACKETS, 80)));
+72,73c72,73
+<   // For example, via "--ns3::DropTailQueue<Packet>::MaxSize=80p"
+<   CommandLine cmd (__FILE__);
+---
+>   // For example, via "--ns3::QueueBase::MaxSize=80p"
+>   CommandLine cmd;
+75c75
+<   cmd.AddValue ("maxSize", "ns3::DropTailQueue<Packet>::MaxSize");
+---
+>   cmd.AddValue ("maxSize", "ns3::QueueBase::MaxSize");

@@ -1,7 +1,53 @@
-diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../../ns-3-dev-git/src/point-to-point/model/point-to-point-net-device.cc
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-channel.cc ../../ns-3-dev/src/point-to-point/model/point-to-point-channel.cc
+88c88
+<   Ptr<const Packet> p,
+---
+>   Ptr<Packet> p,
+102c102
+<                                   m_link[wire].m_dst, p->Copy ());
+---
+>                                   m_link[wire].m_dst, p);
+109c109
+< std::size_t
+---
+> uint32_t 
+117c117
+< PointToPointChannel::GetPointToPointDevice (std::size_t i) const
+---
+> PointToPointChannel::GetPointToPointDevice (uint32_t i) const
+125c125
+< PointToPointChannel::GetDevice (std::size_t i) const
+---
+> PointToPointChannel::GetDevice (uint32_t i) const
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-channel.h ../../ns-3-dev/src/point-to-point/model/point-to-point-channel.h
+81c81
+<   virtual bool TransmitStart (Ptr<const Packet> p, Ptr<PointToPointNetDevice> src, Time txTime);
+---
+>   virtual bool TransmitStart (Ptr<Packet> p, Ptr<PointToPointNetDevice> src, Time txTime);
+87c87
+<   virtual std::size_t GetNDevices (void) const;
+---
+>   virtual uint32_t GetNDevices (void) const;
+94c94
+<   Ptr<PointToPointNetDevice> GetPointToPointDevice (std::size_t i) const;
+---
+>   Ptr<PointToPointNetDevice> GetPointToPointDevice (uint32_t i) const;
+101c101
+<   virtual Ptr<NetDevice> GetDevice (std::size_t i) const;
+---
+>   virtual Ptr<NetDevice> GetDevice (uint32_t i) const;
+150c150
+<   static const std::size_t N_DEVICES = 2;
+---
+>   static const int N_DEVICES = 2;
+153c153
+<   std::size_t        m_nDevices; //!< Devices of this channel
+---
+>   int32_t       m_nDevices; //!< Devices of this channel
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../../ns-3-dev/src/point-to-point/model/point-to-point-net-device.cc
 1d0
 < 
-29,39c28
+29,39d27
 < #include "ns3/srnc.h"
 < #include "ns3/srnc-header.h"
 < #include "ns3/srnc-tag.h"
@@ -13,9 +59,7 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 < 
 < 
 < 
----
-> #include "ns3/net-device-queue-interface.h"
-43,50d31
+43,50d30
 < #include <algorithm>
 < #include <iostream>
 < #include <fstream>
@@ -24,24 +68,15 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 < 
 < using namespace ns3;
 < using namespace std;
-229a211,244
-> PointToPointNetDevice::DoInitialize (void)
-> {
->   if (m_queueInterface)
->     {
->       NS_ASSERT_MSG (m_queue != 0, "A Queue object has not been attached to the device");
-> 
->       // connect the traced callbacks of m_queue to the static methods provided by
->       // the NetDeviceQueue class to support flow control and dynamic queue limits.
->       // This could not be done in NotifyNewAggregate because at that time we are
->       // not guaranteed that a queue has been attached to the netdevice
->       m_queueInterface->ConnectQueueTraces (m_queue, 0);
->     }
-> 
->   NetDevice::DoInitialize ();
-> }
-> 
-> void
+99c79
+<                    MakePointerChecker<Queue<Packet> > ())
+---
+>                    MakePointerChecker<Queue> ())
+138c118
+<     // Trace sources at the "bottom" of the net device, where packets transition
+---
+>     // Trace souces at the "bottom" of the net device, where packets transition
+229a210,226
 > PointToPointNetDevice::NotifyNewAggregate (void)
 > {
 >   NS_LOG_FUNCTION (this);
@@ -59,9 +94,57 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 > }
 > 
 > void
-237a253
+237a235
 >   m_queueInterface = 0;
-351,359d366
+304,305c302,309
+<   Ptr<Packet> p = m_queue->Dequeue ();
+<   if (p == 0)
+---
+>   Ptr<NetDeviceQueue> txq;
+>   if (m_queueInterface)
+>   {
+>     txq = m_queueInterface->GetTxQueue (0);
+>   }
+> 
+>   Ptr<QueueItem> item = m_queue->Dequeue ();
+>   if (item == 0)
+307a312,317
+>       if (txq)
+>       {
+>         NS_LOG_DEBUG ("The device queue is being woken up (" << m_queue->GetNPackets () <<
+>                       " packets and " << m_queue->GetNBytes () << " bytes inside)");
+>         txq->Wake ();
+>       }
+312a323,326
+>   // If the queue was stopped, start it again if there is room for another packet.
+>   // Note that we cannot wake the upper layers because otherwise a packet is sent
+>   // to the device while the machine state is busy, thus causing the assert in
+>   // TransmitStart to fail.
+313a328,340
+>   if (txq && txq->IsStopped ())
+>     {
+>       if ((m_queue->GetMode () == Queue::QUEUE_MODE_PACKETS &&
+>            m_queue->GetNPackets () < m_queue->GetMaxPackets ()) ||
+>           (m_queue->GetMode () == Queue::QUEUE_MODE_BYTES &&
+>            m_queue->GetNBytes () + m_mtu <= m_queue->GetMaxBytes ()))
+>         {
+>           NS_LOG_DEBUG ("The device queue is being started (" << m_queue->GetNPackets () <<
+>                         " packets and " << m_queue->GetNBytes () << " bytes inside)");
+>           txq->Start ();
+>         }
+>     }
+>   Ptr<Packet> p = item->GetPacket ();
+316a344,348
+>   if (txq)
+>     {
+>       // Inform BQL
+>       txq->NotifyTransmittedBytes (m_currentPkt->GetSize ());
+>     }
+338c370
+< PointToPointNetDevice::SetQueue (Ptr<Queue<Packet> > q)
+---
+> PointToPointNetDevice::SetQueue (Ptr<Queue> q)
+351,359d382
 < SrncProcessor m_srncdec[10];
 < std::vector<Ptr<Packet>> m_RecoveredBuffer[10];
 < std::list<int> DecodeSuccesslist[10];
@@ -71,7 +154,7 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 < 
 < uint32_t i;
 < 
-365,435d371
+365,436d387
 <   int LabelNumber = 0;
 <   Ptr<Node> RxNowNode = GetNode();
 <   int RxNowNodeID = RxNowNode->GetId();
@@ -143,7 +226,8 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <           // }
 <         }
 <       }//else
-436a373,390
+< 
+437a389,406
 >   if (m_receiveErrorModel && m_receiveErrorModel->IsCorrupt (packet) ) 
 >     {
 >       // 
@@ -162,13 +246,7 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 >       m_snifferTrace (packet);
 >       m_promiscSnifferTrace (packet);
 >       m_phyRxEndTrace (packet);
-437a392,396
->       //
->       // Trace sinks will expect complete packets, not packets without some of the
->       // headers.
->       //
->       Ptr<Packet> originalPacket = packet->Copy ();
-439,461c398,406
+439,495c408,412
 < // Decode Rule
 <       // uint32_t m_smallestUnprocessedLabel = m_srncdec[de_list].FindSmallestLabelInBuffer();
 <       // LabelNumber = m_srncdec[de_list].FindPacketNumberWithLabel(m_smallestUnprocessedLabel);
@@ -192,17 +270,7 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <       if (m_RecoveredBuffer[de_list].size() != 0 )
 <       {
 <         for ( i = 0; i < m_RecoveredBuffer[de_list].size(); i++)
----
->       //
->       // Strip off the point-to-point protocol header and forward this packet
->       // up the protocol stack.  Since this is a simple point-to-point link,
->       // there is no difference in what the promisc callback sees and what the
->       // normal receive callback sees.
->       //
->       ProcessHeader (packet, protocol);
-> 
->       if (!m_promiscCallback.IsNull ())
-463,505c408,409
+<         {
 <           Ptr<Packet> packet = m_RecoveredBuffer[de_list].at(i);
 <           if (m_receiveErrorModel && m_receiveErrorModel->IsCorrupt (packet) ) 
 <           {
@@ -236,23 +304,39 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <             // normal receive callback sees.
 <             //
 <             ProcessHeader (packet, protocol);
-< 
+---
+>       //
+>       // Trace sinks will expect complete packets, not packets without some of the
+>       // headers.
+>       //
+>       Ptr<Packet> originalPacket = packet->Copy ();
+497,501c414,420
 <             if (!m_promiscCallback.IsNull ())
 <             {
 <               m_macPromiscRxTrace (originalPacket);
 <               m_promiscCallback (this, packet, protocol, GetRemote (), GetAddress (), NetDevice::PACKET_HOST);
 <             }
-< 
+---
+>       //
+>       // Strip off the point-to-point protocol header and forward this packet
+>       // up the protocol stack.  Since this is a simple point-to-point link,
+>       // there is no difference in what the promisc callback sees and what the
+>       // normal receive callback sees.
+>       //
+>       ProcessHeader (packet, protocol);
+503,505c422,425
 <             m_macRxTrace (originalPacket);
 <             m_rxCallback (this, packet, protocol, GetRemote ());
 <           }
 ---
+>       if (!m_promiscCallback.IsNull ())
+>         {
 >           m_macPromiscRxTrace (originalPacket);
 >           m_promiscCallback (this, packet, protocol, GetRemote (), GetAddress (), NetDevice::PACKET_HOST);
-507,508d410
+507,508d426
 <         m_RecoveredBuffer[de_list].clear();
 <       }
-510,555c412,414
+510,555c428,430
 <   }// nodeID
 <   else 
 <   {
@@ -303,7 +387,11 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 >       m_macRxTrace (originalPacket);
 >       m_rxCallback (this, packet, protocol, GetRemote ());
 >     }
-683,739d541
+558c433
+< Ptr<Queue<Packet> >
+---
+> Ptr<Queue>
+683,739d557
 < // 
 < SrncProcessor m_srncprocessor[10];
 < std::list<Ptr<Packet>> coded_buffer[10];
@@ -361,7 +449,16 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 < }
 < 
 < 
-764,821c566
+745a564,571
+>   Ptr<NetDeviceQueue> txq;
+>   if (m_queueInterface)
+>   {
+>     txq = m_queueInterface->GetTxQueue (0);
+>   }
+> 
+>   NS_ASSERT_MSG (!txq || !txq->IsStopped (), "Send should not be called when the device is stopped");
+> 
+764,885c590
 <     AddHeader (packet, protocolNumber);
 <     m_macTxTrace (packet);
 <   //
@@ -420,11 +517,8 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <     }
 < 
 < 
----
->   AddHeader (packet, protocolNumber);
-822a568
->   m_macTxTrace (packet);
-824,999c570,573
+< 
+< 
 < 
 < 
 <   //   m_srncprocessor.Enqueue(temp);
@@ -487,7 +581,9 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <   m_macTxDropTrace (packet);
 <   return false;
 < }
-< 
+---
+>   AddHeader (packet, protocolNumber);
+887,928c592
 < void
 < PointToPointNetDevice::UpdateTimeInterval(int list)
 < {
@@ -530,7 +626,9 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 <       DoTransmitNcPacket(NCpacket2,list);
 <       redud_buffer[list].pop_front();
 <   }
-< 
+---
+>   m_macTxTrace (packet);
+930,999c594,597
 <   m_srncprocessor[list].ClearEnqueueBuffer();
 < 
 <   // Simulator::Schedule (MicroSeconds (m_TimeVal), &PointToPointNetDevice::UpdateTimeInterval, this);
@@ -605,49 +703,114 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.cc ../..
 >   //
 >   // We should enqueue and dequeue the packet to hit the tracing hooks.
 >   //
->   if (m_queue->Enqueue (packet))
-1006,1009c580,584
+>   if (m_queue->Enqueue (Create<QueueItem> (packet)))
+1000a599,603
+>       // Inform BQL
+>       if (txq)
+>         {
+>           txq->NotifyQueuedBytes (packet->GetSize ());
+>         }
+1006,1009c609,647
 <           NcPacket = m_queue->Dequeue ();
 <           m_snifferTrace (NcPacket);
 <           m_promiscSnifferTrace (NcPacket);
 <           TransmitStart (NcPacket);
 ---
->           packet = m_queue->Dequeue ();
+>           packet = m_queue->Dequeue ()->GetPacket ();
+>           // We have enqueued a packet and dequeued a (possibly different) packet. We
+>           // need to check if there is still room for another packet only if the queue
+>           // is in byte mode (the enqueued packet might be larger than the dequeued
+>           // packet, thus leaving no room for another packet)
+>           if (txq)
+>             {
+>               if (m_queue->GetMode () == Queue::QUEUE_MODE_BYTES &&
+>                   m_queue->GetNBytes () + m_mtu > m_queue->GetMaxBytes ())
+>                 {
+>                   NS_LOG_DEBUG ("The device queue is being stopped (" << m_queue->GetNPackets () <<
+>                                 " packets and " << m_queue->GetNBytes () << " bytes inside)");
+>                   txq->Stop ();
+>                 }
+>             }
 >           m_snifferTrace (packet);
 >           m_promiscSnifferTrace (packet);
 >           bool ret = TransmitStart (packet);
+>           if (txq)
+>             {
+>               // Inform BQL
+>               txq->NotifyTransmittedBytes (m_currentPkt->GetSize ());
+>             }
 >           return ret;
-1010a586
+>         }
+>       // We have enqueued a packet but we have not dequeued any packet. Thus, we
+>       // need to check whether the queue is able to store another packet. If not,
+>       // we stop the queue
+>       if (txq)
+>         {
+>           if ((m_queue->GetMode () == Queue::QUEUE_MODE_PACKETS &&
+>                m_queue->GetNPackets () >= m_queue->GetMaxPackets ()) ||
+>               (m_queue->GetMode () == Queue::QUEUE_MODE_BYTES &&
+>                m_queue->GetNBytes () + m_mtu > m_queue->GetMaxBytes ()))
+>             {
+>               NS_LOG_DEBUG ("The device queue is being stopped (" << m_queue->GetNPackets () <<
+>                             " packets and " << m_queue->GetNBytes () << " bytes inside)");
+>               txq->Stop ();
+>             }
+1010a649
 >       return true;
-1012,1017d587
+1012d650
 <       // Enqueue may fail (overflow)
-< 
+1014c652,662
 <   m_macTxDropTrace (NcPacket);
-< }
-< 
-< 
-1018a589
->   // Enqueue may fail (overflow)
-1019a591,593
+---
+>   // Enqueue may fail (overflow). This should not happen if the traffic control
+>   // module has been installed. Anyway, stop the tx queue, so that the upper layers
+>   // do not send packets until there is room in the queue again.
 >   m_macTxDropTrace (packet);
+>   if (txq)
+>   {
+>     NS_LOG_ERROR ("BUG! Device queue full when the queue is not stopped! (" << m_queue->GetNPackets () <<
+>                   " packets and " << m_queue->GetNBytes () << " bytes inside)");
+>     txq->Stop ();
+>   }
 >   return false;
-> }
-diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.h ../../ns-3-dev-git/src/point-to-point/model/point-to-point-net-device.h
+1017,1020d664
+< 
+< 
+< 
+< 
+1082c726
+<   for (std::size_t i = 0; i < m_channel->GetNDevices (); ++i)
+---
+>   for (uint32_t i = 0; i < m_channel->GetNDevices (); ++i)
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.h ../../ns-3-dev/src/point-to-point/model/point-to-point-net-device.h
 23,25d22
 < #include <fstream>
 < #include <iostream>
 < 
-39a37
-> class NetDeviceQueueInterface;
-41c39
+39c36
+< template <typename Item> class Queue;
+---
+> class Queue;
+41c38
 < class ErrorModel; 
 ---
 > class ErrorModel;
-203a202,204
->   virtual void DoInitialize (void);
+112c109
+<    * \return true if the operation was successful (always true actually)
+---
+>    * \return true if the operation was successfull (always true actually)
+124c121
+<   void SetQueue (Ptr<Queue<Packet> > queue);
+---
+>   void SetQueue (Ptr<Queue> queue);
+131c128
+<   Ptr<Queue<Packet> > GetQueue (void) const;
+---
+>   Ptr<Queue> GetQueue (void) const;
+203a201,202
 >   virtual void NotifyNewAggregate (void);
 > 
-291,341d291
+291,341d289
 < 
 < 
 <   void StartTimeInterval(int list);
@@ -699,9 +862,13 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.h ../../
 <   void DoTransmitNcPacket(Ptr<Packet> NcPacket,int list);
 < 
 < 
-491a442
+376c324
+<   Ptr<Queue<Packet> > m_queue;
+---
+>   Ptr<Queue> m_queue;
+491a440
 >   Ptr<NetDeviceQueueInterface> m_queueInterface;   //!< NetDevice queue interface
-527,539d477
+527,539d475
 < 
 <   //std::vector <uint32_t> RecvTcpSeqVector;
 < 
@@ -715,3 +882,17 @@ diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-net-device.h ../../
 < 
 <   //std::vector <uint32_t> CodingTcpEhVector;//time stamp echo
 < 
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-remote-channel.cc ../../ns-3-dev/src/point-to-point/model/point-to-point-remote-channel.cc
+58c58
+<   Ptr<const Packet> p,
+---
+>   Ptr<Packet> p,
+73c73
+<   MpiInterface::SendPacket (p->Copy (), rxTime, dst->GetNode ()->GetId (), dst->GetIfIndex ());
+---
+>   MpiInterface::SendPacket (p, rxTime, dst->GetNode ()->GetId (), dst->GetIfIndex ());
+diff ../../NS3-WiGig/src/point-to-point/model/point-to-point-remote-channel.h ../../ns-3-dev/src/point-to-point/model/point-to-point-remote-channel.h
+69c69
+<   virtual bool TransmitStart (Ptr<const Packet> p, Ptr<PointToPointNetDevice> src,
+---
+>   virtual bool TransmitStart (Ptr<Packet> p, Ptr<PointToPointNetDevice> src,

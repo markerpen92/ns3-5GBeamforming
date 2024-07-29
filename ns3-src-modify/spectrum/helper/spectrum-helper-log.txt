@@ -1,0 +1,18 @@
+diff ../../NS3-WiGig/src/spectrum/helper/adhoc-aloha-noack-ideal-phy-helper.cc ../../ns-3-dev/src/spectrum/helper/adhoc-aloha-noack-ideal-phy-helper.cc
+45c45
+<   m_queue.SetTypeId ("ns3::DropTailQueue<Packet>");
+---
+>   m_queue.SetTypeId ("ns3::DropTailQueue");
+127c127
+<       Ptr<Queue<Packet> > q = (m_queue.Create ())->GetObject<Queue<Packet> > ();
+---
+>       Ptr<Queue> q = (m_queue.Create ())->GetObject<Queue> ();
+diff ../../NS3-WiGig/src/spectrum/helper/tv-spectrum-transmitter-helper.h ../../ns-3-dev/src/spectrum/helper/tv-spectrum-transmitter-helper.h
+276c276
+<    * @return a list containing the indices in startFrequencies that transmitters 
+---
+>    * @return a list contaning the indices in startFrequencies that transmitters 
+312c312
+<    * @param transmitterIndicesToCreate a list containing the channel number 
+---
+>    * @param transmitterIndicesToCreate a list contaning the channel number 

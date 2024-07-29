@@ -1,0 +1,1415 @@
+diff ../../NS3-WiGig/src/spectrum/bindings/callbacks_list.py ../../ns-3-dev-git/src/spectrum/bindings/callbacks_list.py
+13a14
+>     ['void', 'ns3::Ptr<ns3::SpectrumSignalParameters>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'],
+diff ../../NS3-WiGig/src/spectrum/bindings/modulegen__gcc_ILP32.py ../../ns-3-dev-git/src/spectrum/bindings/modulegen__gcc_ILP32.py
+22a23,24
+>     ## queue-size.h (module 'network'): ns3::QueueSizeUnit [enumeration]
+>     module.add_enum('QueueSizeUnit', ['PACKETS', 'BYTES'], import_from_module='ns.network')
+36a39,41
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator', u'ns3::AttributeConstructionList::CIterator')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator*', u'ns3::AttributeConstructionList::CIterator*')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator&', u'ns3::AttributeConstructionList::CIterator&')
+74a80,81
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters> [struct]
+>     module.add_class('DefaultDeleter', template_parameters=['ns3::SpectrumSignalParameters'])
+96a104,106
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >', u'ns3::LogComponent::ComponentList')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >*', u'ns3::LogComponent::ComponentList*')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >&', u'ns3::LogComponent::ComponentList&')
+102a113,115
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )', u'ns3::Mac48Address::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )*', u'ns3::Mac48Address::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )&', u'ns3::Mac48Address::TracedCallback&')
+108a122,125
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address [class]
+>     module.add_class('Mac8Address', import_from_module='ns.network')
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address [class]
+>     root_module['ns3::Mac8Address'].implicitly_converts_to(root_module['ns3::Address'])
+112a130,132
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', u'ns3::NetDeviceContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', u'ns3::NetDeviceContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', u'ns3::NetDeviceContainer::Iterator&')
+114a135,137
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator', u'ns3::NodeContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator*', u'ns3::NodeContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator&', u'ns3::NodeContainer::Iterator&')
+140a164,165
+>     ## queue-size.h (module 'network'): ns3::QueueSize [class]
+>     module.add_class('QueueSize', import_from_module='ns.network')
+178a204,206
+>     typehandlers.add_type_alias(u'uint32_t', u'ns3::TypeId::hash_t')
+>     typehandlers.add_type_alias(u'uint32_t*', u'ns3::TypeId::hash_t*')
+>     typehandlers.add_type_alias(u'uint32_t&', u'ns3::TypeId::hash_t&')
+188a217,219
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >', u'ns3::WifiSpectrumValueHelper::StartStop')
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >*', u'ns3::WifiSpectrumValueHelper::StartStop*')
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >&', u'ns3::WifiSpectrumValueHelper::StartStop&')
+209,210d239
+<     ## queue.h (module 'network'): ns3::QueueBase::QueueMode [enumeration]
+<     module.add_enum('QueueMode', ['QUEUE_MODE_PACKETS', 'QUEUE_MODE_BYTES'], outer_class=root_module['ns3::QueueBase'], import_from_module='ns.network')
+262a292,294
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )', u'ns3::SpectrumValue::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )*', u'ns3::SpectrumValue::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )&', u'ns3::SpectrumValue::TracedCallback&')
+268a301,303
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )', u'ns3::Time::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )*', u'ns3::Time::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )&', u'ns3::Time::TracedCallback&')
+398a434,436
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )', u'ns3::MobilityModel::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )*', u'ns3::MobilityModel::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )&', u'ns3::MobilityModel::TracedCallback&')
+404a443,451
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::NetDevice::LinkChangeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::NetDevice::LinkChangeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::NetDevice::LinkChangeTracedCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::ReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::ReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::ReceiveCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::PromiscReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::PromiscReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::PromiscReceiveCallback&')
+408a456,461
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::ProtocolHandler')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::ProtocolHandler*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::ProtocolHandler&')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::DeviceAdditionListener')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::DeviceAdditionListener*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::DeviceAdditionListener&')
+418a472,489
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )', u'ns3::Packet::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )*', u'ns3::Packet::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )&', u'ns3::Packet::TracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', u'ns3::Packet::AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', u'ns3::Packet::AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', u'ns3::Packet::AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', u'ns3::Packet::TwoAddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', u'ns3::Packet::TwoAddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', u'ns3::Packet::TwoAddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', u'ns3::Packet::Mac48AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', u'ns3::Packet::Mac48AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', u'ns3::Packet::Mac48AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::Packet::SizeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::Packet::SizeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::Packet::SizeTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', u'ns3::Packet::SinrTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', u'ns3::Packet::SinrTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', u'ns3::Packet::SinrTracedCallback&')
+422a494,497
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker [class]
+>     module.add_class('QueueSizeChecker', import_from_module='ns.network', parent=root_module['ns3::AttributeChecker'])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue [class]
+>     module.add_class('QueueSizeValue', import_from_module='ns.network', parent=root_module['ns3::AttributeValue'])
+428a504,506
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )', u'ns3::SpectrumChannel::LossTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )*', u'ns3::SpectrumChannel::LossTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )&', u'ns3::SpectrumChannel::LossTracedCallback&')
+472a551,552
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> [class]
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::SpectrumSignalParameters>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+478a559,561
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )*', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )&', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback&')
+480a564,566
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >', u'ns3::SingleModelSpectrumChannel::PhyList')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >*', u'ns3::SingleModelSpectrumChannel::PhyList*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >&', u'ns3::SingleModelSpectrumChannel::PhyList&')
+483a570
+>     module.add_container('std::vector< std::pair< unsigned int, unsigned int > >', 'std::pair< unsigned int, unsigned int >', container_type=u'vector')
+487,501c574,588
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >', u'ns3::SpectrumConverterMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >*', u'ns3::SpectrumConverterMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >&', u'ns3::SpectrumConverterMap_t&')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >', u'ns3::TxSpectrumModelInfoMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >*', u'ns3::TxSpectrumModelInfoMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >&', u'ns3::TxSpectrumModelInfoMap_t&')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >', u'ns3::RxSpectrumModelInfoMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >*', u'ns3::RxSpectrumModelInfoMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >&', u'ns3::RxSpectrumModelInfoMap_t&')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >', u'ns3::Values')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >*', u'ns3::Values*')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >&', u'ns3::Values&')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >', u'ns3::Bands')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >*', u'ns3::Bands*')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >&', u'ns3::Bands&')
+---
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >', u'ns3::SpectrumConverterMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >*', u'ns3::SpectrumConverterMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >&', u'ns3::SpectrumConverterMap_t&')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >', u'ns3::TxSpectrumModelInfoMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >*', u'ns3::TxSpectrumModelInfoMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >&', u'ns3::TxSpectrumModelInfoMap_t&')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >', u'ns3::RxSpectrumModelInfoMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >*', u'ns3::RxSpectrumModelInfoMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >&', u'ns3::RxSpectrumModelInfoMap_t&')
+>     typehandlers.add_type_alias(u'std::vector< double >', u'ns3::Values')
+>     typehandlers.add_type_alias(u'std::vector< double >*', u'ns3::Values*')
+>     typehandlers.add_type_alias(u'std::vector< double >&', u'ns3::Values&')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >', u'ns3::Bands')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >*', u'ns3::Bands*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >&', u'ns3::Bands&')
+584,589c671,676
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )', u'ns3::Hash::Hash32Function_ptr')
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )', u'ns3::Hash::Hash64Function_ptr')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+---
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash32Function_ptr')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash64Function_ptr')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+679a767
+>     register_Ns3DefaultDeleter__Ns3SpectrumSignalParameters_methods(root_module, root_module['ns3::DefaultDeleter< ns3::SpectrumSignalParameters >'])
+691a780
+>     register_Ns3Mac8Address_methods(root_module, root_module['ns3::Mac8Address'])
+706a796
+>     register_Ns3QueueSize_methods(root_module, root_module['ns3::QueueSize'])
+836a927,928
+>     register_Ns3QueueSizeChecker_methods(root_module, root_module['ns3::QueueSizeChecker'])
+>     register_Ns3QueueSizeValue_methods(root_module, root_module['ns3::QueueSizeValue'])
+860a953
+>     register_Ns3CallbackImpl__Void_Ns3Ptr__lt__ns3SpectrumSignalParameters__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, root_module['ns3::CallbackImpl< void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >'])
+1458c1551
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+1573a1667,1678
+> def register_Ns3DefaultDeleter__Ns3SpectrumSignalParameters_methods(root_module, cls):
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::DefaultDeleter() [constructor]
+>     cls.add_constructor([])
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::DefaultDeleter(ns3::DefaultDeleter<ns3::SpectrumSignalParameters> const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::DefaultDeleter< ns3::SpectrumSignalParameters > const &', 'arg0')])
+>     ## default-deleter.h (module 'core'): static void ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::Delete(ns3::SpectrumSignalParameters * object) [member function]
+>     cls.add_method('Delete', 
+>                    'void', 
+>                    [param('ns3::SpectrumSignalParameters *', 'object')], 
+>                    is_static=True)
+>     return
+> 
+1651c1756
+<     ## hash.h (module 'core'): uint32_t ns3::Hasher::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash.h (module 'core'): uint32_t ns3::Hasher::GetHash32(char const * buffer, std::size_t const size) [member function]
+1654c1759
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')])
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')])
+1659c1764
+<     ## hash.h (module 'core'): uint64_t ns3::Hasher::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash.h (module 'core'): uint64_t ns3::Hasher::GetHash64(char const * buffer, std::size_t const size) [member function]
+1662c1767
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')])
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')])
+1932c2037
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+2007a2113,2117
+>     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredAddress(ns3::Mac8Address addr, ns3::Ipv6Address prefix) [member function]
+>     cls.add_method('MakeAutoconfiguredAddress', 
+>                    'ns3::Ipv6Address', 
+>                    [param('ns3::Mac8Address', 'addr'), param('ns3::Ipv6Address', 'prefix')], 
+>                    is_static=True)
+2022a2133,2137
+>     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredLinkLocalAddress(ns3::Mac8Address mac) [member function]
+>     cls.add_method('MakeAutoconfiguredLinkLocalAddress', 
+>                    'ns3::Ipv6Address', 
+>                    [param('ns3::Mac8Address', 'mac')], 
+>                    is_static=True)
+2305a2421,2462
+> def register_Ns3Mac8Address_methods(root_module, cls):
+>     cls.add_binary_comparison_operator('<')
+>     cls.add_binary_comparison_operator('==')
+>     cls.add_binary_comparison_operator('!=')
+>     cls.add_output_stream_operator()
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address(ns3::Mac8Address const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::Mac8Address const &', 'arg0')])
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address() [constructor]
+>     cls.add_constructor([])
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address(uint8_t addr) [constructor]
+>     cls.add_constructor([param('uint8_t', 'addr')])
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::Allocate() [member function]
+>     cls.add_method('Allocate', 
+>                    'ns3::Mac8Address', 
+>                    [], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::ConvertFrom(ns3::Address const & address) [member function]
+>     cls.add_method('ConvertFrom', 
+>                    'ns3::Mac8Address', 
+>                    [param('ns3::Address const &', 'address')], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): void ns3::Mac8Address::CopyFrom(uint8_t const * pBuffer) [member function]
+>     cls.add_method('CopyFrom', 
+>                    'void', 
+>                    [param('uint8_t const *', 'pBuffer')])
+>     ## mac8-address.h (module 'network'): void ns3::Mac8Address::CopyTo(uint8_t * pBuffer) const [member function]
+>     cls.add_method('CopyTo', 
+>                    'void', 
+>                    [param('uint8_t *', 'pBuffer')], 
+>                    is_const=True)
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::GetBroadcast() [member function]
+>     cls.add_method('GetBroadcast', 
+>                    'ns3::Mac8Address', 
+>                    [], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): static bool ns3::Mac8Address::IsMatchingType(ns3::Address const & address) [member function]
+>     cls.add_method('IsMatchingType', 
+>                    'bool', 
+>                    [param('ns3::Address const &', 'address')], 
+>                    is_static=True)
+>     return
+> 
+2401a2559,2563
+>     ## node-container.h (module 'network'): bool ns3::NodeContainer::Contains(uint32_t id) const [member function]
+>     cls.add_method('Contains', 
+>                    'bool', 
+>                    [param('uint32_t', 'id')], 
+>                    is_const=True)
+2748a2911,2938
+> def register_Ns3QueueSize_methods(root_module, cls):
+>     cls.add_output_stream_operator()
+>     cls.add_binary_comparison_operator('!=')
+>     cls.add_binary_comparison_operator('<')
+>     cls.add_binary_comparison_operator('<=')
+>     cls.add_binary_comparison_operator('==')
+>     cls.add_binary_comparison_operator('>')
+>     cls.add_binary_comparison_operator('>=')
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(ns3::QueueSize const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSize const &', 'arg0')])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(ns3::QueueSizeUnit unit, uint32_t value) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeUnit', 'unit'), param('uint32_t', 'value')])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(std::string size) [constructor]
+>     cls.add_constructor([param('std::string', 'size')])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeUnit ns3::QueueSize::GetUnit() const [member function]
+>     cls.add_method('GetUnit', 
+>                    'ns3::QueueSizeUnit', 
+>                    [], 
+>                    is_const=True)
+>     ## queue-size.h (module 'network'): uint32_t ns3::QueueSize::GetValue() const [member function]
+>     cls.add_method('GetValue', 
+>                    'uint32_t', 
+>                    [], 
+>                    is_const=True)
+>     return
+> 
+3129c3319,3320
+<                    [param('std::string', 'name'), param('std::string', 'help'), param('ns3::Ptr< ns3::TraceSourceAccessor const >', 'accessor')])
+---
+>                    [param('std::string', 'name'), param('std::string', 'help'), param('ns3::Ptr< ns3::TraceSourceAccessor const >', 'accessor')], 
+>                    deprecated=True)
+3134c3325
+<     ## type-id.h (module 'core'): ns3::TypeId::AttributeInformation ns3::TypeId::GetAttribute(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): ns3::TypeId::AttributeInformation ns3::TypeId::GetAttribute(std::size_t i) const [member function]
+3137c3328
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3139c3330
+<     ## type-id.h (module 'core'): std::string ns3::TypeId::GetAttributeFullName(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): std::string ns3::TypeId::GetAttributeFullName(std::size_t i) const [member function]
+3142c3333
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3144c3335
+<     ## type-id.h (module 'core'): uint32_t ns3::TypeId::GetAttributeN() const [member function]
+---
+>     ## type-id.h (module 'core'): std::size_t ns3::TypeId::GetAttributeN() const [member function]
+3146c3337
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+3174c3365
+<     ## type-id.h (module 'core'): static ns3::TypeId ns3::TypeId::GetRegistered(uint32_t i) [member function]
+---
+>     ## type-id.h (module 'core'): static ns3::TypeId ns3::TypeId::GetRegistered(uint16_t i) [member function]
+3177c3368
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('uint16_t', 'i')], 
+3179c3370
+<     ## type-id.h (module 'core'): static uint32_t ns3::TypeId::GetRegisteredN() [member function]
+---
+>     ## type-id.h (module 'core'): static uint16_t ns3::TypeId::GetRegisteredN() [member function]
+3181c3372
+<                    'uint32_t', 
+---
+>                    'uint16_t', 
+3189c3380
+<     ## type-id.h (module 'core'): ns3::TypeId::TraceSourceInformation ns3::TypeId::GetTraceSource(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): ns3::TypeId::TraceSourceInformation ns3::TypeId::GetTraceSource(std::size_t i) const [member function]
+3192c3383
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3194c3385
+<     ## type-id.h (module 'core'): uint32_t ns3::TypeId::GetTraceSourceN() const [member function]
+---
+>     ## type-id.h (module 'core'): std::size_t ns3::TypeId::GetTraceSourceN() const [member function]
+3196c3387
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+3258c3449
+<     ## type-id.h (module 'core'): bool ns3::TypeId::SetAttributeInitialValue(uint32_t i, ns3::Ptr<const ns3::AttributeValue> initialValue) [member function]
+---
+>     ## type-id.h (module 'core'): bool ns3::TypeId::SetAttributeInitialValue(std::size_t i, ns3::Ptr<const ns3::AttributeValue> initialValue) [member function]
+3261c3452
+<                    [param('uint32_t', 'i'), param('ns3::Ptr< ns3::AttributeValue const >', 'initialValue')])
+---
+>                    [param('std::size_t', 'i'), param('ns3::Ptr< ns3::AttributeValue const >', 'initialValue')])
+3447c3638
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateDsssTxPowerSpectralDensity(uint32_t centerFrequency, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateDsssTxPowerSpectralDensity(uint32_t centerFrequency, double txPowerW, uint16_t guardBandwidth) [member function]
+3450c3641
+<                    [param('uint32_t', 'centerFrequency'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3452c3643
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHeOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHeOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3455c3646
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3457c3648
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHtOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHtOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3460c3651
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3462c3653
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, double noiseFigure, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, double noiseFigure, uint16_t guardBandwidth) [member function]
+3465c3656
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('double', 'noiseFigure'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('double', 'noiseFigure'), param('uint16_t', 'guardBandwidth')], 
+3472c3663
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3475c3666
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3477c3668
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateRfFilter(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateRfFilter(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth) [member function]
+3480c3671,3681
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint16_t', 'guardBandwidth')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static void ns3::WifiSpectrumValueHelper::CreateSpectrumMaskForOfdm(ns3::Ptr<ns3::SpectrumValue> c, std::vector<std::pair<unsigned int, unsigned int>, std::allocator<std::pair<unsigned int, unsigned int> > > allocatedSubBands, ns3::WifiSpectrumValueHelper::StartStop maskBand, double txPowerPerBandW, uint32_t nGuardBands, uint32_t innerSlopeWidth, double lowestPointDbr) [member function]
+>     cls.add_method('CreateSpectrumMaskForOfdm', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumValue >', 'c'), param('std::vector< std::pair< unsigned int, unsigned int > >', 'allocatedSubBands'), param('std::pair< unsigned int, unsigned int >', 'maskBand'), param('double', 'txPowerPerBandW'), param('uint32_t', 'nGuardBands'), param('uint32_t', 'innerSlopeWidth'), param('double', 'lowestPointDbr')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static double ns3::WifiSpectrumValueHelper::DbmToW(double dbm) [member function]
+>     cls.add_method('DbmToW', 
+>                    'double', 
+>                    [param('double', 'dbm')], 
+3482c3683
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumModel> ns3::WifiSpectrumValueHelper::GetSpectrumModel(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumModel> ns3::WifiSpectrumValueHelper::GetSpectrumModel(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth) [member function]
+3485c3686,3691
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint16_t', 'guardBandwidth')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static void ns3::WifiSpectrumValueHelper::NormalizeSpectrumMask(ns3::Ptr<ns3::SpectrumValue> c, double txPowerW) [member function]
+>     cls.add_method('NormalizeSpectrumMask', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumValue >', 'c'), param('double', 'txPowerW')], 
+3572a3779,3783
+>     ## chunk.h (module 'network'): uint32_t ns3::Chunk::Deserialize(ns3::Buffer::Iterator start, ns3::Buffer::Iterator end) [member function]
+>     cls.add_method('Deserialize', 
+>                    'uint32_t', 
+>                    [param('ns3::Buffer::Iterator', 'start'), param('ns3::Buffer::Iterator', 'end')], 
+>                    is_virtual=True)
+3762,3769c3973,3975
+<     ## queue.h (module 'network'): uint32_t ns3::QueueBase::GetMaxBytes() const [member function]
+<     cls.add_method('GetMaxBytes', 
+<                    'uint32_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue.h (module 'network'): uint32_t ns3::QueueBase::GetMaxPackets() const [member function]
+<     cls.add_method('GetMaxPackets', 
+<                    'uint32_t', 
+---
+>     ## queue.h (module 'network'): ns3::QueueSize ns3::QueueBase::GetCurrentSize() const [member function]
+>     cls.add_method('GetCurrentSize', 
+>                    'ns3::QueueSize', 
+3772,3774c3978,3980
+<     ## queue.h (module 'network'): ns3::QueueBase::QueueMode ns3::QueueBase::GetMode() const [member function]
+<     cls.add_method('GetMode', 
+<                    'ns3::QueueBase::QueueMode', 
+---
+>     ## queue.h (module 'network'): ns3::QueueSize ns3::QueueBase::GetMaxSize() const [member function]
+>     cls.add_method('GetMaxSize', 
+>                    'ns3::QueueSize', 
+3841,3842c4047,4048
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxBytes(uint32_t maxBytes) [member function]
+<     cls.add_method('SetMaxBytes', 
+---
+>     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxSize(ns3::QueueSize size) [member function]
+>     cls.add_method('SetMaxSize', 
+3844,3852c4050
+<                    [param('uint32_t', 'maxBytes')])
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxPackets(uint32_t maxPackets) [member function]
+<     cls.add_method('SetMaxPackets', 
+<                    'void', 
+<                    [param('uint32_t', 'maxPackets')])
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMode(ns3::QueueBase::QueueMode mode) [member function]
+<     cls.add_method('SetMode', 
+<                    'void', 
+<                    [param('ns3::QueueBase::QueueMode', 'mode')])
+---
+>                    [param('ns3::QueueSize', 'size')])
+4634a4833,4837
+>     ## trailer.h (module 'network'): uint32_t ns3::Trailer::Deserialize(ns3::Buffer::Iterator start, ns3::Buffer::Iterator end) [member function]
+>     cls.add_method('Deserialize', 
+>                    'uint32_t', 
+>                    [param('ns3::Buffer::Iterator', 'start'), param('ns3::Buffer::Iterator', 'end')], 
+>                    is_virtual=True)
+5378a5582,5586
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::SpectrumSignalParameters> '])
+>     ## callback.h (module 'core'): static std::string ns3::CallbackImplBase::GetCppTypeid() [member function]
+>     cls.add_method('GetCppTypeid', 
+>                    'std::string', 
+>                    [], 
+5415c5623
+<     ## channel.h (module 'network'): ns3::Ptr<ns3::NetDevice> ns3::Channel::GetDevice(uint32_t i) const [member function]
+---
+>     ## channel.h (module 'network'): ns3::Ptr<ns3::NetDevice> ns3::Channel::GetDevice(std::size_t i) const [member function]
+5418c5626
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+5425c5633
+<     ## channel.h (module 'network'): uint32_t ns3::Channel::GetNDevices() const [member function]
+---
+>     ## channel.h (module 'network'): std::size_t ns3::Channel::GetNDevices() const [member function]
+5427c5635
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+5575c5783
+<     ## random-variable-stream.h (module 'core'): void ns3::DeterministicRandomVariable::SetValueArray(double * values, uint64_t length) [member function]
+---
+>     ## random-variable-stream.h (module 'core'): void ns3::DeterministicRandomVariable::SetValueArray(double * values, std::size_t length) [member function]
+5578c5786
+<                    [param('double *', 'values'), param('uint64_t', 'length')])
+---
+>                    [param('double *', 'values'), param('std::size_t', 'length')])
+7271a7480,7484
+>     ## packet.h (module 'network'): uint32_t ns3::Packet::PeekHeader(ns3::Header & header, uint32_t size) const [member function]
+>     cls.add_method('PeekHeader', 
+>                    'uint32_t', 
+>                    [param('ns3::Header &', 'header'), param('uint32_t', 'size')], 
+>                    is_const=True)
+7315a7529,7532
+>     ## packet.h (module 'network'): uint32_t ns3::Packet::RemoveHeader(ns3::Header & header, uint32_t size) [member function]
+>     cls.add_method('RemoveHeader', 
+>                    'uint32_t', 
+>                    [param('ns3::Header &', 'header'), param('uint32_t', 'size')])
+7356c7573
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+7467a7685,7724
+> def register_Ns3QueueSizeChecker_methods(root_module, cls):
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker::QueueSizeChecker() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker::QueueSizeChecker(ns3::QueueSizeChecker const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeChecker const &', 'arg0')])
+>     return
+> 
+> def register_Ns3QueueSizeValue_methods(root_module, cls):
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue(ns3::QueueSize const & value) [constructor]
+>     cls.add_constructor([param('ns3::QueueSize const &', 'value')])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue(ns3::QueueSizeValue const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeValue const &', 'arg0')])
+>     ## queue-size.h (module 'network'): ns3::Ptr<ns3::AttributeValue> ns3::QueueSizeValue::Copy() const [member function]
+>     cls.add_method('Copy', 
+>                    'ns3::Ptr< ns3::AttributeValue >', 
+>                    [], 
+>                    is_const=True, is_virtual=True)
+>     ## queue-size.h (module 'network'): bool ns3::QueueSizeValue::DeserializeFromString(std::string value, ns3::Ptr<const ns3::AttributeChecker> checker) [member function]
+>     cls.add_method('DeserializeFromString', 
+>                    'bool', 
+>                    [param('std::string', 'value'), param('ns3::Ptr< ns3::AttributeChecker const >', 'checker')], 
+>                    is_virtual=True)
+>     ## queue-size.h (module 'network'): ns3::QueueSize ns3::QueueSizeValue::Get() const [member function]
+>     cls.add_method('Get', 
+>                    'ns3::QueueSize', 
+>                    [], 
+>                    is_const=True)
+>     ## queue-size.h (module 'network'): std::string ns3::QueueSizeValue::SerializeToString(ns3::Ptr<const ns3::AttributeChecker> checker) const [member function]
+>     cls.add_method('SerializeToString', 
+>                    'std::string', 
+>                    [param('ns3::Ptr< ns3::AttributeChecker const >', 'checker')], 
+>                    is_const=True, is_virtual=True)
+>     ## queue-size.h (module 'network'): void ns3::QueueSizeValue::Set(ns3::QueueSize const & value) [member function]
+>     cls.add_method('Set', 
+>                    'void', 
+>                    [param('ns3::QueueSize const &', 'value')])
+>     return
+> 
+8235a8493,8514
+> def register_Ns3CallbackImpl__Void_Ns3Ptr__lt__ns3SpectrumSignalParameters__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, cls):
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl() [constructor]
+>     cls.add_constructor([])
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl(ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::CallbackImpl< void, ns3::Ptr< ns3::SpectrumSignalParameters >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty > const &', 'arg0')])
+>     ## callback.h (module 'core'): static std::string ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::DoGetTypeid() [member function]
+>     cls.add_method('DoGetTypeid', 
+>                    'std::string', 
+>                    [], 
+>                    is_static=True)
+>     ## callback.h (module 'core'): std::string ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::GetTypeid() const [member function]
+>     cls.add_method('GetTypeid', 
+>                    'std::string', 
+>                    [], 
+>                    is_const=True, is_virtual=True)
+>     ## callback.h (module 'core'): void ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::operator()(ns3::Ptr<ns3::SpectrumSignalParameters> arg0) [member operator]
+>     cls.add_method('operator()', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumSignalParameters >', 'arg0')], 
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+>     return
+> 
+8300c8579
+<     ## multi-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::MultiModelSpectrumChannel::GetDevice(uint32_t i) const [member function]
+---
+>     ## multi-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::MultiModelSpectrumChannel::GetDevice(std::size_t i) const [member function]
+8303c8582
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+8305c8584
+<     ## multi-model-spectrum-channel.h (module 'spectrum'): uint32_t ns3::MultiModelSpectrumChannel::GetNDevices() const [member function]
+---
+>     ## multi-model-spectrum-channel.h (module 'spectrum'): std::size_t ns3::MultiModelSpectrumChannel::GetNDevices() const [member function]
+8307c8586
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+8362c8641
+<     ## single-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::SingleModelSpectrumChannel::GetDevice(uint32_t i) const [member function]
+---
+>     ## single-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::SingleModelSpectrumChannel::GetDevice(std::size_t i) const [member function]
+8365c8644
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+8367c8646
+<     ## single-model-spectrum-channel.h (module 'spectrum'): uint32_t ns3::SingleModelSpectrumChannel::GetNDevices() const [member function]
+---
+>     ## single-model-spectrum-channel.h (module 'spectrum'): std::size_t ns3::SingleModelSpectrumChannel::GetNDevices() const [member function]
+8369c8648
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+8404c8683
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Implementation::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Implementation::GetHash32(char const * buffer, std::size_t const size) [member function]
+8407c8686
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8409c8688
+<     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Implementation::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Implementation::GetHash64(char const * buffer, std::size_t const size) [member function]
+8412c8691
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8448c8727
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash32::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash32::GetHash32(char const * buffer, std::size_t const size) [member function]
+8451c8730
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8465c8744
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash64::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash64::GetHash32(char const * buffer, std::size_t const size) [member function]
+8468c8747
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8470c8749
+<     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Function::Hash64::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Function::Hash64::GetHash64(char const * buffer, std::size_t const size) [member function]
+8473c8752
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8487c8766
+<     ## hash-murmur3.h (module 'core'): uint32_t ns3::Hash::Function::Murmur3::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-murmur3.h (module 'core'): uint32_t ns3::Hash::Function::Murmur3::GetHash32(char const * buffer, std::size_t const size) [member function]
+8490c8769
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8492c8771
+<     ## hash-murmur3.h (module 'core'): uint64_t ns3::Hash::Function::Murmur3::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-murmur3.h (module 'core'): uint64_t ns3::Hash::Function::Murmur3::GetHash64(char const * buffer, std::size_t const size) [member function]
+8495c8774
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8542,8547c8821,8826
+<     register_functions_ns3_FatalImpl(module.get_submodule('FatalImpl'), root_module)
+<     register_functions_ns3_Hash(module.get_submodule('Hash'), root_module)
+<     register_functions_ns3_TracedValueCallback(module.get_submodule('TracedValueCallback'), root_module)
+<     register_functions_ns3_addressUtils(module.get_submodule('addressUtils'), root_module)
+<     register_functions_ns3_internal(module.get_submodule('internal'), root_module)
+<     register_functions_ns3_tests(module.get_submodule('tests'), root_module)
+---
+>     register_functions_ns3_FatalImpl(module.add_cpp_namespace('FatalImpl'), root_module)
+>     register_functions_ns3_Hash(module.add_cpp_namespace('Hash'), root_module)
+>     register_functions_ns3_TracedValueCallback(module.add_cpp_namespace('TracedValueCallback'), root_module)
+>     register_functions_ns3_addressUtils(module.add_cpp_namespace('addressUtils'), root_module)
+>     register_functions_ns3_internal(module.add_cpp_namespace('internal'), root_module)
+>     register_functions_ns3_tests(module.add_cpp_namespace('tests'), root_module)
+8554c8833
+<     register_functions_ns3_Hash_Function(module.get_submodule('Function'), root_module)
+---
+>     register_functions_ns3_Hash_Function(module.add_cpp_namespace('Function'), root_module)
+diff ../../NS3-WiGig/src/spectrum/bindings/modulegen__gcc_LP64.py ../../ns-3-dev-git/src/spectrum/bindings/modulegen__gcc_LP64.py
+22a23,24
+>     ## queue-size.h (module 'network'): ns3::QueueSizeUnit [enumeration]
+>     module.add_enum('QueueSizeUnit', ['PACKETS', 'BYTES'], import_from_module='ns.network')
+36a39,41
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator', u'ns3::AttributeConstructionList::CIterator')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator*', u'ns3::AttributeConstructionList::CIterator*')
+>     typehandlers.add_type_alias(u'std::list< ns3::AttributeConstructionList::Item > const_iterator&', u'ns3::AttributeConstructionList::CIterator&')
+74a80,81
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters> [struct]
+>     module.add_class('DefaultDeleter', template_parameters=['ns3::SpectrumSignalParameters'])
+96a104,106
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >', u'ns3::LogComponent::ComponentList')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >*', u'ns3::LogComponent::ComponentList*')
+>     typehandlers.add_type_alias(u'std::map< std::string, ns3::LogComponent * >&', u'ns3::LogComponent::ComponentList&')
+102a113,115
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )', u'ns3::Mac48Address::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )*', u'ns3::Mac48Address::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Mac48Address )&', u'ns3::Mac48Address::TracedCallback&')
+108a122,125
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address [class]
+>     module.add_class('Mac8Address', import_from_module='ns.network')
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address [class]
+>     root_module['ns3::Mac8Address'].implicitly_converts_to(root_module['ns3::Address'])
+112a130,132
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator', u'ns3::NetDeviceContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator*', u'ns3::NetDeviceContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::NetDevice > > const_iterator&', u'ns3::NetDeviceContainer::Iterator&')
+114a135,137
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator', u'ns3::NodeContainer::Iterator')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator*', u'ns3::NodeContainer::Iterator*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::Node > > const_iterator&', u'ns3::NodeContainer::Iterator&')
+140a164,165
+>     ## queue-size.h (module 'network'): ns3::QueueSize [class]
+>     module.add_class('QueueSize', import_from_module='ns.network')
+178a204,206
+>     typehandlers.add_type_alias(u'uint32_t', u'ns3::TypeId::hash_t')
+>     typehandlers.add_type_alias(u'uint32_t*', u'ns3::TypeId::hash_t*')
+>     typehandlers.add_type_alias(u'uint32_t&', u'ns3::TypeId::hash_t&')
+188a217,219
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >', u'ns3::WifiSpectrumValueHelper::StartStop')
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >*', u'ns3::WifiSpectrumValueHelper::StartStop*')
+>     typehandlers.add_type_alias(u'std::pair< unsigned int, unsigned int >&', u'ns3::WifiSpectrumValueHelper::StartStop&')
+209,210d239
+<     ## queue.h (module 'network'): ns3::QueueBase::QueueMode [enumeration]
+<     module.add_enum('QueueMode', ['QUEUE_MODE_PACKETS', 'QUEUE_MODE_BYTES'], outer_class=root_module['ns3::QueueBase'], import_from_module='ns.network')
+262a292,294
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )', u'ns3::SpectrumValue::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )*', u'ns3::SpectrumValue::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumValue > )&', u'ns3::SpectrumValue::TracedCallback&')
+268a301,303
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )', u'ns3::Time::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )*', u'ns3::Time::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Time )&', u'ns3::Time::TracedCallback&')
+398a434,436
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )', u'ns3::MobilityModel::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )*', u'ns3::MobilityModel::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::MobilityModel const > )&', u'ns3::MobilityModel::TracedCallback&')
+404a443,451
+>     typehandlers.add_type_alias(u'void ( * ) (  )', u'ns3::NetDevice::LinkChangeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) (  )*', u'ns3::NetDevice::LinkChangeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) (  )&', u'ns3::NetDevice::LinkChangeTracedCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::ReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::ReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::ReceiveCallback&')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::NetDevice::PromiscReceiveCallback')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::NetDevice::PromiscReceiveCallback*')
+>     typehandlers.add_type_alias(u'ns3::Callback< bool, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::NetDevice::PromiscReceiveCallback&')
+408a456,461
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::ProtocolHandler')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::ProtocolHandler*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::Ptr< ns3::Packet const >, unsigned short, ns3::Address const &, ns3::Address const &, ns3::NetDevice::PacketType, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::ProtocolHandler&')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::Node::DeviceAdditionListener')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::Node::DeviceAdditionListener*')
+>     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::NetDevice >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::Node::DeviceAdditionListener&')
+418a472,489
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )', u'ns3::Packet::TracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )*', u'ns3::Packet::TracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > )&', u'ns3::Packet::TracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )', u'ns3::Packet::AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )*', u'ns3::Packet::AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Address const & )&', u'ns3::Packet::AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )', u'ns3::Packet::TwoAddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )*', u'ns3::Packet::TwoAddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const > const, ns3::Address const &, ns3::Address const & )&', u'ns3::Packet::TwoAddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )', u'ns3::Packet::Mac48AddressTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )*', u'ns3::Packet::Mac48AddressTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, ns3::Mac48Address )&', u'ns3::Packet::Mac48AddressTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )', u'ns3::Packet::SizeTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )*', u'ns3::Packet::SizeTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( uint32_t, uint32_t )&', u'ns3::Packet::SizeTracedCallback&')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )', u'ns3::Packet::SinrTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )*', u'ns3::Packet::SinrTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::Packet const >, double )&', u'ns3::Packet::SinrTracedCallback&')
+422a494,497
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker [class]
+>     module.add_class('QueueSizeChecker', import_from_module='ns.network', parent=root_module['ns3::AttributeChecker'])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue [class]
+>     module.add_class('QueueSizeValue', import_from_module='ns.network', parent=root_module['ns3::AttributeValue'])
+428a504,506
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )', u'ns3::SpectrumChannel::LossTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )*', u'ns3::SpectrumChannel::LossTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumPhy >, ns3::Ptr< ns3::SpectrumPhy >, double )&', u'ns3::SpectrumChannel::LossTracedCallback&')
+472a551,552
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> [class]
+>     module.add_class('CallbackImpl', import_from_module='ns.core', template_parameters=['void', 'ns3::Ptr<ns3::SpectrumSignalParameters>', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty', 'ns3::empty'], parent=root_module['ns3::CallbackImplBase'])
+478a559,561
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )*', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback*')
+>     typehandlers.add_type_alias(u'void ( * ) ( ns3::Ptr< ns3::SpectrumSignalParameters > )&', u'ns3::MultiModelSpectrumChannel::SignalParametersTracedCallback&')
+480a564,566
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >', u'ns3::SingleModelSpectrumChannel::PhyList')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >*', u'ns3::SingleModelSpectrumChannel::PhyList*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::Ptr< ns3::SpectrumPhy > >&', u'ns3::SingleModelSpectrumChannel::PhyList&')
+483a570
+>     module.add_container('std::vector< std::pair< unsigned int, unsigned int > >', 'std::pair< unsigned int, unsigned int >', container_type=u'vector')
+487,501c574,588
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >', u'ns3::SpectrumConverterMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >*', u'ns3::SpectrumConverterMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::SpectrumConverter > > >&', u'ns3::SpectrumConverterMap_t&')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >', u'ns3::TxSpectrumModelInfoMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >*', u'ns3::TxSpectrumModelInfoMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::TxSpectrumModelInfo > > >&', u'ns3::TxSpectrumModelInfoMap_t&')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >', u'ns3::RxSpectrumModelInfoMap_t')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >*', u'ns3::RxSpectrumModelInfoMap_t*')
+<     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, ns3::RxSpectrumModelInfo > > >&', u'ns3::RxSpectrumModelInfoMap_t&')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >', u'ns3::Values')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >*', u'ns3::Values*')
+<     typehandlers.add_type_alias(u'std::vector< double, std::allocator< double > >&', u'ns3::Values&')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >', u'ns3::Bands')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >*', u'ns3::Bands*')
+<     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo, std::allocator< ns3::BandInfo > >&', u'ns3::Bands&')
+---
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >', u'ns3::SpectrumConverterMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >*', u'ns3::SpectrumConverterMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::SpectrumConverter >&', u'ns3::SpectrumConverterMap_t&')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >', u'ns3::TxSpectrumModelInfoMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >*', u'ns3::TxSpectrumModelInfoMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::TxSpectrumModelInfo >&', u'ns3::TxSpectrumModelInfoMap_t&')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >', u'ns3::RxSpectrumModelInfoMap_t')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >*', u'ns3::RxSpectrumModelInfoMap_t*')
+>     typehandlers.add_type_alias(u'std::map< unsigned int, ns3::RxSpectrumModelInfo >&', u'ns3::RxSpectrumModelInfoMap_t&')
+>     typehandlers.add_type_alias(u'std::vector< double >', u'ns3::Values')
+>     typehandlers.add_type_alias(u'std::vector< double >*', u'ns3::Values*')
+>     typehandlers.add_type_alias(u'std::vector< double >&', u'ns3::Values&')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >', u'ns3::Bands')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >*', u'ns3::Bands*')
+>     typehandlers.add_type_alias(u'std::vector< ns3::BandInfo >&', u'ns3::Bands&')
+584,589c671,676
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )', u'ns3::Hash::Hash32Function_ptr')
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+<     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )', u'ns3::Hash::Hash64Function_ptr')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+<     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+---
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash32Function_ptr')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash32Function_ptr*')
+>     typehandlers.add_type_alias(u'uint32_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash32Function_ptr&')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )', u'ns3::Hash::Hash64Function_ptr')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )*', u'ns3::Hash::Hash64Function_ptr*')
+>     typehandlers.add_type_alias(u'uint64_t ( * ) ( char const *, std::size_t const )&', u'ns3::Hash::Hash64Function_ptr&')
+679a767
+>     register_Ns3DefaultDeleter__Ns3SpectrumSignalParameters_methods(root_module, root_module['ns3::DefaultDeleter< ns3::SpectrumSignalParameters >'])
+691a780
+>     register_Ns3Mac8Address_methods(root_module, root_module['ns3::Mac8Address'])
+706a796
+>     register_Ns3QueueSize_methods(root_module, root_module['ns3::QueueSize'])
+836a927,928
+>     register_Ns3QueueSizeChecker_methods(root_module, root_module['ns3::QueueSizeChecker'])
+>     register_Ns3QueueSizeValue_methods(root_module, root_module['ns3::QueueSizeValue'])
+860a953
+>     register_Ns3CallbackImpl__Void_Ns3Ptr__lt__ns3SpectrumSignalParameters__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, root_module['ns3::CallbackImpl< void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >'])
+1458c1551
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+1573a1667,1678
+> def register_Ns3DefaultDeleter__Ns3SpectrumSignalParameters_methods(root_module, cls):
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::DefaultDeleter() [constructor]
+>     cls.add_constructor([])
+>     ## default-deleter.h (module 'core'): ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::DefaultDeleter(ns3::DefaultDeleter<ns3::SpectrumSignalParameters> const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::DefaultDeleter< ns3::SpectrumSignalParameters > const &', 'arg0')])
+>     ## default-deleter.h (module 'core'): static void ns3::DefaultDeleter<ns3::SpectrumSignalParameters>::Delete(ns3::SpectrumSignalParameters * object) [member function]
+>     cls.add_method('Delete', 
+>                    'void', 
+>                    [param('ns3::SpectrumSignalParameters *', 'object')], 
+>                    is_static=True)
+>     return
+> 
+1651c1756
+<     ## hash.h (module 'core'): uint32_t ns3::Hasher::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash.h (module 'core'): uint32_t ns3::Hasher::GetHash32(char const * buffer, std::size_t const size) [member function]
+1654c1759
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')])
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')])
+1659c1764
+<     ## hash.h (module 'core'): uint64_t ns3::Hasher::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash.h (module 'core'): uint64_t ns3::Hasher::GetHash64(char const * buffer, std::size_t const size) [member function]
+1662c1767
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')])
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')])
+1932c2037
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+2007a2113,2117
+>     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredAddress(ns3::Mac8Address addr, ns3::Ipv6Address prefix) [member function]
+>     cls.add_method('MakeAutoconfiguredAddress', 
+>                    'ns3::Ipv6Address', 
+>                    [param('ns3::Mac8Address', 'addr'), param('ns3::Ipv6Address', 'prefix')], 
+>                    is_static=True)
+2022a2133,2137
+>     ## ipv6-address.h (module 'network'): static ns3::Ipv6Address ns3::Ipv6Address::MakeAutoconfiguredLinkLocalAddress(ns3::Mac8Address mac) [member function]
+>     cls.add_method('MakeAutoconfiguredLinkLocalAddress', 
+>                    'ns3::Ipv6Address', 
+>                    [param('ns3::Mac8Address', 'mac')], 
+>                    is_static=True)
+2305a2421,2462
+> def register_Ns3Mac8Address_methods(root_module, cls):
+>     cls.add_binary_comparison_operator('<')
+>     cls.add_binary_comparison_operator('==')
+>     cls.add_binary_comparison_operator('!=')
+>     cls.add_output_stream_operator()
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address(ns3::Mac8Address const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::Mac8Address const &', 'arg0')])
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address() [constructor]
+>     cls.add_constructor([])
+>     ## mac8-address.h (module 'network'): ns3::Mac8Address::Mac8Address(uint8_t addr) [constructor]
+>     cls.add_constructor([param('uint8_t', 'addr')])
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::Allocate() [member function]
+>     cls.add_method('Allocate', 
+>                    'ns3::Mac8Address', 
+>                    [], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::ConvertFrom(ns3::Address const & address) [member function]
+>     cls.add_method('ConvertFrom', 
+>                    'ns3::Mac8Address', 
+>                    [param('ns3::Address const &', 'address')], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): void ns3::Mac8Address::CopyFrom(uint8_t const * pBuffer) [member function]
+>     cls.add_method('CopyFrom', 
+>                    'void', 
+>                    [param('uint8_t const *', 'pBuffer')])
+>     ## mac8-address.h (module 'network'): void ns3::Mac8Address::CopyTo(uint8_t * pBuffer) const [member function]
+>     cls.add_method('CopyTo', 
+>                    'void', 
+>                    [param('uint8_t *', 'pBuffer')], 
+>                    is_const=True)
+>     ## mac8-address.h (module 'network'): static ns3::Mac8Address ns3::Mac8Address::GetBroadcast() [member function]
+>     cls.add_method('GetBroadcast', 
+>                    'ns3::Mac8Address', 
+>                    [], 
+>                    is_static=True)
+>     ## mac8-address.h (module 'network'): static bool ns3::Mac8Address::IsMatchingType(ns3::Address const & address) [member function]
+>     cls.add_method('IsMatchingType', 
+>                    'bool', 
+>                    [param('ns3::Address const &', 'address')], 
+>                    is_static=True)
+>     return
+> 
+2401a2559,2563
+>     ## node-container.h (module 'network'): bool ns3::NodeContainer::Contains(uint32_t id) const [member function]
+>     cls.add_method('Contains', 
+>                    'bool', 
+>                    [param('uint32_t', 'id')], 
+>                    is_const=True)
+2748a2911,2938
+> def register_Ns3QueueSize_methods(root_module, cls):
+>     cls.add_output_stream_operator()
+>     cls.add_binary_comparison_operator('!=')
+>     cls.add_binary_comparison_operator('<')
+>     cls.add_binary_comparison_operator('<=')
+>     cls.add_binary_comparison_operator('==')
+>     cls.add_binary_comparison_operator('>')
+>     cls.add_binary_comparison_operator('>=')
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(ns3::QueueSize const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSize const &', 'arg0')])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(ns3::QueueSizeUnit unit, uint32_t value) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeUnit', 'unit'), param('uint32_t', 'value')])
+>     ## queue-size.h (module 'network'): ns3::QueueSize::QueueSize(std::string size) [constructor]
+>     cls.add_constructor([param('std::string', 'size')])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeUnit ns3::QueueSize::GetUnit() const [member function]
+>     cls.add_method('GetUnit', 
+>                    'ns3::QueueSizeUnit', 
+>                    [], 
+>                    is_const=True)
+>     ## queue-size.h (module 'network'): uint32_t ns3::QueueSize::GetValue() const [member function]
+>     cls.add_method('GetValue', 
+>                    'uint32_t', 
+>                    [], 
+>                    is_const=True)
+>     return
+> 
+3129c3319,3320
+<                    [param('std::string', 'name'), param('std::string', 'help'), param('ns3::Ptr< ns3::TraceSourceAccessor const >', 'accessor')])
+---
+>                    [param('std::string', 'name'), param('std::string', 'help'), param('ns3::Ptr< ns3::TraceSourceAccessor const >', 'accessor')], 
+>                    deprecated=True)
+3134c3325
+<     ## type-id.h (module 'core'): ns3::TypeId::AttributeInformation ns3::TypeId::GetAttribute(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): ns3::TypeId::AttributeInformation ns3::TypeId::GetAttribute(std::size_t i) const [member function]
+3137c3328
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3139c3330
+<     ## type-id.h (module 'core'): std::string ns3::TypeId::GetAttributeFullName(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): std::string ns3::TypeId::GetAttributeFullName(std::size_t i) const [member function]
+3142c3333
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3144c3335
+<     ## type-id.h (module 'core'): uint32_t ns3::TypeId::GetAttributeN() const [member function]
+---
+>     ## type-id.h (module 'core'): std::size_t ns3::TypeId::GetAttributeN() const [member function]
+3146c3337
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+3174c3365
+<     ## type-id.h (module 'core'): static ns3::TypeId ns3::TypeId::GetRegistered(uint32_t i) [member function]
+---
+>     ## type-id.h (module 'core'): static ns3::TypeId ns3::TypeId::GetRegistered(uint16_t i) [member function]
+3177c3368
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('uint16_t', 'i')], 
+3179c3370
+<     ## type-id.h (module 'core'): static uint32_t ns3::TypeId::GetRegisteredN() [member function]
+---
+>     ## type-id.h (module 'core'): static uint16_t ns3::TypeId::GetRegisteredN() [member function]
+3181c3372
+<                    'uint32_t', 
+---
+>                    'uint16_t', 
+3189c3380
+<     ## type-id.h (module 'core'): ns3::TypeId::TraceSourceInformation ns3::TypeId::GetTraceSource(uint32_t i) const [member function]
+---
+>     ## type-id.h (module 'core'): ns3::TypeId::TraceSourceInformation ns3::TypeId::GetTraceSource(std::size_t i) const [member function]
+3192c3383
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+3194c3385
+<     ## type-id.h (module 'core'): uint32_t ns3::TypeId::GetTraceSourceN() const [member function]
+---
+>     ## type-id.h (module 'core'): std::size_t ns3::TypeId::GetTraceSourceN() const [member function]
+3196c3387
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+3258c3449
+<     ## type-id.h (module 'core'): bool ns3::TypeId::SetAttributeInitialValue(uint32_t i, ns3::Ptr<const ns3::AttributeValue> initialValue) [member function]
+---
+>     ## type-id.h (module 'core'): bool ns3::TypeId::SetAttributeInitialValue(std::size_t i, ns3::Ptr<const ns3::AttributeValue> initialValue) [member function]
+3261c3452
+<                    [param('uint32_t', 'i'), param('ns3::Ptr< ns3::AttributeValue const >', 'initialValue')])
+---
+>                    [param('std::size_t', 'i'), param('ns3::Ptr< ns3::AttributeValue const >', 'initialValue')])
+3447c3638
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateDsssTxPowerSpectralDensity(uint32_t centerFrequency, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateDsssTxPowerSpectralDensity(uint32_t centerFrequency, double txPowerW, uint16_t guardBandwidth) [member function]
+3450c3641
+<                    [param('uint32_t', 'centerFrequency'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3452c3643
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHeOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHeOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3455c3646
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3457c3648
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHtOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateHtOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3460c3651
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3462c3653
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, double noiseFigure, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, double noiseFigure, uint16_t guardBandwidth) [member function]
+3465c3656
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('double', 'noiseFigure'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('double', 'noiseFigure'), param('uint16_t', 'guardBandwidth')], 
+3472c3663
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint8_t channelWidth, double txPowerW, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateOfdmTxPowerSpectralDensity(uint32_t centerFrequency, uint16_t channelWidth, double txPowerW, uint16_t guardBandwidth) [member function]
+3475c3666
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'txPowerW'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'txPowerW'), param('uint16_t', 'guardBandwidth')], 
+3477c3668
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateRfFilter(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumValue> ns3::WifiSpectrumValueHelper::CreateRfFilter(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth) [member function]
+3480c3671,3681
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint16_t', 'guardBandwidth')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static void ns3::WifiSpectrumValueHelper::CreateSpectrumMaskForOfdm(ns3::Ptr<ns3::SpectrumValue> c, std::vector<std::pair<unsigned int, unsigned int>, std::allocator<std::pair<unsigned int, unsigned int> > > allocatedSubBands, ns3::WifiSpectrumValueHelper::StartStop maskBand, double txPowerPerBandW, uint32_t nGuardBands, uint32_t innerSlopeWidth, double lowestPointDbr) [member function]
+>     cls.add_method('CreateSpectrumMaskForOfdm', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumValue >', 'c'), param('std::vector< std::pair< unsigned int, unsigned int > >', 'allocatedSubBands'), param('std::pair< unsigned int, unsigned int >', 'maskBand'), param('double', 'txPowerPerBandW'), param('uint32_t', 'nGuardBands'), param('uint32_t', 'innerSlopeWidth'), param('double', 'lowestPointDbr')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static double ns3::WifiSpectrumValueHelper::DbmToW(double dbm) [member function]
+>     cls.add_method('DbmToW', 
+>                    'double', 
+>                    [param('double', 'dbm')], 
+3482c3683
+<     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumModel> ns3::WifiSpectrumValueHelper::GetSpectrumModel(uint32_t centerFrequency, uint8_t channelWidth, double bandBandwidth, uint8_t guardBandwidth) [member function]
+---
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static ns3::Ptr<ns3::SpectrumModel> ns3::WifiSpectrumValueHelper::GetSpectrumModel(uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth) [member function]
+3485c3686,3691
+<                    [param('uint32_t', 'centerFrequency'), param('uint8_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint8_t', 'guardBandwidth')], 
+---
+>                    [param('uint32_t', 'centerFrequency'), param('uint16_t', 'channelWidth'), param('double', 'bandBandwidth'), param('uint16_t', 'guardBandwidth')], 
+>                    is_static=True)
+>     ## wifi-spectrum-value-helper.h (module 'spectrum'): static void ns3::WifiSpectrumValueHelper::NormalizeSpectrumMask(ns3::Ptr<ns3::SpectrumValue> c, double txPowerW) [member function]
+>     cls.add_method('NormalizeSpectrumMask', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumValue >', 'c'), param('double', 'txPowerW')], 
+3572a3779,3783
+>     ## chunk.h (module 'network'): uint32_t ns3::Chunk::Deserialize(ns3::Buffer::Iterator start, ns3::Buffer::Iterator end) [member function]
+>     cls.add_method('Deserialize', 
+>                    'uint32_t', 
+>                    [param('ns3::Buffer::Iterator', 'start'), param('ns3::Buffer::Iterator', 'end')], 
+>                    is_virtual=True)
+3762,3769c3973,3975
+<     ## queue.h (module 'network'): uint32_t ns3::QueueBase::GetMaxBytes() const [member function]
+<     cls.add_method('GetMaxBytes', 
+<                    'uint32_t', 
+<                    [], 
+<                    is_const=True)
+<     ## queue.h (module 'network'): uint32_t ns3::QueueBase::GetMaxPackets() const [member function]
+<     cls.add_method('GetMaxPackets', 
+<                    'uint32_t', 
+---
+>     ## queue.h (module 'network'): ns3::QueueSize ns3::QueueBase::GetCurrentSize() const [member function]
+>     cls.add_method('GetCurrentSize', 
+>                    'ns3::QueueSize', 
+3772,3774c3978,3980
+<     ## queue.h (module 'network'): ns3::QueueBase::QueueMode ns3::QueueBase::GetMode() const [member function]
+<     cls.add_method('GetMode', 
+<                    'ns3::QueueBase::QueueMode', 
+---
+>     ## queue.h (module 'network'): ns3::QueueSize ns3::QueueBase::GetMaxSize() const [member function]
+>     cls.add_method('GetMaxSize', 
+>                    'ns3::QueueSize', 
+3841,3842c4047,4048
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxBytes(uint32_t maxBytes) [member function]
+<     cls.add_method('SetMaxBytes', 
+---
+>     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxSize(ns3::QueueSize size) [member function]
+>     cls.add_method('SetMaxSize', 
+3844,3852c4050
+<                    [param('uint32_t', 'maxBytes')])
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMaxPackets(uint32_t maxPackets) [member function]
+<     cls.add_method('SetMaxPackets', 
+<                    'void', 
+<                    [param('uint32_t', 'maxPackets')])
+<     ## queue.h (module 'network'): void ns3::QueueBase::SetMode(ns3::QueueBase::QueueMode mode) [member function]
+<     cls.add_method('SetMode', 
+<                    'void', 
+<                    [param('ns3::QueueBase::QueueMode', 'mode')])
+---
+>                    [param('ns3::QueueSize', 'size')])
+4634a4833,4837
+>     ## trailer.h (module 'network'): uint32_t ns3::Trailer::Deserialize(ns3::Buffer::Iterator start, ns3::Buffer::Iterator end) [member function]
+>     cls.add_method('Deserialize', 
+>                    'uint32_t', 
+>                    [param('ns3::Buffer::Iterator', 'start'), param('ns3::Buffer::Iterator', 'end')], 
+>                    is_virtual=True)
+5378a5582,5586
+>                    is_static=True, visibility='protected', template_parameters=[u'ns3::Ptr<ns3::SpectrumSignalParameters> '])
+>     ## callback.h (module 'core'): static std::string ns3::CallbackImplBase::GetCppTypeid() [member function]
+>     cls.add_method('GetCppTypeid', 
+>                    'std::string', 
+>                    [], 
+5415c5623
+<     ## channel.h (module 'network'): ns3::Ptr<ns3::NetDevice> ns3::Channel::GetDevice(uint32_t i) const [member function]
+---
+>     ## channel.h (module 'network'): ns3::Ptr<ns3::NetDevice> ns3::Channel::GetDevice(std::size_t i) const [member function]
+5418c5626
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+5425c5633
+<     ## channel.h (module 'network'): uint32_t ns3::Channel::GetNDevices() const [member function]
+---
+>     ## channel.h (module 'network'): std::size_t ns3::Channel::GetNDevices() const [member function]
+5427c5635
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+5575c5783
+<     ## random-variable-stream.h (module 'core'): void ns3::DeterministicRandomVariable::SetValueArray(double * values, uint64_t length) [member function]
+---
+>     ## random-variable-stream.h (module 'core'): void ns3::DeterministicRandomVariable::SetValueArray(double * values, std::size_t length) [member function]
+5578c5786
+<                    [param('double *', 'values'), param('uint64_t', 'length')])
+---
+>                    [param('double *', 'values'), param('std::size_t', 'length')])
+7271a7480,7484
+>     ## packet.h (module 'network'): uint32_t ns3::Packet::PeekHeader(ns3::Header & header, uint32_t size) const [member function]
+>     cls.add_method('PeekHeader', 
+>                    'uint32_t', 
+>                    [param('ns3::Header &', 'header'), param('uint32_t', 'size')], 
+>                    is_const=True)
+7315a7529,7532
+>     ## packet.h (module 'network'): uint32_t ns3::Packet::RemoveHeader(ns3::Header & header, uint32_t size) [member function]
+>     cls.add_method('RemoveHeader', 
+>                    'uint32_t', 
+>                    [param('ns3::Header &', 'header'), param('uint32_t', 'size')])
+7356c7573
+<                    is_const=True)
+---
+>                    deprecated=True, is_const=True)
+7467a7685,7724
+> def register_Ns3QueueSizeChecker_methods(root_module, cls):
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker::QueueSizeChecker() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeChecker::QueueSizeChecker(ns3::QueueSizeChecker const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeChecker const &', 'arg0')])
+>     return
+> 
+> def register_Ns3QueueSizeValue_methods(root_module, cls):
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue() [constructor]
+>     cls.add_constructor([])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue(ns3::QueueSize const & value) [constructor]
+>     cls.add_constructor([param('ns3::QueueSize const &', 'value')])
+>     ## queue-size.h (module 'network'): ns3::QueueSizeValue::QueueSizeValue(ns3::QueueSizeValue const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::QueueSizeValue const &', 'arg0')])
+>     ## queue-size.h (module 'network'): ns3::Ptr<ns3::AttributeValue> ns3::QueueSizeValue::Copy() const [member function]
+>     cls.add_method('Copy', 
+>                    'ns3::Ptr< ns3::AttributeValue >', 
+>                    [], 
+>                    is_const=True, is_virtual=True)
+>     ## queue-size.h (module 'network'): bool ns3::QueueSizeValue::DeserializeFromString(std::string value, ns3::Ptr<const ns3::AttributeChecker> checker) [member function]
+>     cls.add_method('DeserializeFromString', 
+>                    'bool', 
+>                    [param('std::string', 'value'), param('ns3::Ptr< ns3::AttributeChecker const >', 'checker')], 
+>                    is_virtual=True)
+>     ## queue-size.h (module 'network'): ns3::QueueSize ns3::QueueSizeValue::Get() const [member function]
+>     cls.add_method('Get', 
+>                    'ns3::QueueSize', 
+>                    [], 
+>                    is_const=True)
+>     ## queue-size.h (module 'network'): std::string ns3::QueueSizeValue::SerializeToString(ns3::Ptr<const ns3::AttributeChecker> checker) const [member function]
+>     cls.add_method('SerializeToString', 
+>                    'std::string', 
+>                    [param('ns3::Ptr< ns3::AttributeChecker const >', 'checker')], 
+>                    is_const=True, is_virtual=True)
+>     ## queue-size.h (module 'network'): void ns3::QueueSizeValue::Set(ns3::QueueSize const & value) [member function]
+>     cls.add_method('Set', 
+>                    'void', 
+>                    [param('ns3::QueueSize const &', 'value')])
+>     return
+> 
+8235a8493,8514
+> def register_Ns3CallbackImpl__Void_Ns3Ptr__lt__ns3SpectrumSignalParameters__gt___Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_Ns3Empty_methods(root_module, cls):
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl() [constructor]
+>     cls.add_constructor([])
+>     ## callback.h (module 'core'): ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::CallbackImpl(ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty> const & arg0) [constructor]
+>     cls.add_constructor([param('ns3::CallbackImpl< void, ns3::Ptr< ns3::SpectrumSignalParameters >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty > const &', 'arg0')])
+>     ## callback.h (module 'core'): static std::string ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::DoGetTypeid() [member function]
+>     cls.add_method('DoGetTypeid', 
+>                    'std::string', 
+>                    [], 
+>                    is_static=True)
+>     ## callback.h (module 'core'): std::string ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::GetTypeid() const [member function]
+>     cls.add_method('GetTypeid', 
+>                    'std::string', 
+>                    [], 
+>                    is_const=True, is_virtual=True)
+>     ## callback.h (module 'core'): void ns3::CallbackImpl<void, ns3::Ptr<ns3::SpectrumSignalParameters>, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty>::operator()(ns3::Ptr<ns3::SpectrumSignalParameters> arg0) [member operator]
+>     cls.add_method('operator()', 
+>                    'void', 
+>                    [param('ns3::Ptr< ns3::SpectrumSignalParameters >', 'arg0')], 
+>                    is_pure_virtual=True, is_virtual=True, custom_name=u'__call__')
+>     return
+> 
+8300c8579
+<     ## multi-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::MultiModelSpectrumChannel::GetDevice(uint32_t i) const [member function]
+---
+>     ## multi-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::MultiModelSpectrumChannel::GetDevice(std::size_t i) const [member function]
+8303c8582
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+8305c8584
+<     ## multi-model-spectrum-channel.h (module 'spectrum'): uint32_t ns3::MultiModelSpectrumChannel::GetNDevices() const [member function]
+---
+>     ## multi-model-spectrum-channel.h (module 'spectrum'): std::size_t ns3::MultiModelSpectrumChannel::GetNDevices() const [member function]
+8307c8586
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+8362c8641
+<     ## single-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::SingleModelSpectrumChannel::GetDevice(uint32_t i) const [member function]
+---
+>     ## single-model-spectrum-channel.h (module 'spectrum'): ns3::Ptr<ns3::NetDevice> ns3::SingleModelSpectrumChannel::GetDevice(std::size_t i) const [member function]
+8365c8644
+<                    [param('uint32_t', 'i')], 
+---
+>                    [param('std::size_t', 'i')], 
+8367c8646
+<     ## single-model-spectrum-channel.h (module 'spectrum'): uint32_t ns3::SingleModelSpectrumChannel::GetNDevices() const [member function]
+---
+>     ## single-model-spectrum-channel.h (module 'spectrum'): std::size_t ns3::SingleModelSpectrumChannel::GetNDevices() const [member function]
+8369c8648
+<                    'uint32_t', 
+---
+>                    'std::size_t', 
+8404c8683
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Implementation::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Implementation::GetHash32(char const * buffer, std::size_t const size) [member function]
+8407c8686
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8409c8688
+<     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Implementation::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Implementation::GetHash64(char const * buffer, std::size_t const size) [member function]
+8412c8691
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8448c8727
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash32::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash32::GetHash32(char const * buffer, std::size_t const size) [member function]
+8451c8730
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8465c8744
+<     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash64::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint32_t ns3::Hash::Function::Hash64::GetHash32(char const * buffer, std::size_t const size) [member function]
+8468c8747
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8470c8749
+<     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Function::Hash64::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-function.h (module 'core'): uint64_t ns3::Hash::Function::Hash64::GetHash64(char const * buffer, std::size_t const size) [member function]
+8473c8752
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8487c8766
+<     ## hash-murmur3.h (module 'core'): uint32_t ns3::Hash::Function::Murmur3::GetHash32(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-murmur3.h (module 'core'): uint32_t ns3::Hash::Function::Murmur3::GetHash32(char const * buffer, std::size_t const size) [member function]
+8490c8769
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8492c8771
+<     ## hash-murmur3.h (module 'core'): uint64_t ns3::Hash::Function::Murmur3::GetHash64(char const * buffer, size_t const size) [member function]
+---
+>     ## hash-murmur3.h (module 'core'): uint64_t ns3::Hash::Function::Murmur3::GetHash64(char const * buffer, std::size_t const size) [member function]
+8495c8774
+<                    [param('char const *', 'buffer'), param('size_t const', 'size')], 
+---
+>                    [param('char const *', 'buffer'), param('std::size_t const', 'size')], 
+8542,8547c8821,8826
+<     register_functions_ns3_FatalImpl(module.get_submodule('FatalImpl'), root_module)
+<     register_functions_ns3_Hash(module.get_submodule('Hash'), root_module)
+<     register_functions_ns3_TracedValueCallback(module.get_submodule('TracedValueCallback'), root_module)
+<     register_functions_ns3_addressUtils(module.get_submodule('addressUtils'), root_module)
+<     register_functions_ns3_internal(module.get_submodule('internal'), root_module)
+<     register_functions_ns3_tests(module.get_submodule('tests'), root_module)
+---
+>     register_functions_ns3_FatalImpl(module.add_cpp_namespace('FatalImpl'), root_module)
+>     register_functions_ns3_Hash(module.add_cpp_namespace('Hash'), root_module)
+>     register_functions_ns3_TracedValueCallback(module.add_cpp_namespace('TracedValueCallback'), root_module)
+>     register_functions_ns3_addressUtils(module.add_cpp_namespace('addressUtils'), root_module)
+>     register_functions_ns3_internal(module.add_cpp_namespace('internal'), root_module)
+>     register_functions_ns3_tests(module.add_cpp_namespace('tests'), root_module)
+8554c8833
+<     register_functions_ns3_Hash_Function(module.get_submodule('Function'), root_module)
+---
+>     register_functions_ns3_Hash_Function(module.add_cpp_namespace('Function'), root_module)

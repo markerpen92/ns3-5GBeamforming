@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/spectrum/examples/adhoc-aloha-ideal-phy-matrix-propagation-loss-model.cc ../../ns-3-dev-git/src/spectrum/examples/adhoc-aloha-ideal-phy-matrix-propagation-loss-model.cc
+diff ../../NS3-WiGig/src/spectrum/examples/adhoc-aloha-ideal-phy-matrix-propagation-loss-model.cc ../../ns-3-dev/src/spectrum/examples/adhoc-aloha-ideal-phy-matrix-propagation-loss-model.cc
 83c83
 <   void UpdatePathloss (std::string context, Ptr<const SpectrumPhy> txPhy, Ptr<const SpectrumPhy> rxPhy, double lossDb);
 ---
@@ -17,7 +17,7 @@ diff ../../NS3-WiGig/src/spectrum/examples/adhoc-aloha-ideal-phy-matrix-propagat
 ---
 >   Config::Connect ("/ChannelList/*/PropagationLoss",
 Only in ../../NS3-WiGig/src/spectrum/examples: three-gpp-channel-example.cc
-diff ../../NS3-WiGig/src/spectrum/examples/wscript ../../ns-3-dev-git/src/spectrum/examples/wscript
+diff ../../NS3-WiGig/src/spectrum/examples/wscript ../../ns-3-dev/src/spectrum/examples/wscript
 23,26d22
 < 
 <     obj = bld.create_ns3_program('three-gpp-channel-example',

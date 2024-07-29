@@ -1,0 +1,59 @@
+diff ../../NS3-WiGig/src/buildings/helper/building-position-allocator.cc ../../ns-3-dev-git/src/buildings/helper/building-position-allocator.cc
+333c333
+<       bmm->MakeConsistent (mm);
+---
+>       BuildingsHelper::MakeConsistent (mm);
+diff ../../NS3-WiGig/src/buildings/helper/buildings-helper.cc ../../ns-3-dev-git/src/buildings/helper/buildings-helper.cc
+56d55
+< 
+70a70
+>           MakeConsistent (mm);
+73d72
+<           bmm->MakeConsistent (mm);
+91c90
+<           NS_ABORT_MSG_UNLESS (found == false, " MobilityBuildingInfo already inside another building!");
+---
+>           NS_ABORT_MSG_UNLESS (found == false, " MobilityBuildingInfo already inside another building!");		
+95,97c94,96
+<           uint16_t roomY = (*bit)->GetRoomY (pos);
+<           bmm->SetIndoor (*bit, floor, roomX, roomY);
+<         }
+---
+>           uint16_t roomY = (*bit)->GetRoomY (pos);	   
+>           bmm->SetIndoor (*bit, floor, roomX, roomY);	      
+>         }		    	  
+diff ../../NS3-WiGig/src/buildings/helper/buildings-helper.h ../../ns-3-dev-git/src/buildings/helper/buildings-helper.h
+52c52
+<   * \brief This method goes through the whole NodeList and, for each node in
+---
+>   * This method goes through the whole NodeList and, for each node in
+54,58c54
+<   * the MobilityModel of that node.
+<   *
+<   * \deprecated This method will go away in future release of ns-3.
+<   * A node position will be make consistent by the method \c IsInside () of
+<   * \c MobilityBuildingInfo class.
+---
+>   * the MobilityModel of that node. 
+61d56
+<   NS_DEPRECATED
+64,74c59,65
+<    * \brief Make the given mobility model consistent, by determining whether
+<    * its position falls inside any of the building in BuildingList, and
+<    * updating accordingly the BuildingInfo aggregated with the MobilityModel.
+<    *
+<    * \param mm the mobility model to be made consistent
+<    *
+<    * \deprecated This method will go away in future release of ns-3.
+<    * See instead \c MakeConsistent method of \c MobilityBuildingInfo class.
+<    */
+<   NS_DEPRECATED
+<   static void MakeConsistent (Ptr<MobilityModel> mm);
+---
+>   * Make the given mobility model consistent, by determining whether
+>   * its position falls inside any of the building in BuildingList, and
+>   * updating accordingly the BuildingInfo aggregated with the MobilityModel.
+>   *
+>   * \param bmm the mobility model to be made consistent
+>   */
+>   static void MakeConsistent (Ptr<MobilityModel> bmm);

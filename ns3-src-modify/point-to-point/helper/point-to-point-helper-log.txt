@@ -1,9 +1,16 @@
-diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.cc ../../ns-3-dev-git/src/point-to-point/helper/point-to-point-helper.cc
+diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.cc ../../ns-3-dev/src/point-to-point/helper/point-to-point-helper.cc
 28d27
 < #include "ns3/net-device-queue-interface.h"
+44c43
+<   m_queueFactory.SetTypeId ("ns3::DropTailQueue<Packet>");
+---
+>   m_queueFactory.SetTypeId ("ns3::DropTailQueue");
 48d46
 <   m_snaplen = std::numeric_limits<uint32_t>::max ();
-80,90d77
+58,59d55
+<   QueueBase::AppendItemTypeIfNotPresent (type, "Packet");
+< 
+80,90d75
 < void
 < PointToPointHelper::SetSnapshotLength (uint32_t length)
 < {
@@ -15,11 +22,29 @@ diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.cc ../../ns
 <   return m_snaplen;
 < }
 < 
-119c106
+119c104
 <                                                      PcapHelper::DLT_PPP, m_snaplen);
 ---
 >                                                      PcapHelper::DLT_PPP);
-254,261d240
+185,188c170,173
+<       Ptr<Queue<Packet> > queue = device->GetQueue ();
+<       asciiTraceHelper.HookDefaultEnqueueSinkWithoutContext<Queue<Packet> > (queue, "Enqueue", theStream);
+<       asciiTraceHelper.HookDefaultDropSinkWithoutContext<Queue<Packet> > (queue, "Drop", theStream);
+<       asciiTraceHelper.HookDefaultDequeueSinkWithoutContext<Queue<Packet> > (queue, "Dequeue", theStream);
+---
+>       Ptr<Queue> queue = device->GetQueue ();
+>       asciiTraceHelper.HookDefaultEnqueueSinkWithoutContext<Queue> (queue, "Enqueue", theStream);
+>       asciiTraceHelper.HookDefaultDropSinkWithoutContext<Queue> (queue, "Drop", theStream);
+>       asciiTraceHelper.HookDefaultDequeueSinkWithoutContext<Queue> (queue, "Dequeue", theStream);
+247c232
+<   Ptr<Queue<Packet> > queueA = m_queueFactory.Create<Queue<Packet> > ();
+---
+>   Ptr<Queue> queueA = m_queueFactory.Create<Queue> ();
+252c237
+<   Ptr<Queue<Packet> > queueB = m_queueFactory.Create<Queue<Packet> > ();
+---
+>   Ptr<Queue> queueB = m_queueFactory.Create<Queue> ();
+254,261d238
 <   // Aggregate NetDeviceQueueInterface objects
 <   Ptr<NetDeviceQueueInterface> ndqiA = CreateObject<NetDeviceQueueInterface> ();
 <   ndqiA->GetTxQueue (0)->ConnectQueueTraces (queueA);
@@ -28,8 +53,10 @@ diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.cc ../../ns
 <   ndqiB->GetTxQueue (0)->ConnectQueueTraces (queueB);
 <   devB->AggregateObject (ndqiB);
 < 
-diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.h ../../ns-3-dev-git/src/point-to-point/helper/point-to-point-helper.h
-152,163d151
+diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.h ../../ns-3-dev/src/point-to-point/helper/point-to-point-helper.h
+32a33
+> class Queue;
+152,163d152
 <   /**
 <    * Set the maximum length of packet data stored in the PCAP file.
 <    *
@@ -42,5 +69,5 @@ diff ../../NS3-WiGig/src/point-to-point/helper/point-to-point-helper.h ../../ns-
 <    * \return length The length of the snapshot in bytes.
 <    */
 <   uint32_t GetSnapshotLength (void) const;
-200d187
+200d188
 <   uint32_t m_snaplen;                   //!< Snapshot length in bytes.

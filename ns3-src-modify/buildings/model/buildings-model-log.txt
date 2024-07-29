@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/buildings/model/building.cc ../../ns-3-dev-git/src/buildings/model/building.cc
+diff ../../NS3-WiGig/src/buildings/model/building.cc ../../ns-3-dev/src/buildings/model/building.cc
 287,292d286
 < bool
 < Building::IsIntersect (const Vector &l1, const Vector &l2) const
@@ -6,7 +6,7 @@ diff ../../NS3-WiGig/src/buildings/model/building.cc ../../ns-3-dev-git/src/buil
 <   return m_buildingBounds.IsIntersect (l1, l2);
 < }
 < 
-diff ../../NS3-WiGig/src/buildings/model/building.h ../../ns-3-dev-git/src/buildings/model/building.h
+diff ../../NS3-WiGig/src/buildings/model/building.h ../../ns-3-dev/src/buildings/model/building.h
 203,211d202
 <   /**
 <    * \brief Checks if a line-segment between position l1 and position l2
@@ -17,9 +17,14 @@ diff ../../NS3-WiGig/src/buildings/model/building.h ../../ns-3-dev-git/src/build
 <    * \return true if there is a intersection, false otherwise
 <    */
 <   bool IsIntersect (const Vector &l1, const Vector &l2) const;
+diff ../../NS3-WiGig/src/buildings/model/building-list.cc ../../ns-3-dev/src/buildings/model/building-list.cc
+19c19
+<  * Based on BuildingList implementation by Mathieu Lacage  <mathieu.lacage@sophia.inria.fr>
+---
+>  * Based on BuildingList implemenation by Mathieu Lacage  <mathieu.lacage@sophia.inria.fr>
 Only in ../../NS3-WiGig/src/buildings/model: buildings-channel-condition-model.cc
 Only in ../../NS3-WiGig/src/buildings/model: buildings-channel-condition-model.h
-diff ../../NS3-WiGig/src/buildings/model/buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/buildings-propagation-loss-model.cc
+diff ../../NS3-WiGig/src/buildings/model/buildings-propagation-loss-model.cc ../../ns-3-dev/src/buildings/model/buildings-propagation-loss-model.cc
 191,194c191
 <   bool isAIndoor = a->IsIndoor ();
 <   bool isBIndoor = b->IsIndoor ();
@@ -35,7 +40,7 @@ diff ../../NS3-WiGig/src/buildings/model/buildings-propagation-loss-model.cc ../
 <   if (isBIndoor) // b is indoor
 ---
 >   if (b->IsIndoor ())
-diff ../../NS3-WiGig/src/buildings/model/hybrid-buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/hybrid-buildings-propagation-loss-model.cc
+diff ../../NS3-WiGig/src/buildings/model/hybrid-buildings-propagation-loss-model.cc ../../ns-3-dev/src/buildings/model/hybrid-buildings-propagation-loss-model.cc
 156,157d155
 <   bool isAIndoor = a1->IsIndoor ();
 <   bool isBIndoor = b1->IsIndoor ();
@@ -62,7 +67,7 @@ diff ../../NS3-WiGig/src/buildings/model/hybrid-buildings-propagation-loss-model
 ---
 >         } // end b1->IsIndoor ()
 >     } // end a1->IsOutdoor ()
-diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.cc ../../ns-3-dev-git/src/buildings/model/mobility-building-info.cc
+diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.cc ../../ns-3-dev/src/buildings/model/mobility-building-info.cc
 24d23
 < #include <ns3/building-list.h>
 47,54d45
@@ -123,9 +128,13 @@ diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.cc ../../ns-3-de
 < 
 <   m_cachedPosition = pos;
 < 
-diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.h ../../ns-3-dev-git/src/buildings/model/mobility-building-info.h
+diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.h ../../ns-3-dev/src/buildings/model/mobility-building-info.h
 33d32
 < #include <ns3/mobility-model.h>
+44c43
+<  * This model implements the management of scenarios where users might be
+---
+>  * This model implements the managment of scenarios where users might be
 51,55d49
 <   /**
 <    * \brief Get the type ID.
@@ -222,7 +231,7 @@ diff ../../NS3-WiGig/src/buildings/model/mobility-building-info.h ../../ns-3-dev
 >   uint8_t m_nFloor;
 >   uint8_t m_roomX;
 >   uint8_t m_roomY;
-diff ../../NS3-WiGig/src/buildings/model/oh-buildings-propagation-loss-model.cc ../../ns-3-dev-git/src/buildings/model/oh-buildings-propagation-loss-model.cc
+diff ../../NS3-WiGig/src/buildings/model/oh-buildings-propagation-loss-model.cc ../../ns-3-dev/src/buildings/model/oh-buildings-propagation-loss-model.cc
 77,80c77
 <   bool isAIndoor = a1->IsIndoor ();
 <   bool isBIndoor = b1->IsIndoor ();

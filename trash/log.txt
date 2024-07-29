@@ -1,0 +1,6 @@
+path : 
+    src/internet/model/global-route-manager-impl.cc, line=316
+error-msg : 
+    assert failed. cond="m_ecmpRootExits.size () <= 1", msg="Assumed there is at most one exit from the root to this vertex", file=../src/internet/model/global-route-manager-impl.cc, line=316
+action : 
+    remove the code

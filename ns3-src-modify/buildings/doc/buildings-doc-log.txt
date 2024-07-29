@@ -1,1 +1,1 @@
-Common subdirectories: ../../NS3-WiGig/src/buildings/doc/source and ../../ns-3-dev-git/src/buildings/doc/source
+Common subdirectories: ../../NS3-WiGig/src/buildings/doc/source and ../../ns-3-dev/src/buildings/doc/source

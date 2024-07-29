@@ -14,13 +14,13 @@ while IFS= read -r module; do
 
   # Check if module directory exists in NS3-WiGig/src
   if [ ! -d "../../NS3-WiGig/src/$module" ]; then
-    echo "$module does not exist in NS3-WiGig/src, skipping."
+    echo "$module does not exist in NS3-WiGig/src/$module, skipping."
     continue
   fi
 
   # Check if module directory exists in ns-3-dev-git/src
-  if [ ! -d "../../ns-3-dev-git/src/$module" ]; then
-    echo "$module does not exist in ns-3-dev-git/src, skipping."
+  if [ ! -d "../../ns-3-dev/src/$module" ]; then
+    echo "$module does not exist in ns-3-dev/src/$module, skipping."
     continue
   fi
 
@@ -29,13 +29,13 @@ while IFS= read -r module; do
   for dir in $(ls "../../NS3-WiGig/src/$module"); do
     if [ -d "../../NS3-WiGig/src/$module/$dir" ]; then
       # Check if target directory exists in ns-3-dev-git
-      if [ -d "../../ns-3-dev-git/src/$module/$dir" ]; then
+      if [ -d "../../ns-3-dev/src/$module/$dir" ]; then
         mkdir -p "./$module/$dir"
 
         # Generate diff file
-        diff "../../NS3-WiGig/src/$module/$dir" "../../ns-3-dev-git/src/$module/$dir" > "./$module/$dir/$module-$dir-log.txt"
+        diff "../../NS3-WiGig/src/$module/$dir" "../../ns-3-dev/src/$module/$dir" > "./$module/$dir/$module-$dir-log.txt"
       else
-        echo "Skipping $module/$dir as it does not exist in ns-3-dev-git."
+        echo "Skipping $module/$dir as it does not exist in ns-3-dev."
       fi
     fi
   done

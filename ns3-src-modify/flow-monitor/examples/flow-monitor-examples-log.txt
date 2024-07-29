@@ -1,5 +1,174 @@
-diff ../../NS3-WiGig/src/flow-monitor/examples/wifi-olsr-flowmon.py ../../ns-3-dev-git/src/flow-monitor/examples/wifi-olsr-flowmon.py
-35c35
+diff ../../NS3-WiGig/src/flow-monitor/examples/flowmon-parse-results.py ../../ns-3-dev/src/flow-monitor/examples/flowmon-parse-results.py
+16d15
+< ## FiveTuple
+18,30d16
+<     ## class variables
+<     ## @var sourceAddress 
+<     #  source address
+<     ## @var destinationAddress 
+<     #  destination address
+<     ## @var protocol 
+<     #  network protocol
+<     ## @var sourcePort 
+<     #  source port
+<     ## @var destinationPort 
+<     #  destination port
+<     ## @var __slots__ 
+<     #  class variable list
+33,36d18
+<         '''The initializer.
+<         @param self The object pointer.
+<         @param el The element.
+<         '''
+43d24
+< ## Histogram
+45,53d25
+<     ## class variables
+<     ## @var bins
+<     #  histogram bins
+<     ## @var nbins
+<     #  number of bins
+<     ## @var number_of_flows
+<     #  number of flows
+<     ## @var __slots__
+<     #  class variable list
+56,59d27
+<         ''' The initializer.
+<         @param self The object pointer.
+<         @param el The element.
+<         '''
+66d33
+< ## Flow
+68,92d34
+<     ## class variables
+<     ## @var flowId
+<     #  delay ID
+<     ## @var delayMean
+<     #  mean delay
+<     ## @var packetLossRatio
+<     #  packet loss ratio
+<     ## @var rxBitrate
+<     #  receive bit rate
+<     ## @var txBitrate
+<     #  transmit bit rate
+<     ## @var fiveTuple
+<     #  five tuple
+<     ## @var packetSizeMean
+<     #  packet size mean
+<     ## @var probe_stats_unsorted
+<     #  unsirted probe stats
+<     ## @var hopCount
+<     #  hop count
+<     ## @var flowInterruptionsHistogram
+<     #  flow histogram
+<     ## @var rx_duration
+<     #  receive duration
+<     ## @var __slots__
+<     #  class variable list
+97,100d38
+<         ''' The initializer.
+<         @param self The object pointer.
+<         @param flow_el The element.
+<         '''
+139c77
+< ## ProbeFlowStats
+---
+> 
+141,151d78
+<     ## class variables
+<     ## @var probeId
+<     #  probe ID
+<     ## @var packets
+<     #  network packets
+<     ## @var bytes
+<     #  bytes
+<     ## @var delayFromFirstProbe
+<     #  delay from first probe
+<     ## @var __slots__
+<     #  class variable list
+154d80
+< ## Simulation
+156,158d81
+<     ## class variables
+<     ## @var flows
+<     #  list of flows
+160,163d82
+<         ''' The initializer.
+<         @param self The object pointer.
+<         @param simulation_el The element.
+<         '''
+diff ../../NS3-WiGig/src/flow-monitor/examples/wifi-olsr-flowmon.py ../../ns-3-dev/src/flow-monitor/examples/wifi-olsr-flowmon.py
+19d18
+< from __future__ import print_function
+35c34
 < DISTANCE = 20 # (m)
 ---
 > DISTANCE = 100 # (m)
+53c52
+<     wifi = ns.wifi.WifiHelper()
+---
+>     wifi = ns.wifi.WifiHelper.Default()
+107c106
+<         #print (i, destaddr)
+---
+>         #print i, destaddr
+126,130c125,129
+<         print ("  Tx Bytes: ", st.txBytes, file=os)
+<         print ("  Rx Bytes: ", st.rxBytes, file=os)
+<         print ("  Tx Packets: ", st.txPackets, file=os)
+<         print ("  Rx Packets: ", st.rxPackets, file=os)
+<         print ("  Lost Packets: ", st.lostPackets, file=os)
+---
+>         print >> os, "  Tx Bytes: ", st.txBytes
+>         print >> os, "  Rx Bytes: ", st.rxBytes
+>         print >> os, "  Tx Packets: ", st.txPackets
+>         print >> os, "  Rx Packets: ", st.rxPackets
+>         print >> os, "  Lost Packets: ", st.lostPackets
+132,134c131,133
+<             print ("  Mean{Delay}: ", (st.delaySum.GetSeconds() / st.rxPackets), file=os)
+<             print ("  Mean{Jitter}: ", (st.jitterSum.GetSeconds() / (st.rxPackets-1)), file=os)
+<             print ("  Mean{Hop Count}: ", float(st.timesForwarded) / st.rxPackets + 1, file=os)
+---
+>             print >> os, "  Mean{Delay}: ", (st.delaySum.GetSeconds() / st.rxPackets)
+> 	    print >> os, "  Mean{Jitter}: ", (st.jitterSum.GetSeconds() / (st.rxPackets-1))
+>             print >> os, "  Mean{Hop Count}: ", float(st.timesForwarded) / st.rxPackets + 1
+137c136
+<             print ("Delay Histogram", file=os)
+---
+>             print >> os, "Delay Histogram"
+139,141c138,140
+<               print (" ",i,"(", st.delayHistogram.GetBinStart (i), "-", \
+<                   st.delayHistogram.GetBinEnd (i), "): ", st.delayHistogram.GetBinCount (i), file=os)
+<             print ("Jitter Histogram", file=os)
+---
+>               print >> os, " ",i,"(", st.delayHistogram.GetBinStart (i), "-", \
+>                   st.delayHistogram.GetBinEnd (i), "): ", st.delayHistogram.GetBinCount (i)
+>             print >> os, "Jitter Histogram"
+143,145c142,144
+<               print (" ",i,"(", st.jitterHistogram.GetBinStart (i), "-", \
+<                   st.jitterHistogram.GetBinEnd (i), "): ", st.jitterHistogram.GetBinCount (i), file=os)
+<             print ("PacketSize Histogram", file=os)
+---
+>               print >> os, " ",i,"(", st.jitterHistogram.GetBinStart (i), "-", \
+>                   st.jitterHistogram.GetBinEnd (i), "): ", st.jitterHistogram.GetBinCount (i)
+>             print >> os, "PacketSize Histogram"
+147,148c146,147
+<               print (" ",i,"(", st.packetSizeHistogram.GetBinStart (i), "-", \
+<                   st.packetSizeHistogram.GetBinEnd (i), "): ", st.packetSizeHistogram.GetBinCount (i), file=os)
+---
+>               print >> os, " ",i,"(", st.packetSizeHistogram.GetBinStart (i), "-", \
+>                   st.packetSizeHistogram.GetBinEnd (i), "): ", st.packetSizeHistogram.GetBinCount (i)
+151c150
+<             print ("  Packets dropped by reason %i: %i" % (reason, drops), file=os)
+---
+>             print "  Packets dropped by reason %i: %i" % (reason, drops)
+162,163c161,162
+<             print ("FlowID: %i (%s %s/%s --> %s/%i)" % \
+<                 (flow_id, proto, t.sourceAddress, t.sourcePort, t.destinationAddress, t.destinationPort))
+---
+>             print "FlowID: %i (%s %s/%s --> %s/%i)" % \
+>                 (flow_id, proto, t.sourceAddress, t.sourcePort, t.destinationAddress, t.destinationPort)
+166c165
+<         print (monitor.SerializeToXmlFile(cmd.Results, True, True))
+---
+>         print monitor.SerializeToXmlFile(cmd.Results, True, True)

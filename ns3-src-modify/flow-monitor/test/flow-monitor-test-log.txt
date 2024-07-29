@@ -1,5 +1,46 @@
-diff ../../NS3-WiGig/src/flow-monitor/test/examples-to-run.py ../../ns-3-dev-git/src/flow-monitor/test/examples-to-run.py
+diff ../../NS3-WiGig/src/flow-monitor/test/examples-to-run.py ../../ns-3-dev/src/flow-monitor/test/examples-to-run.py
 1c1
 < #! /usr/bin/env python3
 ---
 > #! /usr/bin/env python
+diff ../../NS3-WiGig/src/flow-monitor/test/histogram-test-suite.cc ../../ns-3-dev/src/flow-monitor/test/histogram-test-suite.cc
+26,36d25
+< /**
+<  * \ingroup flow-monitor
+<  * \defgroup flow-monitor-test FlowMonitor module tests
+<  */
+< 
+< /**
+<  * \ingroup flow-monitor-test
+<  * \ingroup tests
+<  *
+<  * \brief FlowMonitor Histogram Test
+<  */
+83,89c72
+< /**
+<  * \ingroup flow-monitor-test
+<  * \ingroup tests
+<  *
+<  * \brief FlowMonitor Histogram TestSuite
+<  */
+< class HistogramTestSuite : public TestSuite
+---
+> static class HistogramTestSuite : public TestSuite
+92,101c75,80
+<   HistogramTestSuite ();
+< };
+< 
+< HistogramTestSuite::HistogramTestSuite ()
+<   : TestSuite ("histogram", UNIT)
+< {
+<   AddTestCase (new HistogramTestCase, TestCase::QUICK);
+< }
+< 
+< static HistogramTestSuite g_HistogramTestSuite; //!< Static variable for test initialization
+---
+>   HistogramTestSuite ()
+>     : TestSuite ("histogram", UNIT) 
+>   {
+>     AddTestCase (new HistogramTestCase (), TestCase::QUICK);
+>   }
+> } g_HistogramTestSuite;

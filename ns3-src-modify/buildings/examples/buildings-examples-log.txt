@@ -1,4 +1,4 @@
-diff ../../NS3-WiGig/src/buildings/examples/buildings-pathloss-profiler.cc ../../ns-3-dev-git/src/buildings/examples/buildings-pathloss-profiler.cc
+diff ../../NS3-WiGig/src/buildings/examples/buildings-pathloss-profiler.cc ../../ns-3-dev/src/buildings/examples/buildings-pathloss-profiler.cc
 44c44
 <   CommandLine cmd (__FILE__);
 ---

@@ -1,0 +1,242 @@
+diff ../../NS3-WiGig/src/internet/test/examples-to-run.py ../../ns-3-dev-git/src/internet/test/examples-to-run.py
+1c1
+< #! /usr/bin/env python3
+---
+> #! /usr/bin/env python
+Only in ../../NS3-WiGig/src/internet/test: icmp-test.cc
+Only in ../../NS3-WiGig/src/internet/test: ipv4-deduplication-test.cc
+Only in ../../NS3-WiGig/src/internet/test: ipv6-address-duplication-test.cc
+diff ../../NS3-WiGig/src/internet/test/ipv6-test.cc ../../ns-3-dev-git/src/internet/test/ipv6-test.cc
+91,93d90
+<   interface->SetUp ();
+<   interface2->SetUp ();
+< 
+97a95
+>   interface->SetUp ();
+99a98,99
+> 
+>   interface2->SetUp ();
+diff ../../NS3-WiGig/src/internet/test/tcp-advertised-window-test.cc ../../ns-3-dev-git/src/internet/test/tcp-advertised-window-test.cc
+131c131
+<   if (!m_tcb->m_rxBuffer->Finished ())
+---
+>   if (!m_rxBuffer->Finished ())
+137c137
+<           uint32_t available = m_tcb->m_rxBuffer->Available ();
+---
+>           uint32_t available = m_rxBuffer->Available ();
+183,185c183,185
+<   //NS_LOG_DEBUG ("MaxRxSequence () = " << m_tcb->m_rxBuffer->MaxRxSequence ());
+<   //NS_LOG_DEBUG ("NextRxSequence () = " << m_tcb->m_rxBuffer->NextRxSequence ());
+<   //NS_LOG_DEBUG ("MaxBufferSize () = " << m_tcb->m_rxBuffer->MaxBufferSize ());
+---
+>   //NS_LOG_DEBUG ("MaxRxSequence () = " << m_rxBuffer->MaxRxSequence ());
+>   //NS_LOG_DEBUG ("NextRxSequence () = " << m_rxBuffer->NextRxSequence ());
+>   //NS_LOG_DEBUG ("MaxBufferSize () = " << m_rxBuffer->MaxBufferSize ());
+188,189c188,189
+<   //NS_LOG_DEBUG ("Available () = " << m_tcb->m_rxBuffer->Available ());
+<   uint32_t w = m_tcb->m_rxBuffer->MaxBufferSize ();
+---
+>   //NS_LOG_DEBUG ("Available () = " << m_rxBuffer->Available ());
+>   uint32_t w = m_rxBuffer->MaxBufferSize ();
+265c265
+<  *   m_tcb->m_rxBuffer->MaxRxSequence () - m_tcb->m_rxBuffer->NextRxSequence ()
+---
+>  *   m_rxBuffer->MaxRxSequence () - m_rxBuffer->NextRxSequence ()
+269c269
+<  *   m_tcb->m_rxBuffer->MaxBufferSize ()
+---
+>  *   m_rxBuffer->MaxBufferSize ()
+diff ../../NS3-WiGig/src/internet/test/tcp-classic-recovery-test.cc ../../ns-3-dev-git/src/internet/test/tcp-classic-recovery-test.cc
+101c101
+<   recovery->DoRecovery (m_state, 500);
+---
+>   recovery->DoRecovery (m_state, 0, 500);
+124a125,127
+>     AddTestCase (new ClassicRecoveryTest (3000, 500, 2500, 3,
+>                                           "Classic recovery test on cWnd and cWndInfl with 500 bytes segmentSize"),
+>                  TestCase::QUICK);
+Only in ../../NS3-WiGig/src/internet/test: tcp-dctcp-test.cc
+diff ../../NS3-WiGig/src/internet/test/tcp-ecn-test.cc ../../ns-3-dev-git/src/internet/test/tcp-ecn-test.cc
+47c47
+<  * This test suite will run four combinations of enabling ECN (sender off and receiver off; sender on and receiver off;
+---
+>  * This test suite will run four combinations of enabling ECN (sender off and receiver off; sender on and sender off;
+164c164
+<   Ptr<Packet> p = m_txBuffer->CopyFromSequence (maxSize, seq)->GetPacketCopy ();
+---
+>   Ptr<Packet> p = m_txBuffer->CopyFromSequence (maxSize, seq);
+329c329
+<   header.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>   header.SetAckNumber (m_rxBuffer->NextRxSequence ());
+408c408
+<       SetUseEcn (SENDER, TcpSocketState::On);
+---
+>       SetEcn (SENDER, TcpSocketBase::ClassicEcn);
+412c412
+<       SetUseEcn (RECEIVER, TcpSocketState::On);
+---
+>       SetEcn (RECEIVER, TcpSocketBase::ClassicEcn);
+diff ../../NS3-WiGig/src/internet/test/tcp-general-test.cc ../../ns-3-dev-git/src/internet/test/tcp-general-test.cc
+227,230d226
+<   m_senderSocket->m_rateOps->TraceConnectWithoutContext ("TcpRateUpdated",
+<                                               MakeCallback (&TcpGeneralTest::RateUpdatedTrace, this));
+<   m_senderSocket->m_rateOps->TraceConnectWithoutContext ("TcpRateSampleUpdated",
+<                                               MakeCallback (&TcpGeneralTest::RateSampleUpdatedTrace, this));
+873c869
+<       return DynamicCast<TcpSocketMsgBase> (m_senderSocket)->m_tcb->m_rxBuffer;
+---
+>       return DynamicCast<TcpSocketMsgBase> (m_senderSocket)->m_rxBuffer;
+878c874
+<       return DynamicCast<TcpSocketMsgBase> (m_receiverSocket)->m_tcb->m_rxBuffer;
+---
+>       return DynamicCast<TcpSocketMsgBase> (m_receiverSocket)->m_rxBuffer;
+886,903d881
+<  Ptr<TcpTxBuffer>
+<  TcpGeneralTest::GetTxBuffer (SocketWho who)
+<  {
+<   if (who == SENDER)
+<     {
+<       return DynamicCast<TcpSocketMsgBase> (m_senderSocket)->m_txBuffer;
+<     }
+<   else if (who == RECEIVER)
+<     {
+<       return DynamicCast<TcpSocketMsgBase> (m_receiverSocket)->m_txBuffer;
+<     }
+<   else
+<     {
+<       NS_FATAL_ERROR ("Not defined");
+<     }
+<  }
+< 
+< 
+955c933
+< TcpGeneralTest::SetUseEcn (SocketWho who, TcpSocketState::UseEcn_t useEcn)
+---
+> TcpGeneralTest::SetEcn (SocketWho who, TcpSocketBase::EcnMode_t ecnMode)
+959c937
+<       m_senderSocket->SetUseEcn (useEcn);
+---
+>       m_senderSocket->SetEcn (ecnMode);
+962,963c940,941
+<     {
+<       m_receiverSocket->SetUseEcn (useEcn);
+---
+>    {
+>       m_receiverSocket->SetEcn (ecnMode);
+1176c1154
+<       header.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>       header.SetAckNumber (m_rxBuffer->NextRxSequence ());
+1184c1162
+<       if (m_bytesLeftToBeAcked == 0 && m_tcb->m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+---
+>       if (m_bytesLeftToBeAcked == 0 && m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+1186c1164
+<           m_bytesLeftToBeAcked = m_tcb->m_rxBuffer->NextRxSequence ().GetValue () - 1 - m_bytesToAck;
+---
+>           m_bytesLeftToBeAcked = m_rxBuffer->NextRxSequence ().GetValue () - 1 - m_bytesToAck;
+1188c1166
+<       else if (m_bytesLeftToBeAcked > 0 && m_tcb->m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+---
+>       else if (m_bytesLeftToBeAcked > 0 && m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+1260c1238
+<   if (m_bytesLeftToBeAcked > 0 && m_tcb->m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+---
+>   if (m_bytesLeftToBeAcked > 0 && m_rxBuffer->NextRxSequence () > m_lastAckedSeq)
+diff ../../NS3-WiGig/src/internet/test/tcp-general-test.h ../../ns-3-dev-git/src/internet/test/tcp-general-test.h
+27d26
+< #include "ns3/tcp-rate-ops.h"
+539,546d537
+<    * \brief Get the Tx buffer from selected socket
+<    *
+<    * \param who socket where get the TCB
+<    * \return the tx buffer
+<    */
+<   Ptr<TcpTxBuffer> GetTxBuffer (SocketWho who);
+< 
+<   /**
+595c586
+<    * \brief Forcefully set the ecn use on
+---
+>    * \brief Forcefully set the ecn mode on
+598c589
+<    * \param useEcn Mode of ECN. Currently Off and On are supported.
+---
+>    * \param ecnMode Mode of ECN. Currently NoEcn and ClassicEcn is supported.
+600c591
+<   void SetUseEcn (SocketWho who, TcpSocketState::UseEcn_t useEcn);
+---
+>   void SetEcn (SocketWho who, TcpSocketBase::EcnMode_t ecnMode);
+788,805d778
+<   }
+< 
+<   /**
+<    * \brief Track the rate value of TcpRateLinux.
+<    * \param rate updated value of TcpRate.
+<    */
+<   virtual void RateUpdatedTrace (const TcpRateLinux::TcpRateConnection &rate)
+<   {
+<     NS_UNUSED (rate);
+<   }
+< 
+<   /**
+<    * \brief Track the rate sample value of TcpRateLinux.
+<    * \param sample updated value of TcpRateSample.
+<    */
+<   virtual void RateSampleUpdatedTrace (const TcpRateLinux::TcpRateSample &sample)
+<   {
+<     NS_UNUSED (sample);
+diff ../../NS3-WiGig/src/internet/test/tcp-hybla-test.cc ../../ns-3-dev-git/src/internet/test/tcp-hybla-test.cc
+114c114
+<   NS_TEST_ASSERT_MSG_EQ_TOL (calcRho, m_rho, 0.01,
+---
+>   NS_TEST_ASSERT_MSG_EQ_TOL (calcRho, m_rho, MilliSeconds (10),
+diff ../../NS3-WiGig/src/internet/test/tcp-prr-recovery-test.cc ../../ns-3-dev-git/src/internet/test/tcp-prr-recovery-test.cc
+49,51c49,51
+<    * \param m_deliveredBytes Bytes SACKed on last acknowledgment.
+<    * \param bytesSent Bytes sent while in recovery phase.
+<    * \param reductionBound Type of reduction bound to be used.
+---
+>    * \para m_lastSackedBytes Bytes SACKed on last acknowledgment.
+>    * \para bytesSent Bytes sent while in recovery phase.
+>    * \para reductionBound Type of reduction bound to be used.
+59c59
+<                    uint32_t m_deliveredBytes,
+---
+>                    uint32_t m_lastSackedBytes,
+72c72
+<   uint32_t m_deliveredBytes;         //!< Bytes SACKed on last acknowledgment.
+---
+>   uint32_t m_lastSackedBytes;         //!< Bytes SACKed on last acknowledgment.
+84c84
+<                                   uint32_t deliveredBytes,
+---
+>                                   uint32_t lastSackedBytes,
+94c94
+<     m_deliveredBytes (deliveredBytes),
+---
+>     m_lastSackedBytes (lastSackedBytes),
+128c128
+<   recovery->DoRecovery (m_state, m_deliveredBytes);
+---
+>   recovery->DoRecovery (m_state, 0, m_lastSackedBytes);
+Only in ../../NS3-WiGig/src/internet/test: tcp-rate-ops-test.cc
+diff ../../NS3-WiGig/src/internet/test/tcp-tx-buffer-test.cc ../../ns-3-dev-git/src/internet/test/tcp-tx-buffer-test.cc
+287c287
+<   Ptr<Packet> ret = txBuf.CopyFromSequence (100, SequenceNumber32 (1))->GetPacketCopy ();
+---
+>   Ptr<Packet> ret = txBuf.CopyFromSequence (100, SequenceNumber32 (1));
+306c306
+<   ret = txBuf.CopyFromSequence (50, SequenceNumber32 (101))->GetPacketCopy ();
+---
+>   ret = txBuf.CopyFromSequence (50, SequenceNumber32 (101));
+318c318
+<   ret = txBuf.CopyFromSequence (70, SequenceNumber32 (151))->GetPacketCopy ();
+---
+>   ret = txBuf.CopyFromSequence (70, SequenceNumber32 (151));
+326c326
+<   ret = txBuf.CopyFromSequence (3000, SequenceNumber32 (221))->GetPacketCopy ();
+---
+>   ret = txBuf.CopyFromSequence (3000, SequenceNumber32 (221));

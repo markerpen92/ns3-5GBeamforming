@@ -1,0 +1,632 @@
+diff ../../NS3-WiGig/src/spectrum/model/multi-model-spectrum-channel.cc ../../ns-3-dev-git/src/spectrum/model/multi-model-spectrum-channel.cc
+21,23d20
+< #include <algorithm>
+< #include <iostream>
+< #include <utility>
+39a37,38
+> #include <iostream>
+> #include <utility>
+41a41
+> 
+47a48
+> 
+75a77
+> 
+80a83
+> 
+82d84
+<   : m_numDevices {0}
+107a110,111
+> 
+> 
+127,128c131,132
+<       auto phyIt = std::find (rxInfoIterator->second.m_rxPhys.begin(), rxInfoIterator->second.m_rxPhys.end(), phy);
+<       if (phyIt != rxInfoIterator->second.m_rxPhys.end ())
+---
+>       std::set<Ptr<SpectrumPhy> >::iterator phyIt = rxInfoIterator->second.m_rxPhySet.find (phy);
+>       if (phyIt !=  rxInfoIterator->second.m_rxPhySet.end ())
+130c134
+<           rxInfoIterator->second.m_rxPhys.erase (phyIt);
+---
+>           rxInfoIterator->second.m_rxPhySet.erase (phyIt);
+147c151,152
+<       ret.first->second.m_rxPhys.push_back (phy);
+---
+>       std::pair<std::set<Ptr<SpectrumPhy> >::iterator, bool> ret2 = ret.first->second.m_rxPhySet.insert (phy);
+>       NS_ASSERT (ret2.second);
+170c175,176
+<       rxInfoIterator->second.m_rxPhys.push_back (phy);
+---
+>       std::pair<std::set<Ptr<SpectrumPhy> >::iterator, bool> ret2 = rxInfoIterator->second.m_rxPhySet.insert (phy);
+>       NS_ASSERT (ret2.second);
+171a178
+> 
+173a181
+> 
+215a224,225
+>     
+> 
+228c238
+<   NS_LOG_LOGIC ("txSpectrumModelUid " << txSpectrumModelUid);
+---
+>   NS_LOG_LOGIC (" txSpectrumModelUid " << txSpectrumModelUid);
+243c253
+<       NS_LOG_LOGIC ("rxSpectrumModelUids " << rxSpectrumModelUid);
+---
+>       NS_LOG_LOGIC (" rxSpectrumModelUids " << rxSpectrumModelUid);
+253c263
+<           NS_LOG_LOGIC ("converting txPowerSpectrum SpectrumModelUids " << txSpectrumModelUid << " --> " << rxSpectrumModelUid);
+---
+>           NS_LOG_LOGIC (" converting txPowerSpectrum SpectrumModelUids" << txSpectrumModelUid << " --> " << rxSpectrumModelUid);
+263,264c273,275
+<       for (auto rxPhyIterator = rxInfoIterator->second.m_rxPhys.begin ();
+<            rxPhyIterator != rxInfoIterator->second.m_rxPhys.end ();
+---
+> 
+>       for (std::set<Ptr<SpectrumPhy> >::const_iterator rxPhyIterator = rxInfoIterator->second.m_rxPhySet.begin ();
+>            rxPhyIterator != rxInfoIterator->second.m_rxPhySet.end ();
+272c283
+<               NS_LOG_LOGIC ("copying signal parameters " << txParams);
+---
+>               NS_LOG_LOGIC (" copying signal parameters " << txParams);
+281,283d291
+<                   double txAntennaGain = 0;
+<                   double rxAntennaGain = 0;
+<                   double propagationGainDb = 0;
+288c296
+<                       txAntennaGain = rxParams->txAntenna->GetGainDb (txAngles);
+---
+>                       double txAntennaGain = rxParams->txAntenna->GetGainDb (txAngles);
+296c304
+<                       rxAntennaGain = rxAntenna->GetGainDb (rxAngles);
+---
+>                       double rxAntennaGain = rxAntenna->GetGainDb (rxAngles);
+302c310
+<                       propagationGainDb = m_propagationLoss->CalcRxPower (0, txMobility, receiverMobility);
+---
+>                       double propagationGainDb = m_propagationLoss->CalcRxPower (0, txMobility, receiverMobility);
+306,309c314
+<                   NS_LOG_LOGIC ("total pathLoss = " << pathLossDb << " dB");
+<                   // Gain trace
+<                   m_gainTrace (txMobility, receiverMobility, txAntennaGain, rxAntennaGain, propagationGainDb, pathLossDb);
+<                   // Pathloss trace
+---
+>                   NS_LOG_LOGIC ("total pathLoss = " << pathLossDb << " dB");    
+311c316
+<                   if (pathLossDb > m_maxLossDb)
+---
+>                   if ( pathLossDb > m_maxLossDb)
+319c324
+<                   if (m_spectrumPropagationLoss && !m_spectrumPropagationLoss->DoCalculateRxPowerAtReceiverSide ())
+---
+>                   if (m_spectrumPropagationLoss)
+355,365d359
+<   if (m_spectrumPropagationLoss && m_spectrumPropagationLoss->DoCalculateRxPowerAtReceiverSide ())
+<     {
+<       if (!params->isMimo)
+<         {
+<           params->psd = m_spectrumPropagationLoss->CalcRxPower (params, params->txPhy->GetMobility (), receiver->GetMobility ());
+<         }
+<       else
+<         {
+<           m_spectrumPropagationLoss->CalcMimoRxPower (params, params->txPhy->GetMobility (), receiver->GetMobility ());
+<         }
+<     }
+392c386,388
+<       for (const auto &phyIt : rxInfoIterator->second.m_rxPhys)
+---
+>       for (std::set<Ptr<SpectrumPhy> >::const_iterator phyIt = rxInfoIterator->second.m_rxPhySet.begin ();
+>            phyIt != rxInfoIterator->second.m_rxPhySet.end ();
+>            ++phyIt)        
+396c392
+<               return (*phyIt).GetDevice ();
+---
+>               return (*phyIt)->GetDevice ();
+401c397
+<   NS_FATAL_ERROR ("m_numDevices > actual number of devices");
+---
+>   NS_FATAL_ERROR ("m_numDevice > actual number of devices");
+diff ../../NS3-WiGig/src/spectrum/model/multi-model-spectrum-channel.h ../../ns-3-dev-git/src/spectrum/model/multi-model-spectrum-channel.h
+83c83
+<   std::vector<Ptr<SpectrumPhy> > m_rxPhys;     //!< Container of the Rx Spectrum phy objects.
+---
+>   std::set<Ptr<SpectrumPhy> > m_rxPhySet;      //!< Container of the Rx Spectrum phy objects.
+diff ../../NS3-WiGig/src/spectrum/model/single-model-spectrum-channel.cc ../../ns-3-dev-git/src/spectrum/model/single-model-spectrum-channel.cc
+123,125d122
+<               double txAntennaGain = 0;
+<               double rxAntennaGain = 0;
+<               double propagationGainDb = 0;
+130c127
+<                   txAntennaGain = rxParams->txAntenna->GetGainDb (txAngles);
+---
+>                   double txAntennaGain = rxParams->txAntenna->GetGainDb (txAngles);
+138c135
+<                   rxAntennaGain = rxAntenna->GetGainDb (rxAngles);
+---
+>                   double rxAntennaGain = rxAntenna->GetGainDb (rxAngles);
+144c141
+<                   propagationGainDb = m_propagationLoss->CalcRxPower (0, senderMobility, receiverMobility);
+---
+>                   double propagationGainDb = m_propagationLoss->CalcRxPower (0, senderMobility, receiverMobility);
+148,151c145
+<               NS_LOG_LOGIC ("total pathLoss = " << pathLossDb << " dB");
+<               // Gain trace
+<               m_gainTrace (senderMobility, receiverMobility, txAntennaGain, rxAntennaGain, propagationGainDb, pathLossDb);
+<               // Pathloss trace
+---
+>               NS_LOG_LOGIC ("total pathLoss = " << pathLossDb << " dB");    
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-channel.cc ../../ns-3-dev-git/src/spectrum/model/spectrum-channel.cc
+152,157d151
+< Ptr<PropagationLossModel>
+< SpectrumChannel::GetPropagationLossModel ()
+< {
+<   return m_propagationLoss;
+< }
+< 
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-channel.h ../../ns-3-dev-git/src/spectrum/model/spectrum-channel.h
+98,102c98
+<   /**
+<    * Get the propagation loss model.
+<    * \returns a pointer to the propagation loss model.
+<    */
+<   Ptr<PropagationLossModel> GetPropagationLossModel (void);
+---
+> 
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-propagation-loss-model.cc ../../ns-3-dev-git/src/spectrum/model/spectrum-propagation-loss-model.cc
+24d23
+< #include "spectrum-signal-parameters.h"
+75,107d73
+< }
+< 
+< bool
+< SpectrumPropagationLossModel::DoCalculateRxPowerAtReceiverSide (void) const
+< {
+<   return false;
+< }
+< 
+< bool
+< SpectrumPropagationLossModel::SupportMimoSystemPowerCalculation (void) const
+< {
+<   return false;
+< }
+< 
+< Ptr<SpectrumValue>
+< SpectrumPropagationLossModel::CalcRxPower (Ptr<SpectrumSignalParameters> rxParams,
+<                                            Ptr<const MobilityModel> a,
+<                                            Ptr<const MobilityModel> b) const
+< {
+<   rxParams->psd = DoCalcRxPowerSpectralDensity (rxParams->psd, a, b);
+<   if (m_next != 0)
+<     {
+<       rxParams->psd = m_next->CalcRxPower (rxParams, a, b);
+<     }
+<   return rxParams->psd;
+< }
+< 
+< void
+< SpectrumPropagationLossModel::CalcMimoRxPower (Ptr<SpectrumSignalParameters> rxParams,
+<                                                Ptr<const MobilityModel> a,
+<                                                Ptr<const MobilityModel> b) const
+< {
+<   NS_FATAL_ERROR ("You must define this function");
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-propagation-loss-model.h ../../ns-3-dev-git/src/spectrum/model/spectrum-propagation-loss-model.h
+31c31,32
+< class SpectrumSignalParameters;
+---
+> 
+> 
+80,116d80
+<   /**
+<    * By default this function is set to false to allow backward compatability.
+<    * \return Return true if we store we calculate the received power at the receiver side, otherwise false.
+<    */
+<   virtual bool DoCalculateRxPowerAtReceiverSide (void) const;
+<   /**
+<    * By default this function is set to false to allow backward compatability.
+<    * \return Return true if we support calculating the received power for MIMO system, otherwise false.
+<    */
+<   virtual bool SupportMimoSystemPowerCalculation (void) const;
+<   /**
+<    * This method is to be called to calculate PSD at the receiver side.
+<    *
+<    * \param params the SpectrumSignalParameters of the signal being received.
+<    * \param a sender mobility
+<    * \param b receiver mobility
+<    *
+<    * \return set of values Vs frequency representing the received
+<    * power in the same units used for the txPower parameter.
+<    */
+<   virtual Ptr<SpectrumValue> CalcRxPower (Ptr<SpectrumSignalParameters> params,
+<                                           Ptr<const MobilityModel> a,
+<                                           Ptr<const MobilityModel> b) const;
+<   /**
+<    * This method is to be called to calculate PSD for MIMO transmission.
+<    *
+<    * \param params the SpectrumSignalParameters of the signal being received.
+<    * \param a sender mobility
+<    * \param b receiver mobility
+<    *
+<    * \return set of values Vs frequency representing the received
+<    * power in the same units used for the txPower parameter.
+<    */
+<   virtual void CalcMimoRxPower (Ptr<SpectrumSignalParameters> params,
+<                                 Ptr<const MobilityModel> a,
+<                                 Ptr<const MobilityModel> b) const;
+< 
+137d100
+< 
+138a102,106
+> 
+> 
+> 
+> 
+> 
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-signal-parameters.cc ../../ns-3-dev-git/src/spectrum/model/spectrum-signal-parameters.cc
+36d35
+<   isMimo = false;
+51,52d49
+<   psdList = p.psdList;
+<   isMimo = p.isMimo;
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-signal-parameters.h ../../ns-3-dev-git/src/spectrum/model/spectrum-signal-parameters.h
+29c29
+< #include "vector"
+---
+> 
+113,130d112
+< 
+<   //// WIGIG ////
+<   /**
+<    * A list of Power Spectral Density of the
+<    * concurrent waveforms, in linear units. The exact unit will depend on the
+<    * type of transmission medium involved: W for radio communications, Pa for
+<    * underwater acoustic communications. Other transmission media to
+<    * be defined.
+<    *
+<    * \note when SpectrumSignalParameters is copied, only the pointer to the PSD will be copied. This is because SpectrumChannel objects normally overwrite the psd anyway, so there is no point in making a copy.
+<    */
+<   std::vector<Ptr<SpectrumValue> > psdList;
+<   /**
+<    * Indicate whether the transmission is MIMO or SISO.
+<    */
+<   bool isMimo;
+<   //// WIGIG ////
+< 
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-value.cc ../../ns-3-dev-git/src/spectrum/model/spectrum-value.cc
+695,699d694
+< uint32_t
+< SpectrumValue::GetValuesN () const
+< {
+<   return m_values.size ();
+< }
+701,705c696
+< const double &
+< SpectrumValue::ValuesAt (uint32_t pos) const
+< {
+<   return m_values.at (pos);
+< }
+---
+> 
+diff ../../NS3-WiGig/src/spectrum/model/spectrum-value.h ../../ns-3-dev-git/src/spectrum/model/spectrum-value.h
+160,164d159
+<   /**
+<    * \brief Get the number of values stored in the array
+<    * \return the values array size
+<    */
+<   uint32_t GetValuesN () const;
+166,171d160
+<   /**
+<    * \brief Get the value element at the position
+<    * \param pos position
+<    * \return the value element in that position (with bounds checking)
+<    */
+<   const double & ValuesAt (uint32_t pos) const;
+Only in ../../NS3-WiGig/src/spectrum/model: three-gpp-channel-model.cc
+Only in ../../NS3-WiGig/src/spectrum/model: three-gpp-channel-model.h
+Only in ../../NS3-WiGig/src/spectrum/model: three-gpp-spectrum-propagation-loss-model.cc
+Only in ../../NS3-WiGig/src/spectrum/model: three-gpp-spectrum-propagation-loss-model.h
+Only in ../../NS3-WiGig/src/spectrum/model: trace-fading-loss-model.cc
+Only in ../../NS3-WiGig/src/spectrum/model: trace-fading-loss-model.h
+diff ../../NS3-WiGig/src/spectrum/model/wifi-spectrum-value-helper.cc ../../ns-3-dev-git/src/spectrum/model/wifi-spectrum-value-helper.cc
+86c86
+< WifiSpectrumValueHelper::GetSpectrumModel (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, uint16_t guardBandwidth)
+---
+> WifiSpectrumValueHelper::GetSpectrumModel (uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth)
+140c140
+<   uint32_t bandBandwidth = 312500;
+---
+>   double bandBandwidth = 312500;
+163c163
+<   uint32_t bandBandwidth = 0;
+---
+>   double bandBandwidth = 0;
+216c216
+<   uint32_t bandBandwidth = 312500;
+---
+>   double bandBandwidth = 312500;
+333c333
+<   uint32_t bandBandwidth = 78125;
+---
+>   double bandBandwidth = 78125;
+362c362
+<       // the final 5 subbands and the guard band.
+---
+>       // the final 6 subbands and the guard band.
+375c375
+<       // the final 11 subbands and the guard band.
+---
+>       // the final 12 subbands and the guard band.
+388c388
+<       // the final 11 subbands and the guard band.
+---
+>       // the final 12 subbands and the guard band.
+426,517d425
+< static const double WIGIG_BAND_BANDWIDTH_HZ = 5156250;
+< 
+< Ptr<SpectrumValue>
+< WifiSpectrumValueHelper::CreateWigigSingleCarrierTxPowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth,
+<                                                                          double txPowerW, double guardBandwidth,
+<                                                                          uint8_t ncb)
+< {
+<   NS_LOG_FUNCTION (centerFrequency << channelWidth << txPowerW << guardBandwidth);
+<   Ptr<SpectrumValue> c = Create<SpectrumValue> (GetSpectrumModel (centerFrequency, channelWidth, WIGIG_BAND_BANDWIDTH_HZ, guardBandwidth));
+<   uint32_t nGuardBands = static_cast<uint32_t> (((2 * guardBandwidth * 1e6) / WIGIG_BAND_BANDWIDTH_HZ) + 0.5);
+<   uint32_t nAllocatedBands = static_cast<uint32_t> (((channelWidth * 1e6) / WIGIG_BAND_BANDWIDTH_HZ)+ 0.5);
+< //  NS_ASSERT_MSG (c->GetSpectrumModel ()->GetNumBands () == (nAllocatedBands + nGuardBands + 1),
+< //                 "Unexpected number of bands " << c->GetSpectrumModel ()->GetNumBands ());
+<   double txPowerPerBandW = 0.0;
+<   uint32_t start1 = (nGuardBands / 2);
+<   uint32_t stop1 = start1 + nAllocatedBands - 1;
+<   //Prepare spectrum mask specific variables
+<   uint32_t flatRegionWidth = static_cast<uint32_t> ((((ncb - 1) * 1080e6 + 940e6) / WIGIG_BAND_BANDWIDTH_HZ) + 0.5); //size in number of subcarriers in the flat region
+<   uint32_t innerSlopeWidth = static_cast<uint32_t> ((((ncb - 1) * 120e6 + 260e6 )/ WIGIG_BAND_BANDWIDTH_HZ) + 0.5); //size in number of subcarriers of the 0dBr<->20dBr slope
+<   uint32_t middleSlopeWidth = static_cast<uint32_t> (((ncb * 1500e6) / WIGIG_BAND_BANDWIDTH_HZ) + 0.5); //size in number of subcarriers of the 17dBr<->22dBr slope
+<   uint32_t outerSlopeWidth = static_cast<uint32_t> (((ncb * 360e6) / WIGIG_BAND_BANDWIDTH_HZ) + 0.5); //size in number of subcarriers of the 22dBr<->30dBr slope
+<   std::vector <StartStop> subBands; //list of data/pilot-containing subBands (sent at 0dBr)
+<   StartStop maskBand (0, nAllocatedBands + nGuardBands);
+<   txPowerPerBandW = txPowerW / nAllocatedBands;
+<   subBands.push_back (std::make_pair (start1, stop1));
+<   //Build transmit spectrum mask
+<   CreateSpectrumMaskForWigig (c, subBands, maskBand,
+<                               txPowerPerBandW, nGuardBands,
+<                               flatRegionWidth, innerSlopeWidth,
+<                               middleSlopeWidth, outerSlopeWidth);
+<   NormalizeSpectrumMask (c, txPowerW);
+<   NS_ASSERT_MSG (std::abs (txPowerW - Integral (*c)) < 1e-6, "Power allocation failed");
+<   return c;
+< }
+< 
+< //TR++ TODO VINCENT
+< Ptr<SpectrumValue>
+< WifiSpectrumValueHelper::CreateDmgOfdmTxPowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth,
+<                                                               double txPowerW, double guardBandwidth)
+< {
+<   NS_LOG_FUNCTION (centerFrequency << channelWidth << txPowerW << guardBandwidth);
+<   double bandBandwidth = 5156250;   /* DMG OFDM subcarrier frequency spacing 5.15625 MHz(2640 MHz/512) */
+<   Ptr<SpectrumValue> c = Create<SpectrumValue> (GetSpectrumModel (centerFrequency, channelWidth, bandBandwidth, guardBandwidth));
+<   Values::iterator vit = c->ValuesBegin ();
+<   Bands::const_iterator bit = c->ConstBandsBegin ();
+<   //TR++ TODO VINCENT Condition removed - To check
+<   // uint32_t nGuardBands = static_cast<uint32_t>(((2 * guardBandwidth * 1e6) / bandBandwidth) + 0.5);
+<   //uint32_t nAllocatedBands = static_cast<uint32_t>(((channelWidth * 1e6) / bandBandwidth) + 0.5);
+<   //NS_ASSERT_MSG (c->GetSpectrumModel ()->GetNumBands () == (nAllocatedBands + nGuardBands + 1), "Unexpected number of bands " << c->GetSpectrumModel ()->GetNumBands ());
+<   double txPowerPerBand;
+< 
+<   switch (channelWidth)
+<     {
+<     case 2160:
+<       //TR++ PHY
+<       // Normally, there are 355 subcarriers for 802.11ad
+<       // 16 pilots, 3 DC and 336 data
+<       // The pilots are located on carriers 10, 30, 50, 70, 90, 110, 130 and 150,
+<       // The three DC carriers are located in the middle (-1, 0 and +1) and are suppressed (nulled)
+<       // TODO VINCENT Implement the null DC
+<       NS_ASSERT_MSG (c->GetSpectrumModel ()->GetNumBands () == 355, "Unexpected number of bands");
+<       txPowerPerBand = txPowerW / 355;
+< 
+<       for (size_t i = 0; i < c->GetSpectrumModel ()->GetNumBands (); i++, vit++, bit++)
+<         {
+<           if ((i >= 0 && i <= 9) || (i >= 11 && i <= 29) ||
+<               (i >= 31 && i <= 49) || (i >= 51 && i <= 69) ||
+<               (i >= 71 && i <= 89) || (i >= 91 && i <= 109) ||
+<               (i >= 111 && i <= 129) || (i >= 131 && i <= 149) ||
+<               (i >= 151))
+<             {
+<               *vit = txPowerPerBand / (bit->fh - bit->fl);
+<             }
+<           else if ((i == 0) || (i == 1))
+<             {
+<               /* Hany: Put zero power in DC Subcarriers */
+<               *vit = 0;
+<             }
+<           else
+<             {
+<               //TODO VINCENT Check this as normally, I guess pilot and DC band should be managed differently
+<               *vit = txPowerPerBand / (bit->fh - bit->fl);
+<             }
+<         }
+<       break;
+<     }
+<   NS_LOG_DEBUG ("Integrated power " << Integral (*c));
+<   NS_ASSERT_MSG (std::abs (txPowerW - Integral (*c)) < 1e-6, "Power allocation failed");
+<   return c;
+< }
+< //TR--
+< 
+519c427
+< WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, double noiseFigure, uint16_t guardBandwidth)
+---
+> WifiSpectrumValueHelper::CreateNoisePowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, double noiseFigure, uint16_t guardBandwidth)
+533c441
+<   double kT_W_Hz = DbmToW (kT_dBm_Hz);
+---
+>   double kT_W_Hz = std::pow (10.0, (kT_dBm_Hz - 30) / 10.0);
+544c452
+< WifiSpectrumValueHelper::CreateRfFilter (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, uint16_t guardBandwidth)
+---
+> WifiSpectrumValueHelper::CreateRfFilter (uint32_t centerFrequency, uint16_t channelWidth, double bandGranularity, uint16_t guardBandwidth)
+546,547c454,455
+<   NS_LOG_FUNCTION (centerFrequency << channelWidth << bandBandwidth << guardBandwidth);
+<   Ptr<SpectrumValue> c = Create <SpectrumValue> (GetSpectrumModel (centerFrequency, channelWidth, bandBandwidth, guardBandwidth));
+---
+>   NS_LOG_FUNCTION (centerFrequency << channelWidth << bandGranularity << guardBandwidth);
+>   Ptr<SpectrumValue> c = Create <SpectrumValue> (GetSpectrumModel (centerFrequency, channelWidth, bandGranularity, guardBandwidth));
+550a459
+>   uint32_t bandBandwidth = static_cast<uint32_t> (bandGranularity);
+552c461
+<   if (numBandsInFilter % 2 == 0)
+---
+>   if (channelWidth % bandBandwidth != 0)
+570,674d478
+< //// WIGIG ////
+< 
+< void
+< WifiSpectrumValueHelper::CreateSpectrumMaskForWigig (Ptr<SpectrumValue> c, std::vector <StartStop> allocatedSubBands, StartStop maskBand,
+<                                                      double txPowerPerBandW, uint32_t nGuardBands,
+<                                                      uint32_t flatRegionWidth, uint32_t innerSlopeWidth,
+<                                                      uint32_t middleSlopeWidth, uint32_t outerSlopeWidth)
+< {
+<     NS_LOG_FUNCTION (c << allocatedSubBands.front ().first << allocatedSubBands.back ().second
+<                      << maskBand.first << maskBand.second << txPowerPerBandW << nGuardBands << innerSlopeWidth);
+< 
+<     uint32_t numSubBands = allocatedSubBands.size ();
+<     uint32_t numBands = c->GetSpectrumModel ()->GetNumBands ();
+<     uint32_t numMaskBands = maskBand.second - maskBand.first + 1;
+<     NS_ASSERT (numSubBands && numBands && numMaskBands);
+<     NS_LOG_LOGIC ("Power per band " << txPowerPerBandW << "W");
+< 
+<     // Different power levels
+<     double txPowerRefDbm = (10.0 * std::log10 (txPowerPerBandW * 1000.0));
+<     double txPowerInnerBandMinDbm = txPowerRefDbm - 17;
+<     double txPowerMiddleBandMinDbm = txPowerRefDbm - 22;
+<     double txPowerOuterBandMinDbm = txPowerRefDbm - 30; //TODO also take into account dBm/MHz constraints
+< 
+<     // Different widths (in number of bands)
+<     StartStop outerBandLeft (maskBand.first,
+<                              maskBand.first + outerSlopeWidth);
+<     StartStop middleBandLeft (outerBandLeft.second + 1,
+<                               outerBandLeft.second + middleSlopeWidth);
+<     StartStop innerBandLeft (middleBandLeft.second + 1,
+<                              middleBandLeft.second + innerSlopeWidth);
+<     StartStop flatRegion (innerBandLeft.second + 1,
+<                           innerBandLeft.second + flatRegionWidth * 2);
+<     StartStop innerBandRight (flatRegion.second + 1,
+<                               flatRegion.second + innerSlopeWidth);
+<     StartStop middleBandRight (innerBandRight.second + 1,
+<                                innerBandRight.second + middleSlopeWidth);
+<     StartStop outerBandRight (middleBandRight.second + 1,
+<                               middleBandRight.second + outerSlopeWidth);
+< 
+<     NS_LOG_DEBUG ("outerBandLeft=[" << outerBandLeft.first << ";" << outerBandLeft.second << "] " <<
+<                   "middleBandLeft=[" << middleBandLeft.first << ";" << middleBandLeft.second << "] " <<
+<                   "innerBandLeft=[" << innerBandLeft.first << ";" << innerBandLeft.second << "] " <<
+<                   "flatRegion=[" << flatRegion.first << ";" << flatRegion.second << "] " <<
+<                   "subBands=[" << allocatedSubBands.front ().first << ";" << allocatedSubBands.back ().second << "] " <<
+<                   "innerBandRight=[" << innerBandRight.first << ";" << innerBandRight.second << "] " <<
+<                   "middleBandRight=[" << middleBandRight.first << ";" << middleBandRight.second << "] " <<
+<                   "outerBandRight=[" << outerBandRight.first << ";" << outerBandRight.second << "] ");
+< 
+<     // Different slopes
+<     double innerSlope = 17.0 / innerSlopeWidth;   // 0 to 17 dBr
+<     double middleSlope = 5.0 / middleSlopeWidth;  // 17 to 22 dBr
+<     double outerSlope = 8.0 / outerSlopeWidth;    // 22 to 30 dBr
+< 
+<     // Build spectrum mask
+<     Values::iterator vit = c->ValuesBegin ();
+<     Bands::const_iterator bit = c->ConstBandsBegin ();
+<     double txPowerW = 0.0;
+< 
+<     for (size_t i = 0; i < numBands; i++, vit++, bit++)
+<       {
+<         if (i < maskBand.first || i > maskBand.second) //outside the spectrum mask
+<           {
+<             txPowerW = 0.0;
+<           }
+<         else if (i <= outerBandLeft.second && i >= outerBandLeft.first) //better to put greater first (less computation)
+<           {
+<             txPowerW = DbmToW (txPowerOuterBandMinDbm + ((i - outerBandLeft.first) * outerSlope));
+<           }
+<         else if (i <= middleBandLeft.second && i >= middleBandLeft.first)
+<           {
+<             txPowerW = DbmToW (txPowerMiddleBandMinDbm + ((i - middleBandLeft.first) * middleSlope));
+<           }
+<         else if (i <= innerBandLeft.second && i >= innerBandLeft.first)
+<           {
+<             txPowerW = DbmToW (txPowerInnerBandMinDbm + ((i - innerBandLeft.first) * innerSlope));
+<           }
+<         else if (i <= flatRegion.second && i >= flatRegion.first)
+<           {
+<             txPowerW = txPowerPerBandW;
+<           }
+<         else if (i <= innerBandRight.second && i >= innerBandRight.first)
+<           {
+<             txPowerW = DbmToW (txPowerRefDbm - ((i - innerBandRight.first + 1) * innerSlope)); // +1 so as to be symmetric with left slope
+<           }
+<         else if (i <= middleBandRight.second && i >= middleBandRight.first)
+<           {
+<             txPowerW = DbmToW (txPowerInnerBandMinDbm - ((i - middleBandRight.first + 1) * middleSlope)); // +1 so as to be symmetric with left slope
+<           }
+<         else if (i <= outerBandRight.second && i >= outerBandRight.first)
+<           {
+<             txPowerW = DbmToW (txPowerMiddleBandMinDbm - ((i - outerBandRight.first + 1) * outerSlope)); // +1 so as to be symmetric with left slope
+<           }
+<         else
+<           {
+<             NS_FATAL_ERROR ("Should have handled all cases, " << i);
+<           }
+<         double txPowerDbr = 10 * std::log10 (txPowerW / txPowerPerBandW);
+<         NS_LOG_LOGIC (uint32_t (i) << " -> " << txPowerDbr);
+<         *vit = txPowerW / (bit->fh - bit->fl);
+<       }
+<     NS_LOG_INFO ("Added signal power to subbands " << allocatedSubBands.front ().first << "-" << allocatedSubBands.back ().second);
+< }
+< 
+< //// WIGIG ////
+< 
+819c623,624
+<   return std::pow (10.0, 0.1 * (dBm - 30.0));
+---
+>   double mW = std::pow (10.0, dBm / 10.0);
+>   return mW / 1000.0;
+diff ../../NS3-WiGig/src/spectrum/model/wifi-spectrum-value-helper.h ../../ns-3-dev-git/src/spectrum/model/wifi-spectrum-value-helper.h
+60c60
+<   static Ptr<SpectrumModel> GetSpectrumModel (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, uint16_t guardBandwidth);
+---
+>   static Ptr<SpectrumModel> GetSpectrumModel (uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth);
+126c126
+<   static Ptr<SpectrumValue> CreateNoisePowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, double noiseFigure, uint16_t guardBandwidth);
+---
+>   static Ptr<SpectrumValue> CreateNoisePowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, double noiseFigure, uint16_t guardBandwidth);
+148,172c148
+<   static Ptr<SpectrumValue> CreateRfFilter (uint32_t centerFrequency, uint16_t channelWidth, uint32_t bandBandwidth, uint16_t guardBandwidth);
+< 
+<   //// WIGIG ///
+<   /**
+<    * CreateWigigSingleCarrierTxPowerSpectralDensity
+<    * \param centerFrequency center frequency (MHz)
+<    * \param channelWidth channel width (MHz)
+<    * \param txPowerW  transmit power (W) to allocate
+<    * \param guardBandwidth width of the guard band (MHz)
+<    * \return a pointer to a newly allocated SpectrumValue representing the Wigig Contrn and SC Transmit Power Spectral Density in W/Hz for each Band.
+<    */
+<   static Ptr<SpectrumValue> CreateWigigSingleCarrierTxPowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth,
+<                                                                             double txPowerW, double guardBandwidth,
+<                                                                             uint8_t ncb = 1);
+<   /**
+<    * CreateDmgOfdmTxPowerSpectralDensity
+<    * \param centerFrequency center frequency (MHz)
+<    * \param channelWidth channel width (MHz)
+<    * \param txPowerW  transmit power (W) to allocate
+<    * \param guardBandwidth width of the guard band (MHz)
+<    * \return a pointer to a newly allocated SpectrumValue representing the Wigig OFDM Transmit Power Spectral Density in W/Hz for each Band.
+<    */
+<   static Ptr<SpectrumValue> CreateDmgOfdmTxPowerSpectralDensity (uint32_t centerFrequency, uint16_t channelWidth,
+<                                                                  double txPowerW, double guardBandwidth);
+<   //// WIGIG ///
+---
+>   static Ptr<SpectrumValue> CreateRfFilter (uint32_t centerFrequency, uint16_t channelWidth, double bandBandwidth, uint16_t guardBandwidth);
+217,221d192
+< 
+<   static void CreateSpectrumMaskForWigig (Ptr<SpectrumValue> c, std::vector <StartStop> allocatedSubBands, StartStop maskBand,
+<                                           double txPowerPerBandW, uint32_t nGuardBands,
+<                                           uint32_t flatJunctionWidth, uint32_t innerSlopeWidth,
+<                                           uint32_t middleSlopeWidth, uint32_t outerSlopeWidth);

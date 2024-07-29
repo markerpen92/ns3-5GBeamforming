@@ -1,0 +1,5 @@
+diff ../../NS3-WiGig/src/flow-monitor/examples/wifi-olsr-flowmon.py ../../ns-3-dev-git/src/flow-monitor/examples/wifi-olsr-flowmon.py
+35c35
+< DISTANCE = 20 # (m)
+---
+> DISTANCE = 100 # (m)

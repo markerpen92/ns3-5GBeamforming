@@ -1,0 +1,2962 @@
+diff ../../NS3-WiGig/src/internet/model/arp-cache.cc ../../ns-3-dev-git/src/internet/model/arp-cache.cc
+439,451d438
+< 
+< void
+< ArpCache::Entry::MarkWaitReply (Ptr<Packet> waiting)
+< {
+<   NS_LOG_FUNCTION (this << waiting);
+<   NS_ASSERT (m_state == ALIVE || m_state == DEAD);
+<   NS_ASSERT (m_pending.empty ());
+<   m_state = WAIT_REPLY;
+<   m_pending.push_back (std::make_pair (waiting, Ipv4Header ()));
+<   UpdateSeen ();
+<   m_arp->StartWaitReplyTimer ();
+< }
+< 
+470a458,463
+> }
+> void 
+> ArpCache::Entry::SetMacAddresss (Address macAddress)
+> {
+>   NS_LOG_FUNCTION (this);
+>   m_macAddress = macAddress;
+diff ../../NS3-WiGig/src/internet/model/arp-cache.h ../../ns-3-dev-git/src/internet/model/arp-cache.h
+207,210d206
+<     void MarkWaitReply (Ptr<Packet> waiting);
+<     /**
+<      * \param waiting
+<      */
+246a243,248
+>     /**
+>      * \param macAddress The MacAddress for this entry
+>      * \deprecated This (misspelled) method will go away in future versions of ns-3, in favor of the correctly spelled version.
+>      */
+>     NS_DEPRECATED
+>     void SetMacAddresss (Address macAddress);
+diff ../../NS3-WiGig/src/internet/model/arp-l3-protocol.cc ../../ns-3-dev-git/src/internet/model/arp-l3-protocol.cc
+109c109
+<  * This method is called by AggregateObject and completes the aggregation
+---
+>  * This method is called by AddAgregate and completes the aggregation
+231c231
+<                arp.GetDestinationIpv4Address () == cache->GetInterface ()->GetAddress (i).GetLocal () &&
+---
+>                arp.GetDestinationIpv4Address ().IsEqual (cache->GetInterface ()->GetAddress (i).GetLocal ()) &&
+372a373,374
+>   Ipv4Header header;
+>   header.SetDestination (to);
+diff ../../NS3-WiGig/src/internet/model/global-route-manager-impl.cc ../../ns-3-dev-git/src/internet/model/global-route-manager-impl.cc
+316c316
+<   //NS_ASSERT_MSG (m_ecmpRootExits.size () <= 1, "Assumed there is at most one exit from the root to this vertex");
+---
+>   NS_ASSERT_MSG (m_ecmpRootExits.size () <= 1, "Assumed there is at most one exit from the root to this vertex");
+diff ../../NS3-WiGig/src/internet/model/global-router-interface.cc ../../ns-3-dev-git/src/internet/model/global-router-interface.cc
+21,22d20
+< #include <iostream>
+< 
+915c913
+<   Ipv4Mask maskLocal = ipv4Local->GetAddress (interfaceLocal, 0).GetMask ();
+---
+>   Ipv4Mask maskLocal = ipv4Local->GetAddress (interfaceLocal, 0).GetMask ();;
+diff ../../NS3-WiGig/src/internet/model/icmpv4-l4-protocol.cc ../../ns-3-dev-git/src/internet/model/icmpv4-l4-protocol.cc
+72c72
+<  * This method is called by AggregateObject and completes the aggregation
+---
+>  * This method is called by AddAgregate and completes the aggregation
+diff ../../NS3-WiGig/src/internet/model/icmpv6-l4-protocol.cc ../../ns-3-dev-git/src/internet/model/icmpv6-l4-protocol.cc
+34a35
+> #include "ipv6-raw-socket-factory-impl.h"
+101,106d101
+< TypeId Icmpv6L4Protocol::GetInstanceTypeId () const
+< {
+<   NS_LOG_FUNCTION (this);
+<   return Icmpv6L4Protocol::GetTypeId ();
+< }
+< 
+153a149,150
+>               Ptr<Ipv6RawSocketFactoryImpl> rawFactory = CreateObject<Ipv6RawSocketFactoryImpl> ();
+>               ipv6->AggregateObject (rawFactory);
+167,172d163
+< Ptr<Node> Icmpv6L4Protocol::GetNode ()
+< {
+<   NS_LOG_FUNCTION (this);
+<   return m_node;
+< }
+< 
+211c202
+<   
+---
+> 
+575,578c566
+<   NdiscCache::Ipv6PayloadHeaderPair p = ForgeNA (target.IsLinkLocal () ? interface->GetLinkLocalAddress ().GetAddress () : ifaddr.GetAddress (),
+<                                                  src.IsAny () ? dst : src, // DAD replies must go to the multicast group it was sent to.
+<                                                  &hardwareAddress,
+<                                                  flags );
+---
+>   NdiscCache::Ipv6PayloadHeaderPair p = ForgeNA (target.IsLinkLocal () ? interface->GetLinkLocalAddress ().GetAddress () : ifaddr.GetAddress (), src.IsAny () ? Ipv6Address::GetAllNodesMulticast () : src, &hardwareAddress, flags );
+804c792
+<           entry->SetRouter (redirTarget != redirDestination);
+---
+>           entry->SetRouter (!redirTarget.IsEqual (redirDestination) ? true : false);
+829c817
+<   if (redirTarget == redirDestination)
+---
+>   if (redirTarget.IsEqual (redirDestination))
+915c903
+<   SocketIpv6HopLimitTag tag;
+---
+>   SocketIpTtlTag tag;
+918c906
+<   tag.SetHopLimit (ttl);
+---
+>   tag.SetTtl (ttl);
+935c923
+<   SocketIpv6HopLimitTag tag;
+---
+>   SocketIpTtlTag tag;
+946c934
+<       tag.SetHopLimit (ttl);
+---
+>       tag.SetTtl (ttl);
+1258a1247,1252
+>   /* if the source is unspec, multicast the NA to all-nodes multicast */
+>   if (src == Ipv6Address::GetAny ())
+>     {
+>       dst = Ipv6Address::GetAllNodesMulticast ();
+>     }
+> 
+1286c1280
+<   NS_ASSERT_MSG (false, "Icmpv6L4Protocol can not find a NDIS Cache for device " << device);
+---
+>   NS_ASSERT (false);
+diff ../../NS3-WiGig/src/internet/model/icmpv6-l4-protocol.h ../../ns-3-dev-git/src/internet/model/icmpv6-l4-protocol.h
+60d59
+<   virtual TypeId GetInstanceTypeId (void) const;
+77c76
+<   uint8_t GetMaxUnicastSolicit () const;
+---
+>   uint8_t GetMaxUnicastSolicit () const;;
+83c82
+<   Time GetReachableTime () const;
+---
+>   Time GetReachableTime () const;;
+120,126c119
+<    * \brief Get the node.
+<    * \return node
+<    */
+<   Ptr<Node> GetNode ();
+< 
+<   /**
+<    * \brief This method is called by AggregateObject and completes the aggregation
+---
+>    * \brief This method is called by AddAgregate and completes the aggregation
+209c202
+<   virtual void SendNS (Ipv6Address src, Ipv6Address dst, Ipv6Address target, Address hardwareAddress);
+---
+>   void SendNS (Ipv6Address src, Ipv6Address dst, Ipv6Address target, Address hardwareAddress);
+355c348
+<    * \param dst destination address (usually ff02::2 i.e all-routers)
+---
+>    * \param dst destination address (usealy ff02::2 i.e all-routers)
+366c359
+<   virtual Ptr<NdiscCache> CreateCache (Ptr<NetDevice> device, Ptr<Ipv6Interface> interface);
+---
+>   Ptr<NdiscCache> CreateCache (Ptr<NetDevice> device, Ptr<Ipv6Interface> interface);
+389a383
+> private:
+391a386,431
+> 
+>   /**
+>    * \brief Neighbor Discovery node constants: max multicast solicitations.
+>    */
+>   uint8_t m_maxMulticastSolicit;
+> 
+>   /**
+>    * \brief Neighbor Discovery node constants: max unicast solicitations.
+>    */
+>   uint8_t m_maxUnicastSolicit;
+> 
+>   /**
+>    * \brief Neighbor Discovery node constants: reachable time.
+>    */
+>   Time m_reachableTime;
+> 
+>   /**
+>    * \brief Neighbor Discovery node constants: retransmission timer.
+>    */
+>   Time m_retransmissionTime;
+> 
+>   /**
+>    * \brief Neighbor Discovery node constants: delay for the first probe.
+>    */
+>   Time m_delayFirstProbe;
+> 
+>   /**
+>    * \brief The node.
+>    */
+>   Ptr<Node> m_node;
+> 
+>   /**
+>    * \brief A list of cache by device.
+>    */
+>   CacheList m_cacheList;
+> 
+>   /**
+>    * \brief Always do DAD ?
+>    */
+>   bool m_alwaysDad;
+> 
+>   /**
+>    * \brief Random jitter before sending solicitations
+>    */
+>   Ptr<RandomVariableStream> m_solicitationJitter;
+> 
+516,561d555
+< 
+<   /**
+<    * \brief Always do DAD ?
+<    */
+<   bool m_alwaysDad;
+< 
+<   /**
+<    * \brief A list of cache by device.
+<    */
+<   CacheList m_cacheList;
+< 
+< private:
+<   /**
+<    * \brief Neighbor Discovery node constants: max multicast solicitations.
+<    */
+<   uint8_t m_maxMulticastSolicit;
+< 
+<   /**
+<    * \brief Neighbor Discovery node constants: max unicast solicitations.
+<    */
+<   uint8_t m_maxUnicastSolicit;
+< 
+<   /**
+<    * \brief Neighbor Discovery node constants: reachable time.
+<    */
+<   Time m_reachableTime;
+< 
+<   /**
+<    * \brief Neighbor Discovery node constants: retransmission timer.
+<    */
+<   Time m_retransmissionTime;
+< 
+<   /**
+<    * \brief Neighbor Discovery node constants: delay for the first probe.
+<    */
+<   Time m_delayFirstProbe;
+< 
+<   /**
+<    * \brief The node.
+<    */
+<   Ptr<Node> m_node;
+< 
+<   /**
+<    * \brief Random jitter before sending solicitations
+<    */
+<   Ptr<RandomVariableStream> m_solicitationJitter;
+diff ../../NS3-WiGig/src/internet/model/ipv4-global-routing.cc ../../ns-3-dev-git/src/internet/model/ipv4-global-routing.cc
+138,141d137
+< bool times[10] = {0};
+< Ipv4Address address_list[10];
+< bool RoundRobin = true;
+< 
+159c155
+<       if ((*i)->GetDest () == dest)
+---
+>       if ((*i)->GetDest ().IsEqual (dest)) 
+226,228c222,223
+<       uint32_t selectIndex = 0;
+< 
+<         if (m_randomEcmpRouting && RoundRobin == 0)
+---
+>       uint32_t selectIndex;
+>       if (m_randomEcmpRouting)
+234,301c229
+<           if (allRoutes.size () == 1)
+<           {
+<             selectIndex = 0;
+<           }
+<           else
+<           {
+<             if (dest == address_list[0] && dest!= "10.1.1.1") // packet
+<               {
+<                 selectIndex = pri[0] > -1 ? !(pri[0]%2) : 0 ; //pri is global
+<                 // selectIndex = times[0];
+<                 // times[0] = times[0]^1;
+<               }
+<               else if (dest == address_list[1] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[1] > -1 ? !(pri[1]%2) : 0 ; //pri is global
+<                 // selectIndex = times[1];
+<                 // times[1] = times[1]^1;
+<               }
+<               else if (dest == address_list[2] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[2] > -1 ? !(pri[2]%2) : 0 ; //pri is global
+<                 // selectIndex = times[2];
+<                 // times[2] = times[2]^1;
+<               }
+<               else if (dest == address_list[3] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[3] > -1 ? !(pri[3]%2) : 0 ; //pri is global
+<                 // selectIndex = times[3];
+<                 // times[3] = times[3]^1;
+<               }
+<                else if (dest == address_list[4] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[4] > -1 ? !(pri[4]%2) : 0 ; //pri is global
+<                 // selectIndex = times[4];
+<                 // times[4] = times[4]^1;
+<               }
+<               else if (dest == address_list[5] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[5] > -1 ? !(pri[5]%2) : 0 ; //pri is global
+<                 // selectIndex = times[5];
+<                 // times[5] = times[5]^1;
+<               }
+<               else if (dest == address_list[6] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[6] > -1 ? !(pri[6]%2) : 0 ; //pri is global
+<                 // selectIndex = times[6];
+<                 // times[6] = times[6]^1;
+<               }
+<               else if (dest == address_list[7] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[7] > -1 ? !(pri[7]%2) : 0 ; //pri is global
+<                 // selectIndex = times[7];
+<                 // times[7] = times[7]^1;
+<               }
+<               else if (dest == "10.1.1.1")//ack
+<               {
+<                 selectIndex = times[8];
+<                 times[8] = times[8]^1;
+<               }
+<               else 
+<               {
+<                 // selectIndex = pri[3] > -1 ? pri[3] : 0 ; //pri is global
+<                 selectIndex = times[9];
+<                 times[9] = times[9]^1;
+<                 // selectIndex = 0;
+<               }
+<               // std::cout << selectIndex << " \n";
+<           }
+---
+>           selectIndex = 0;
+480c408
+<       << ", Local time: " << m_ipv4->GetObject<Node> ()->GetLocalTime ().As (unit)
+---
+>       << ", Local time: " << GetObject<Node> ()->GetLocalTime ().As (unit)
+555d482
+< 
+564,582d490
+<   // MengHua{
+<   for (int list = 0; list < 10; list++) //regist New IP
+<   {
+<     if (address_list[list] != header.GetDestination() && address_list[list] == "102.102.102.102")  
+<     {
+< 
+<       address_list[list] = header.GetDestination();
+<       rout = list;
+<       // std::cout << list  << "  "<< header.GetDestination()<< "\n";
+<       break;
+<     }
+<     else if (address_list[list] == header.GetDestination())
+<     {
+<       rout = list;
+<       break;
+<     }
+<   }
+<   pri[rout] = p->GetSize () == 1432 ? header.GetPri() : -1;
+<   // }MengHua
+612d519
+<   // Ptr<Ipv4Route> rtentry = LookupGlobal (header.GetDestination ());
+diff ../../NS3-WiGig/src/internet/model/ipv4-global-routing.h ../../ns-3-dev-git/src/internet/model/ipv4-global-routing.h
+231,234d230
+<   int pri[10];
+<   int rout = 0;
+< 
+< 
+274,275d269
+< 
+< 
+diff ../../NS3-WiGig/src/internet/model/ipv4-header.cc ../../ns-3-dev-git/src/internet/model/ipv4-header.cc
+44,49c44
+<     m_headerSize(5*4),
+<     //---NC header---
+<     NcPri (0),
+<     EncodedNumber (0),
+<     EncodedLabel (0),
+<     EncodedCoeffVector (0)
+---
+>     m_headerSize(5*4)
+387,442d381
+< //--------NC Function--------
+< std::vector <uint8_t>
+< Ipv4Header::GetReceivedHeaderCoeffVector() const
+< { 
+<   return EncodedCoeffVector;
+< }
+< void 
+< Ipv4Header::SetEncodedLabel(uint32_t label)
+< {
+<   EncodedLabel = label;
+<   NS_LOG_FUNCTION(this << " SetNcLabel:"<<label);
+< }
+< 
+< uint32_t
+< Ipv4Header::GetEncodedLabel() const
+< { 
+<   NS_LOG_FUNCTION(this << " GetNcLabel:"<< EncodedLabel);
+<   return EncodedLabel;
+< }
+< void 
+< Ipv4Header::SetEncodedPacketNumber(uint8_t numbers)
+< {
+<   EncodedNumber = numbers;
+< }
+< 
+< uint8_t 
+< Ipv4Header::GetEncodedPacketNumber() const
+< {
+<   return EncodedNumber;
+< }
+< 
+< void 
+< Ipv4Header::SetPri(uint8_t pri)
+< {
+<   NcPri = pri;
+< }
+< 
+< uint8_t 
+< Ipv4Header::GetPri() const
+< {
+<   return NcPri;
+< }
+< 
+< void 
+< Ipv4Header::SetEncodedCoeffVector(const std::vector<uint8_t>& vector)
+< { 
+<   EncodedCoeffVector = vector;
+< }
+< 
+< const std::vector<uint8_t>& 
+< Ipv4Header::GetEncodedCoeffVector() const
+< {
+<   return EncodedCoeffVector;
+< }
+< 
+< 
+448,458c387,388
+<   uint8_t verIhl;
+<   if (m_ttl > 64 )
+<   {
+<     verIhl = (4 << 4) | (10);
+<   }
+<   else
+<   {
+<     verIhl = (4 << 4) | (5);
+<   }
+<   // verIhl = (4 << 4) | (5);
+<   // verIhl = (4 << 4) | (10);
+---
+> 
+>   uint8_t verIhl = (4 << 4) | (5);
+461,470c391
+<   if (m_ttl > 64 )
+<   {
+<     i.WriteHtonU16 (m_payloadSize + 10*4);
+<   }
+<   else
+<   {
+<     i.WriteHtonU16 (m_payloadSize + 5*4);
+<   }
+<   // i.WriteHtonU16 (m_payloadSize + 5*4);
+<   // i.WriteHtonU16 (m_payloadSize + 10*4);
+---
+>   i.WriteHtonU16 (m_payloadSize + 5*4);
+500,535d420
+< //-----NC Serialize-----
+<   if (m_ttl > 64 )
+<   {
+<     std::vector <uint8_t> headerVector;
+<     for(uint8_t i = 0 ; i < 14 ; i++)
+<     {   
+<       if (i < EncodedCoeffVector.size())
+<       {
+<         headerVector.push_back(EncodedCoeffVector[i]);
+<       }
+<       else
+<       {
+<         headerVector.push_back(0);
+<       }
+<     }
+<     i.WriteU32(EncodedLabel);
+<     i.WriteU8(EncodedNumber);
+<     i.WriteU8(NcPri);
+<     if(EncodedNumber)
+<     {
+<       for(uint8_t index = 0; index < headerVector.size();index++)
+<       {
+<         i.WriteU8(headerVector[index]);
+<       }
+<       // for(uint8_t index = 0; index < 14 ;index++)
+<       // {
+<       //   i.WriteU8(EncodedCoeffVector[index]);
+<       // }
+<     }
+< 
+<   }
+< 
+< 
+< 
+< 
+< 
+588,605d472
+<   if (m_ttl > 64)
+<   {
+<     EncodedLabel = i.ReadU32();
+<     EncodedNumber = i.ReadU8();
+<     NcPri = i.ReadU8();
+< 
+<     int temp;
+< 
+<     if(EncodedNumber)
+<     {
+<       for(uint8_t index = 0; index < 14 ;index++)
+<       {
+<         temp = i.ReadU8();
+<         EncodedCoeffVector.push_back(temp);
+<       }
+<     }
+<   }
+< 
+diff ../../NS3-WiGig/src/internet/model/ipv4-header.h ../../ns-3-dev-git/src/internet/model/ipv4-header.h
+58,71d57
+<   
+< 	void SetEncodedCoeffVector(const std::vector<uint8_t>& vector);
+< 	const std::vector<uint8_t>& GetEncodedCoeffVector() const;
+< 
+< 	std::vector <uint8_t> GetReceivedHeaderCoeffVector() const;
+< 
+< 	void SetEncodedLabel (uint32_t label);
+< 	uint32_t GetEncodedLabel() const;
+< 
+< 	void SetPri(uint8_t pri);
+< 	uint8_t GetPri() const;
+< 
+< 	void SetEncodedPacketNumber(uint8_t numbers);
+< 	uint8_t GetEncodedPacketNumber() const;
+75,82c61,65
+<    * \brief DiffServ codepoints
+<    *
+<    * The values correspond to the 6-bit DSCP codepoint within the 8-bit
+<    * DS field defined in \RFC {2474}.  ECN bits are separately set with the
+<    * SetEcn() method.  Codepoints are defined in
+<    * Assured Forwarding (AF) \RFC{2597},
+<    * Expedited Forwarding (EF) \RFC{2598}, and
+<    * Default and Class Selector (CS) \RFC{2474}.
+---
+>    * \brief DiffServ Code Points
+>    * Code Points defined in
+>    * Assured Forwarding (AF) \RFC{2597}
+>    * Expedited Forwarding (EF) \RFC{2598}
+>    * Default and Class Selector (CS) \RFC{2474}
+277,282d259
+< 
+< 	uint8_t NcPri;
+< 	uint8_t EncodedNumber;
+< 	uint32_t EncodedLabel;
+< 	std::vector <uint8_t> EncodedCoeffVector;
+< 	std::vector <uint8_t> ReceivedHeaderCoeffVector;
+diff ../../NS3-WiGig/src/internet/model/ipv4-interface.h ../../ns-3-dev-git/src/internet/model/ipv4-interface.h
+172c172
+<    * \returns the number of Ipv4InterfaceAddress stored on this interface
+---
+>    * \returns the number of Ipv4InterfaceAddresss stored on this interface
+diff ../../NS3-WiGig/src/internet/model/ipv4-l3-protocol.cc ../../ns-3-dev-git/src/internet/model/ipv4-l3-protocol.cc
+30,31d29
+< #include "ns3/string.h"
+< #include "ns3/boolean.h"
+74,88d71
+<     .AddAttribute ("EnableDuplicatePacketDetection",
+<                    "Enable multicast duplicate packet detection based on RFC 6621",
+<                    BooleanValue (false),
+<                    MakeBooleanAccessor (&Ipv4L3Protocol::m_enableDpd),
+<                    MakeBooleanChecker ())
+<     .AddAttribute ("DuplicateExpire", "Expiration delay for duplicate cache entries",
+<                    TimeValue (MilliSeconds (1)),
+<                    MakeTimeAccessor (&Ipv4L3Protocol::m_expire),
+<                    MakeTimeChecker ())
+<     .AddAttribute ("PurgeExpiredPeriod", 
+<                    "Time between purges of expired duplicate packet entries, "
+<                    "0 means never purge",
+<                    TimeValue (Seconds (1)),
+<                    MakeTimeAccessor (&Ipv4L3Protocol::m_purge),
+<                    MakeTimeChecker (Seconds (0)))
+265c248
+<  * This method is called by AggregateObject and completes the aggregation
+---
+>  * This method is called by AddAgregate and completes the aggregation
+327,329c310
+<   m_fragments.clear ();
+<   m_timeoutEventList.clear ();
+<   if (m_timeoutEvent.IsRunning ())
+---
+>   for (MapFragmentsTimers_t::iterator it = m_fragmentsTimers.begin (); it != m_fragmentsTimers.end (); it++)
+331c312,315
+<       m_timeoutEvent.Cancel ();
+---
+>       if (it->second.IsRunning ())
+>         {
+>           it->second.Cancel ();
+>         }
+334,338c318,319
+<   if (m_cleanDpd.IsRunning ())
+<     {
+<       m_cleanDpd.Cancel ();
+<     }
+<   m_dups.clear ();
+---
+>   m_fragments.clear ();
+>   m_fragmentsTimers.clear ();
+409a391
+>   tc->SetupDevice (device);
+528c510
+<           NS_LOG_LOGIC ("For me (Ipv4Addr multicast address)");
+---
+>           NS_LOG_LOGIC ("For me (Ipv4Addr multicast address");
+604c586
+<       // packet->RemoveAtEnd (packet->GetSize () - ipHeader.GetPayloadSize ());
+---
+>       packet->RemoveAtEnd (packet->GetSize () - ipHeader.GetPayloadSize ());
+651,657d632
+<   if (m_enableDpd && ipHeader.GetDestination ().IsMulticast () && UpdateDuplicate (packet, ipHeader))
+<     {
+<       NS_LOG_LOGIC ("Dropping received packet -- duplicate.");
+<       m_dropTrace (ipHeader, packet, DROP_DUPLICATE, m_node->GetObject<Ipv4> (), interface);
+<       return;
+<     }
+< 
+953c928
+<   if (route->GetGateway () != Ipv4Address ("0.0.0.0"))
+---
+>   if (!route->GetGateway ().IsEqual (Ipv4Address ("0.0.0.0")))
+1058,1059c1033,1035
+<       // Do not reply to multicast/broadcast IP address
+<       if (ipHeader.GetDestination ().IsBroadcast () == false &&
+---
+>       // Do not reply to ICMP or to multicast/broadcast IP address 
+>       if (ipHeader.GetProtocol () != Icmpv4L4Protocol::PROT_NUMBER && 
+>           ipHeader.GetDestination ().IsBroadcast () == false &&
+1506c1482
+<       listFragments.emplace_back (fragment, fragmentHeader);
+---
+>       listFragments.push_back (Ipv4PayloadHeaderPair (fragment, fragmentHeader));
+1523c1499
+<   FragmentKey_t key;
+---
+>   std::pair<uint64_t, uint32_t> key;
+1537,1539c1513,1515
+< 
+<       FragmentsTimeoutsListI_t iter = SetTimeout (key, ipHeader, iif);
+<       fragments->SetTimeoutIter (iter);
+---
+>       m_fragmentsTimers[key] = Simulator::Schedule (m_fragmentExpirationTimeout,
+>                                                     &Ipv4L3Protocol::HandleFragmentsTimeout, this,
+>                                                     key, ipHeader, iif);
+1553d1528
+<       m_timeoutEventList.erase (fragments->GetTimeoutIter ());
+1555a1531,1536
+>       if (m_fragmentsTimers[key].IsRunning ())
+>         {
+>           NS_LOG_LOGIC ("Stopping WaitFragmentsTimer at " << Simulator::Now ().GetSeconds () << " due to complete packet");
+>           m_fragmentsTimers[key].Cancel ();
+>         }
+>       m_fragmentsTimers.erase (key);
+1700,1714c1681
+< Ipv4L3Protocol::Fragments::SetTimeoutIter (FragmentsTimeoutsListI_t iter)
+< {
+<   m_timeoutIter = iter;
+<   return;
+< }
+< 
+< Ipv4L3Protocol::FragmentsTimeoutsListI_t
+< Ipv4L3Protocol::Fragments::GetTimeoutIter ()
+< {
+<   return m_timeoutIter;
+< }
+< 
+< 
+< void
+< Ipv4L3Protocol::HandleFragmentsTimeout (FragmentKey_t key, Ipv4Header & ipHeader, uint32_t iif)
+---
+> Ipv4L3Protocol::HandleFragmentsTimeout (std::pair<uint64_t, uint32_t> key, Ipv4Header & ipHeader, uint32_t iif)
+1732a1700
+>   m_fragmentsTimers.erase (key);
+1734,1880d1701
+< 
+< bool
+< Ipv4L3Protocol::UpdateDuplicate (Ptr<const Packet> p, const Ipv4Header &header)
+< {
+<   NS_LOG_FUNCTION (this << p << header);
+< 
+<   // \todo RFC 6621 mandates SHA-1 hash.  For now ns3 hash should be fine.
+<   uint8_t proto = header.GetProtocol ();
+<   Ipv4Address src = header.GetSource ();
+<   Ipv4Address dst = header.GetDestination ();
+<   uint64_t id = header.GetIdentification ();
+< 
+<   // concat hash value onto id
+<   uint64_t hash = id << 32;
+<   if (header.GetFragmentOffset () || !header.IsLastFragment ())
+<     {
+<       // use I-DPD (RFC 6621, Sec 6.2.1)
+<       hash |= header.GetFragmentOffset ();
+<     }
+<   else
+<     {
+<       // use H-DPD (RFC 6621, Sec 6.2.2)
+< 
+<       // serialize packet
+<       Ptr<Packet> pkt = p->Copy ();
+<       pkt->AddHeader (header);
+< 
+<       std::ostringstream oss (std::ios_base::binary);
+<       pkt->CopyData (&oss, pkt->GetSize ());
+<       std::string bytes = oss.str ();
+< 
+<       NS_ASSERT_MSG (bytes.size () >= 20, "Degenerate header serialization");
+< 
+<       // zero out mutable fields
+<       bytes[1] = 0;               // DSCP / ECN
+<       bytes[6] = bytes[7] = 0;    // Flags / Fragment offset
+<       bytes[8] = 0;               // TTL
+<       bytes[10] = bytes[11] = 0;  // Header checksum
+<       if (header.GetSerializedSize () > 20)     // assume options should be 0'd
+<         {
+<           std::fill_n (bytes.begin () + 20, header.GetSerializedSize () - 20, 0);
+<         }
+<         
+<       // concat hash onto ID
+<       hash |= (uint64_t)Hash32 (bytes);
+<     }
+< 
+<   // set cleanup job for new duplicate entries
+<   if (!m_cleanDpd.IsRunning () && m_purge.IsStrictlyPositive ())
+<     {
+<       m_cleanDpd = Simulator::Schedule (m_expire, &Ipv4L3Protocol::RemoveDuplicates, this);
+<     }
+< 
+<   // assume this is a new entry
+<   DupTuple_t key {hash, proto, src, dst};
+<   NS_LOG_DEBUG ("Packet " << p->GetUid () << " key = (" <<
+<                 std::hex << std::get<0> (key) << ", " <<
+<                 std::dec << +std::get<1> (key) << ", " <<
+<                 std::get<2> (key) << ", " <<
+<                 std::get<3> (key) << ")");
+< 
+<   // place a new entry, on collision the existing entry iterator is returned
+<   DupMap_t::iterator iter;
+<   bool inserted, isDup;
+<   std::tie (iter, inserted) = m_dups.emplace (key, Seconds (0));
+<   isDup = !inserted && iter->second > Simulator::Now ();
+< 
+<   // set the expiration event
+<   iter->second = Simulator::Now () + m_expire;
+<   return isDup;
+< }
+< 
+< void
+< Ipv4L3Protocol::RemoveDuplicates (void)
+< {
+<   NS_LOG_FUNCTION (this);
+< 
+<   DupMap_t::size_type n = 0;
+<   Time expire = Simulator::Now ();
+<   auto iter = m_dups.cbegin ();
+<   while (iter != m_dups.cend ())
+<     {
+<       if (iter->second < expire)
+<         {
+<           NS_LOG_LOGIC ("Remove key = (" <<
+<                         std::hex << std::get<0> (iter->first) << ", " <<
+<                         std::dec << +std::get<1> (iter->first) << ", " <<
+<                         std::get<2> (iter->first) << ", " <<
+<                         std::get<3> (iter->first) << ")");
+<           iter = m_dups.erase (iter);
+<           ++n;
+<         }
+<       else
+<         {
+<           ++iter;
+<         }
+<     }
+<   
+<   NS_LOG_DEBUG ("Purged " << n << " expired duplicate entries out of " << (n + m_dups.size ()));
+<   
+<   // keep cleaning up if necessary
+<   if (!m_dups.empty () && m_purge.IsStrictlyPositive ())
+<     {
+<       m_cleanDpd = Simulator::Schedule (m_purge, &Ipv4L3Protocol::RemoveDuplicates, this);
+<     }
+< }
+< 
+< Ipv4L3Protocol::FragmentsTimeoutsListI_t
+< Ipv4L3Protocol::SetTimeout (FragmentKey_t key, Ipv4Header ipHeader, uint32_t iif)
+< {
+<   Time now = Simulator::Now () + m_fragmentExpirationTimeout;
+< 
+<   if (m_timeoutEventList.empty ())
+<     {
+<       m_timeoutEvent = Simulator::Schedule (m_fragmentExpirationTimeout, &Ipv4L3Protocol::HandleTimeout, this);
+<     }
+<   m_timeoutEventList.emplace_back (now, key, ipHeader, iif);
+< 
+<   Ipv4L3Protocol::FragmentsTimeoutsListI_t iter = --m_timeoutEventList.end();
+< 
+<   return (iter);
+< }
+< 
+< void
+< Ipv4L3Protocol::HandleTimeout (void)
+< {
+<   Time now = Simulator::Now ();
+< 
+<   while (!m_timeoutEventList.empty () && std::get<0> (*m_timeoutEventList.begin ()) == now)
+<     {
+<       HandleFragmentsTimeout (std::get<1> (*m_timeoutEventList.begin ()),
+<                               std::get<2> (*m_timeoutEventList.begin ()),
+<                               std::get<3> (*m_timeoutEventList.begin ()));
+<       m_timeoutEventList.pop_front ();
+<     }
+< 
+<   if (m_timeoutEventList.empty ())
+<     {
+<       return;
+<     }
+< 
+<   Time difference = std::get<0> (*m_timeoutEventList.begin ()) - now;
+<   m_timeoutEvent = Simulator::Schedule (difference, &Ipv4L3Protocol::HandleTimeout, this);
+< 
+<   return;
+< }
+< 
+diff ../../NS3-WiGig/src/internet/model/ipv4-l3-protocol.h ../../ns-3-dev-git/src/internet/model/ipv4-l3-protocol.h
+104,105c104
+<     DROP_FRAGMENT_TIMEOUT, /**< Fragment timeout exceeded */
+<     DROP_DUPLICATE  /**< Duplicate packet received */
+---
+>     DROP_FRAGMENT_TIMEOUT /**< Fragment timeout exceeded */
+233,234c232,233
+<       (const Ipv4Header & header, Ptr<const Packet> packet, uint32_t interface);
+< 
+---
+>     (const Ipv4Header & header, Ptr<const Packet> packet, uint32_t interface);
+>    
+246c245
+<       (Ptr<const Packet> packet, Ptr<Ipv4> ipv4, uint32_t interface);
+---
+>     (Ptr<const Packet> packet, Ptr<Ipv4> ipv4, uint32_t interface);
+260,263c259,262
+<       (const Ipv4Header & header, Ptr<const Packet> packet,
+<           DropReason reason, Ptr<Ipv4> ipv4,
+<           uint32_t interface);
+< 
+---
+>     (const Ipv4Header & header, Ptr<const Packet> packet,
+>      DropReason reason, Ptr<Ipv4> ipv4,
+>      uint32_t interface);
+>    
+312,318c311,317
+<       Ipv4Address source,
+<       Ipv4Address destination,
+<       uint8_t protocol,
+<       uint16_t payloadSize,
+<       uint8_t ttl,
+<       uint8_t tos,
+<       bool mayFragment);
+---
+>     Ipv4Address source,
+>     Ipv4Address destination,
+>     uint8_t protocol,
+>     uint16_t payloadSize,
+>     uint8_t ttl,
+>     uint8_t tos,
+>     bool mayFragment);
+418a418,425
+>    * \brief Process the timeout for packet fragments
+>    * \param key representing the packet fragments
+>    * \param ipHeader the IP header of the original packet
+>    * \param iif Input Interface
+>    */
+>   void HandleFragmentsTimeout ( std::pair<uint64_t, uint32_t> key, Ipv4Header & ipHeader, uint32_t iif);
+> 
+>   /**
+488,521d494
+<   /// Key identifying a fragmented packet
+<   typedef std::pair<uint64_t, uint32_t> FragmentKey_t;
+< 
+<   /// Container for fragment timeouts.
+<   typedef std::list< std::tuple <Time, FragmentKey_t, Ipv4Header, uint32_t > > FragmentsTimeoutsList_t;
+<   /// Container Iterator for fragment timeouts..
+<   typedef std::list< std::tuple <Time, FragmentKey_t, Ipv4Header, uint32_t > >::iterator FragmentsTimeoutsListI_t;
+< 
+<   /**
+<    * \brief Process the timeout for packet fragments
+<    * \param key representing the packet fragments
+<    * \param ipHeader the IP header of the original packet
+<    * \param iif Input Interface
+<    */
+<   void HandleFragmentsTimeout (FragmentKey_t key, Ipv4Header & ipHeader, uint32_t iif);
+< 
+<   /**
+<    * \brief Set a new timeout "event" for a fragmented packet
+<    * \param key the fragment identification
+<    * \param ipHeader the IPv4 header of the fragmented packet
+<    * \param iif input interface of the packet
+<    * \return an iterator to the inserted "event"
+<    */
+<   FragmentsTimeoutsListI_t SetTimeout (FragmentKey_t key, Ipv4Header ipHeader, uint32_t iif);
+< 
+<   /**
+<    * \brief Handles a fragmented packet timeout
+<    */
+<   void HandleTimeout (void);
+< 
+<   FragmentsTimeoutsList_t m_timeoutEventList;  //!< Timeout "events" container
+< 
+<   EventId m_timeoutEvent;  //!< Event for the next scheduled timeout
+< 
+527c500
+<   public:
+---
+> public:
+564,576c537
+<     /**
+<      * \brief Set the Timeout iterator.
+<      * \param iter The iterator.
+<      */
+<     void SetTimeoutIter (FragmentsTimeoutsListI_t iter);
+< 
+<     /**
+<      * \brief Get the Timeout iterator.
+<      * \returns The iterator.
+<      */
+<     FragmentsTimeoutsListI_t GetTimeoutIter ();
+< 
+<   private:
+---
+> private:
+587,590d547
+<     /**
+<      * \brief Timeout iterator to "event" handler
+<      */
+<     FragmentsTimeoutsListI_t m_timeoutIter;
+594c551,553
+<   typedef std::map< FragmentKey_t, Ptr<Fragments> > MapFragments_t;
+---
+>   typedef std::map< std::pair<uint64_t, uint32_t>, Ptr<Fragments> > MapFragments_t;
+>   /// Container of fragment timeout event, stored as pairs(src+dst addr, src+dst port) / EventId
+>   typedef std::map< std::pair<uint64_t, uint32_t>, EventId > MapFragmentsTimers_t;
+597a557
+>   MapFragmentsTimers_t m_fragmentsTimers; //!< Expiration events.
+599,622d558
+<   /// IETF RFC 6621, Section 6.2 de-duplication w/o IPSec
+<   /// RFC 6621 recommended duplicate packet tuple: {IPV hash, IP protocol, IP source address, IP destination address}
+<   typedef std::tuple <uint64_t, uint8_t, Ipv4Address, Ipv4Address> DupTuple_t;
+<   /// Maps packet duplicate tuple to expiration time
+<   typedef std::map<DupTuple_t, Time> DupMap_t;
+< 
+<   /**
+<    * Registers duplicate entry, return false if new
+<    * \param [in] p Possibly duplicate packet.
+<    * \param [in] header Packet \pname{p} header.
+<    * \return True if this packet is a duplicate
+<    */
+<   bool UpdateDuplicate (Ptr<const Packet> p, const Ipv4Header &header);
+<   /**
+<    * Remove duplicate packet entry
+<    * \param [in] iter Iterator into duplicate map to remove
+<    */
+<   void RemoveDuplicates (void);
+< 
+<   bool                m_enableDpd;    //!< Enable multicast duplicate packet detection
+<   DupMap_t            m_dups;         //!< map of packet duplicate tuples to expiry event
+<   Time                m_expire;       //!< duplicate entry expiration delay
+<   Time                m_purge;        //!< time between purging expired duplicate entries
+<   EventId             m_cleanDpd;     //!< event to cleanup expired duplicate entries
+diff ../../NS3-WiGig/src/internet/model/ipv4-list-routing.cc ../../ns-3-dev-git/src/internet/model/ipv4-list-routing.cc
+78c78
+<                         << ", Local time: " << m_ipv4->GetObject<Node> ()->GetLocalTime ().As (unit)
+---
+>                         << ", Local time: " << GetObject<Node> ()->GetLocalTime ().As (unit)
+diff ../../NS3-WiGig/src/internet/model/ipv4-routing-table-entry.cc ../../ns-3-dev-git/src/internet/model/ipv4-routing-table-entry.cc
+99c99
+<   if (m_destNetworkMask == Ipv4Mask::GetOnes ())
+---
+>   if (m_destNetworkMask.IsEqual (Ipv4Mask::GetOnes ()))
+124c124
+<   if (m_dest == Ipv4Address::GetZero ())
+---
+>   if (m_dest.IsEqual (Ipv4Address::GetZero ()))
+149c149
+<   if (m_gateway == Ipv4Address::GetZero ())
+---
+>   if (m_gateway.IsEqual (Ipv4Address::GetZero ()))
+diff ../../NS3-WiGig/src/internet/model/ipv4-static-routing.cc ../../ns-3-dev-git/src/internet/model/ipv4-static-routing.cc
+360c360
+<   return m_networkRoutes.size ();
+---
+>   return m_networkRoutes.size ();;
+700c700
+<       << ", Local time: " << m_ipv4->GetObject<Node> ()->GetLocalTime ().As (unit)
+---
+>       << ", Local time: " << GetObject<Node> ()->GetLocalTime ().As (unit)
+diff ../../NS3-WiGig/src/internet/model/ipv6-extension.cc ../../ns-3-dev-git/src/internet/model/ipv6-extension.cc
+318,323d317
+<     .AddAttribute ("FragmentExpirationTimeout",
+<                    "When this timeout expires, the fragments "
+<                    "will be cleared from the buffer.",
+<                    TimeValue (Seconds (60)),
+<                    MakeTimeAccessor (&Ipv6ExtensionFragment::m_fragmentExpirationTimeout),
+<                    MakeTimeChecker ())
+348,352d341
+<   m_timeoutEventList.clear ();
+<   if (m_timeoutEvent.IsRunning ())
+<     {
+<       m_timeoutEvent.Cancel ();
+<     }
+390c379
+<   FragmentKey_t fragmentsId = FragmentKey_t (src, identification);
+---
+>   std::pair<Ipv6Address, uint32_t> fragmentsId = std::pair<Ipv6Address, uint32_t> (src, identification);
+401,402c390,393
+<       FragmentsTimeoutsListI_t iter = SetTimeout (fragmentsId, ipHeader);
+<       fragments->SetTimeoutIter (iter);
+---
+>       EventId timeout = Simulator::Schedule (Seconds (60),
+>                                              &Ipv6ExtensionFragment::HandleFragmentsTimeout, this,
+>                                              fragmentsId, ipHeader);
+>       fragments->SetTimeoutEventId (timeout);
+421,422c412
+< 
+<       m_timeoutEventList.erase (fragments->GetTimeoutIter ());
+---
+>       fragments->CancelTimeout ();
+479c469
+<           unfragmentablePart.emplace_back (hopbyhopHeader, Ipv6Header::IPV6_EXT_HOP_BY_HOP);
+---
+>           unfragmentablePart.push_back (std::pair<Ipv6ExtensionHeader *, uint8_t> (hopbyhopHeader, Ipv6Header::IPV6_EXT_HOP_BY_HOP));
+503c493
+<           unfragmentablePart.emplace_back (routingHeader, Ipv6Header::IPV6_EXT_ROUTING);
+---
+>           unfragmentablePart.push_back (std::pair<Ipv6ExtensionHeader *, uint8_t> (routingHeader, Ipv6Header::IPV6_EXT_ROUTING));
+523c513
+<           unfragmentablePart.emplace_back (destinationHeader, Ipv6Header::IPV6_EXT_DESTINATION);
+---
+>           unfragmentablePart.push_back (std::pair<Ipv6ExtensionHeader *, uint8_t> (destinationHeader, Ipv6Header::IPV6_EXT_DESTINATION));
+594c584
+<       listFragments.emplace_back (fragment, ipv6Header);
+---
+>       listFragments.push_back (Ipv6PayloadHeaderPair (fragment, ipv6Header));
+607c597
+< void Ipv6ExtensionFragment::HandleFragmentsTimeout (FragmentKey_t fragmentsId,
+---
+> void Ipv6ExtensionFragment::HandleFragmentsTimeout (std::pair<Ipv6Address, uint32_t> fragmentsId,
+634,671d623
+< 
+< Ipv6ExtensionFragment::FragmentsTimeoutsListI_t Ipv6ExtensionFragment::SetTimeout (FragmentKey_t key, Ipv6Header ipHeader)
+< {
+<   if (m_timeoutEventList.empty ())
+<     {
+<       m_timeoutEvent = Simulator::Schedule (m_fragmentExpirationTimeout, &Ipv6ExtensionFragment::HandleTimeout, this);
+<     }
+<   m_timeoutEventList.emplace_back (Simulator::Now () + m_fragmentExpirationTimeout, key, ipHeader);
+< 
+<   Ipv6ExtensionFragment::FragmentsTimeoutsListI_t iter = --m_timeoutEventList.end();
+< 
+<   return (iter);
+< }
+< 
+< void Ipv6ExtensionFragment::HandleTimeout (void)
+< {
+<   Time now = Simulator::Now ();
+< 
+<   while (!m_timeoutEventList.empty () && std::get<0> (*m_timeoutEventList.begin ()) == now)
+<     {
+<       HandleFragmentsTimeout (std::get<1> (*m_timeoutEventList.begin ()),
+<                               std::get<2> (*m_timeoutEventList.begin ()));
+<       m_timeoutEventList.pop_front ();
+<     }
+< 
+<   if (m_timeoutEventList.empty ())
+<     {
+<       return;
+<     }
+< 
+<   Time difference = std::get<0> (*m_timeoutEventList.begin ()) - now;
+<   m_timeoutEvent = Simulator::Schedule (difference, &Ipv6ExtensionFragment::HandleTimeout, this);
+< 
+<   return;
+< }
+< 
+< 
+< 
+769c721
+< void Ipv6ExtensionFragment::Fragments::SetTimeoutIter (FragmentsTimeoutsListI_t iter)
+---
+> void Ipv6ExtensionFragment::Fragments::SetTimeoutEventId (EventId event)
+771c723
+<   m_timeoutIter = iter;
+---
+>   m_timeoutEventId = event;
+775c727
+< Ipv6ExtensionFragment::FragmentsTimeoutsListI_t Ipv6ExtensionFragment::Fragments::GetTimeoutIter ()
+---
+> void Ipv6ExtensionFragment::Fragments::CancelTimeout ()
+777c729,730
+<   return m_timeoutIter;
+---
+>   m_timeoutEventId.Cancel ();
+>   return;
+diff ../../NS3-WiGig/src/internet/model/ipv6-extension.h ../../ns-3-dev-git/src/internet/model/ipv6-extension.h
+26d25
+< #include <tuple>
+320,334d318
+< 
+<   /**
+<    * Key identifying a fragmented packet
+<    */
+<   typedef std::pair<Ipv6Address, uint32_t> FragmentKey_t;
+< 
+<   /**
+<    * Container for fragment timeouts.
+<    */
+<   typedef std::list< std::tuple <Time, FragmentKey_t, Ipv6Header > > FragmentsTimeoutsList_t;
+<   /**
+<    * Container Iterator for fragment timeouts.
+<    */
+<   typedef std::list< std::tuple <Time, FragmentKey_t, Ipv6Header > >::iterator FragmentsTimeoutsListI_t;
+< 
+386,387c370,371
+<      * \brief Set the Timeout iterator.
+<      * \param iter The iterator.
+---
+>      * \brief Set the Timeout EventId.
+>      * \param event The event.
+389c373
+<     void SetTimeoutIter (FragmentsTimeoutsListI_t iter);
+---
+>     void SetTimeoutEventId (EventId event);
+392,393c376
+<      * \brief Get the Timeout iterator.
+<      * \returns The iterator.
+---
+>      * \brief Cancel the timeout event
+395c378
+<     FragmentsTimeoutsListI_t GetTimeoutIter ();
+---
+>     void CancelTimeout ();
+414c397
+<      * \brief Timeout iterator to "event" handler
+---
+>      * \brief Timeout handler event
+416c399
+<     FragmentsTimeoutsListI_t m_timeoutIter;
+---
+>     EventId m_timeoutEventId;
+424c407
+<   void HandleFragmentsTimeout (FragmentKey_t key, Ipv6Header ipHeader);
+---
+>   void HandleFragmentsTimeout (std::pair<Ipv6Address, uint32_t> key, Ipv6Header ipHeader);
+446c429
+<   typedef std::map<FragmentKey_t, Ptr<Fragments> > MapFragments_t;
+---
+>   typedef std::map<std::pair<Ipv6Address, uint32_t>, Ptr<Fragments> > MapFragments_t;
+452,468d434
+< 
+<   /**
+<    * \brief Set a new timeout "event" for a fragmented packet
+<    * \param key the fragment identification
+<    * \param ipHeader the IPv6 header of the fragmented packet
+<    * \return an iterator to the inserted "event"
+<    */
+<   FragmentsTimeoutsListI_t SetTimeout (FragmentKey_t key, Ipv6Header ipHeader);
+< 
+<   /**
+<    * \brief Handles a fragmented packet timeout
+<    */
+<   void HandleTimeout (void);
+< 
+<   FragmentsTimeoutsList_t m_timeoutEventList;  //!< Timeout "events" container
+<   EventId m_timeoutEvent;  //!< Event for the next scheduled timeout
+<   Time m_fragmentExpirationTimeout; //!< Expiration timeout
+diff ../../NS3-WiGig/src/internet/model/ipv6-interface.cc ../../ns-3-dev-git/src/internet/model/ipv6-interface.cc
+131,132d130
+<   int32_t interfaceId = m_node->GetObject<Ipv6> ()->GetInterfaceForDevice (m_device);
+<   Ptr<Icmpv6L4Protocol> icmpv6 = DynamicCast<Icmpv6L4Protocol> (m_node->GetObject<Ipv6> ()->GetProtocol (Icmpv6L4Protocol::GetStaticProtocolNumber (), interfaceId));
+133a132,137
+>   Ptr<IpL4Protocol> proto = m_node->GetObject<Ipv6> ()->GetProtocol (Icmpv6L4Protocol::GetStaticProtocolNumber ());
+>   Ptr<Icmpv6L4Protocol> icmpv6;
+>   if (proto)
+>     {
+>       icmpv6 = proto->GetObject <Icmpv6L4Protocol> ();
+>     }
+143a148
+>   DoSetup ();
+149a155
+>   DoSetup ();
+243,245c249,254
+< 
+<           int32_t interfaceId = m_node->GetObject<Ipv6> ()->GetInterfaceForDevice (m_device);
+<           Ptr<Icmpv6L4Protocol> icmpv6 = DynamicCast<Icmpv6L4Protocol> (m_node->GetObject<Ipv6> ()->GetProtocol (Icmpv6L4Protocol::GetStaticProtocolNumber (), interfaceId));
+---
+>           Ptr<IpL4Protocol> proto = m_node->GetObject<Ipv6> ()->GetProtocol (Icmpv6L4Protocol::GetStaticProtocolNumber ());
+>           Ptr<Icmpv6L4Protocol> icmpv6;
+>           if (proto)
+>             {
+>               icmpv6 = proto->GetObject <Icmpv6L4Protocol> ();
+>             }
+249,257c258,259
+<               if (icmpv6->IsAlwaysDad ())
+<                 {
+<                   Simulator::Schedule (Seconds (0.), &Icmpv6L4Protocol::DoDAD, icmpv6, addr, this);
+<                   Simulator::Schedule (Seconds (1.), &Icmpv6L4Protocol::FunctionDadTimeout, icmpv6, this, addr);
+<                 }
+<               else
+<                 {
+<                   Simulator::Schedule (Seconds (0.), &Icmpv6L4Protocol::FunctionDadTimeout, icmpv6, this, addr);
+<                 }
+---
+>               Simulator::Schedule (Seconds (0.), &Icmpv6L4Protocol::DoDAD, icmpv6, addr, this);
+>               Simulator::Schedule (Seconds (1.), &Icmpv6L4Protocol::FunctionDadTimeout, icmpv6, this, addr);
+431,435c433,434
+<       NS_LOG_LOGIC ("Needs NDISC " << dest);
+< 
+<       int32_t interfaceId = m_node->GetObject<Ipv6> ()->GetInterfaceForDevice (m_device);
+<       Ptr<Icmpv6L4Protocol> icmpv6 = DynamicCast<Icmpv6L4Protocol> (m_node->GetObject<Ipv6> ()->GetProtocol (Icmpv6L4Protocol::GetStaticProtocolNumber (), interfaceId));
+< 
+---
+>       NS_LOG_LOGIC ("Needs ARP" << " " << dest);
+>       Ptr<Icmpv6L4Protocol> icmpv6 = ipv6->GetIcmpv6 ();
+463c462
+<       NS_LOG_LOGIC ("Doesn't need NDISC");
+---
+>       NS_LOG_LOGIC ("Doesn't need ARP");
+diff ../../NS3-WiGig/src/internet/model/ipv6-l3-protocol.cc ../../ns-3-dev-git/src/internet/model/ipv6-l3-protocol.cc
+47d46
+< #include "ipv6-raw-socket-factory-impl.h"
+131,133d129
+<   
+<   Ptr<Ipv6RawSocketFactoryImpl> rawFactoryImpl = CreateObject<Ipv6RawSocketFactoryImpl> ();
+<   AggregateObject (rawFactoryImpl);
+213a210
+>   tc->SetupDevice (device);
+709d705
+<   
+902c898,899
+<       NS_LOG_LOGIC ("Ipv6L3Protocol::Send case 2: probably sent to machine on same IPv6 network");
+---
+>       NS_LOG_LOGIC ("Ipv6L3Protocol::Send case 1: probably sent to machine on same IPv6 network");
+>       /* NS_FATAL_ERROR ("This case is not yet implemented"); */
+1067c1064
+<               if (addr == hdr.GetDestinationAddress ())
+---
+>               if (addr.IsEqual (hdr.GetDestinationAddress ()))
+1167c1164
+<   if (route->GetGateway () != Ipv6Address::GetAny ())
+---
+>   if (!route->GetGateway ().IsEqual (Ipv6Address::GetAny ()))
+diff ../../NS3-WiGig/src/internet/model/ipv6-routing-table-entry.cc ../../ns-3-dev-git/src/internet/model/ipv6-routing-table-entry.cc
+111c111
+<   if (m_destNetworkPrefix == Ipv6Prefix::GetOnes ())
+---
+>   if (m_destNetworkPrefix.IsEqual (Ipv6Prefix::GetOnes ()))
+140c140
+<   if (m_dest == Ipv6Address::GetZero ())
+---
+>   if (m_dest.IsEqual (Ipv6Address::GetZero ()))
+159c159
+<   if (m_gateway == Ipv6Address::GetZero ())
+---
+>   if (m_gateway.IsEqual (Ipv6Address::GetZero ()))
+diff ../../NS3-WiGig/src/internet/model/ipv6-static-routing.cc ../../ns-3-dev-git/src/internet/model/ipv6-static-routing.cc
+89c89
+<       << ", Local time: " << m_ipv6->GetObject<Node> ()->GetLocalTime ().As (unit)
+---
+>       << ", Local time: " << GetObject<Node> ()->GetLocalTime ().As (unit)
+diff ../../NS3-WiGig/src/internet/model/ndisc-cache.cc ../../ns-3-dev-git/src/internet/model/ndisc-cache.cc
+284c284
+<       addr = m_ndCache->GetInterface ()->GetLinkLocalAddress ().GetAddress ();
+---
+>       addr = m_ndCache->GetInterface ()->GetLinkLocalAddress ().GetAddress ();;
+diff ../../NS3-WiGig/src/internet/model/rip.cc ../../ns-3-dev-git/src/internet/model/rip.cc
+150,151d149
+< 
+<               socket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+153,155c151
+<               socket->SetRecvPktInfo (true);
+< 
+<               m_unicastSocketList[socket] = i;
+---
+>               m_sendSocketList[socket] = i;
+164c160
+<   if (!m_multicastRecvSocket)
+---
+>   if (!m_recvSocket)
+169c165
+<       m_multicastRecvSocket = Socket::CreateSocket (theNode, tid);
+---
+>       m_recvSocket = Socket::CreateSocket (theNode, tid);
+171,174c167,170
+<       m_multicastRecvSocket->Bind (local);
+<       m_multicastRecvSocket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+<       m_multicastRecvSocket->SetIpRecvTtl (true);
+<       m_multicastRecvSocket->SetRecvPktInfo (true);
+---
+>       m_recvSocket->Bind (local);
+>       m_recvSocket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+>       m_recvSocket->SetIpRecvTtl (true);
+>       m_recvSocket->SetRecvPktInfo (true);
+323c319
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+352d347
+<           socket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+354,356c349,350
+<           socket->SetRecvPktInfo (true);
+<           m_unicastSocketList[socket] = i;
+<        }
+---
+>           m_sendSocketList[socket] = i;
+>         }
+363c357
+<   if (!m_multicastRecvSocket)
+---
+>   if (!m_recvSocket)
+368c362
+<       m_multicastRecvSocket = Socket::CreateSocket (theNode, tid);
+---
+>       m_recvSocket = Socket::CreateSocket (theNode, tid);
+370,373c364,367
+<       m_multicastRecvSocket->Bind (local);
+<       m_multicastRecvSocket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+<       m_multicastRecvSocket->SetIpRecvTtl (true);
+<       m_multicastRecvSocket->SetRecvPktInfo (true);
+---
+>       m_recvSocket->Bind (local);
+>       m_recvSocket->SetRecvCallback (MakeCallback (&Rip::Receive, this));
+>       m_recvSocket->SetIpRecvTtl (true);
+>       m_recvSocket->SetRecvPktInfo (true);
+390c384
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+397c391
+<           m_unicastSocketList.erase (iter);
+---
+>           m_sendSocketList.erase (iter);
+564c558
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+568c562
+<   m_unicastSocketList.clear ();
+---
+>   m_sendSocketList.clear ();
+570,571c564,565
+<   m_multicastRecvSocket->Close ();
+<   m_multicastRecvSocket = 0;
+---
+>   m_recvSocket->Close ();
+>   m_recvSocket = 0;
+723c717
+<   NS_LOG_INFO ("Received " << *packet << " from " << senderAddr.GetIpv4 () << ":" << senderAddr.GetPort ());
+---
+>   NS_LOG_INFO ("Received " << *packet << " from " << senderAddr);
+728,736d721
+<   if (socket == m_multicastRecvSocket)
+<     {
+<       NS_LOG_LOGIC ("Received a packet from the multicast socket");
+<     }
+<   else
+<     {
+<       NS_LOG_LOGIC ("Received a packet from one of the unicast sockets");
+<     }
+< 
+766d750
+<       NS_LOG_LOGIC ("The message is a Response from " << senderAddr.GetIpv4 () << ":" << senderAddr.GetPort ());
+771d754
+<       NS_LOG_LOGIC ("The message is a Request from " << senderAddr.GetIpv4 () << ":" << senderAddr.GetPort ());
+805c788
+<               for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>               for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+938c921
+<       m_multicastRecvSocket->SendTo (p, 0, InetSocketAddress (senderAddress, senderPort));
+---
+>       m_recvSocket->SendTo (p, 0, InetSocketAddress (senderAddress, senderPort));
+1087c1070
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+1274c1257
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+diff ../../NS3-WiGig/src/internet/model/rip.h ../../ns-3-dev-git/src/internet/model/rip.h
+392,393c392,393
+<   SocketList m_unicastSocketList; //!< list of sockets for unicast messages (socket, interface index)
+<   Ptr<Socket> m_multicastRecvSocket; //!< multicast receive socket
+---
+>   SocketList m_sendSocketList; //!< list of sockets for sending (socket, interface index)
+>   Ptr<Socket> m_recvSocket; //!< receive socket
+diff ../../NS3-WiGig/src/internet/model/ripng.cc ../../ns-3-dev-git/src/internet/model/ripng.cc
+144c144
+<               socket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+---
+>               socket->ShutdownRecv ();
+146,147c146
+<               socket->SetRecvPktInfo (true);
+<               m_unicastSocketList[socket] = i;
+---
+>               m_sendSocketList[socket] = i;
+156c155
+<   if (!m_multicastRecvSocket)
+---
+>   if (!m_recvSocket)
+161c160
+<       m_multicastRecvSocket = Socket::CreateSocket (theNode, tid);
+---
+>       m_recvSocket = Socket::CreateSocket (theNode, tid);
+163,166c162,165
+<       m_multicastRecvSocket->Bind (local);
+<       m_multicastRecvSocket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+<       m_multicastRecvSocket->SetIpv6RecvHopLimit (true);
+<       m_multicastRecvSocket->SetRecvPktInfo (true);
+---
+>       m_recvSocket->Bind (local);
+>       m_recvSocket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+>       m_recvSocket->SetIpv6RecvHopLimit (true);
+>       m_recvSocket->SetRecvPktInfo (true);
+291c290
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+320c319
+<           socket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+---
+>           socket->ShutdownRecv ();
+322,323c321
+<           socket->SetRecvPktInfo (true);
+<           m_unicastSocketList[socket] = i;
+---
+>           m_sendSocketList[socket] = i;
+331c329
+<   if (!m_multicastRecvSocket)
+---
+>   if (!m_recvSocket)
+336c334
+<       m_multicastRecvSocket = Socket::CreateSocket (theNode, tid);
+---
+>       m_recvSocket = Socket::CreateSocket (theNode, tid);
+338,341c336,339
+<       m_multicastRecvSocket->Bind (local);
+<       m_multicastRecvSocket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+<       m_multicastRecvSocket->SetIpv6RecvHopLimit (true);
+<       m_multicastRecvSocket->SetRecvPktInfo (true);
+---
+>       m_recvSocket->Bind (local);
+>       m_recvSocket->SetRecvCallback (MakeCallback (&RipNg::Receive, this));
+>       m_recvSocket->SetIpv6RecvHopLimit (true);
+>       m_recvSocket->SetRecvPktInfo (true);
+358c356
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+365c363
+<           m_unicastSocketList.erase (iter);
+---
+>           m_sendSocketList.erase (iter);
+543c541
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+547c545
+<   m_unicastSocketList.clear ();
+---
+>   m_sendSocketList.clear ();
+549,550c547,548
+<   m_multicastRecvSocket->Close ();
+<   m_multicastRecvSocket = 0;
+---
+>   m_recvSocket->Close ();
+>   m_recvSocket = 0;
+782c780
+<               for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>               for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+862c860
+<           for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>           for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+872c870
+<           sendingSocket = m_multicastRecvSocket;
+---
+>           sendingSocket = m_recvSocket;
+1083c1081
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+1259c1257
+<   for (SocketListI iter = m_unicastSocketList.begin (); iter != m_unicastSocketList.end (); iter++ )
+---
+>   for (SocketListI iter = m_sendSocketList.begin (); iter != m_sendSocketList.end (); iter++ )
+diff ../../NS3-WiGig/src/internet/model/ripng.h ../../ns-3-dev-git/src/internet/model/ripng.h
+398,399c398,399
+<   SocketList m_unicastSocketList; //!< list of sockets for unicast messages (socket, interface index)
+<   Ptr<Socket> m_multicastRecvSocket; //!< multicast receive socket
+---
+>   SocketList m_sendSocketList; //!< list of sockets for sending (socket, interface index)
+>   Ptr<Socket> m_recvSocket; //!< receive socket
+diff ../../NS3-WiGig/src/internet/model/tcp-bic.cc ../../ns-3-dev-git/src/internet/model/tcp-bic.cc
+276,283d275
+< void
+< TcpBic::ReduceCwnd (Ptr<TcpSocketState> tcb)
+< {
+<   NS_LOG_FUNCTION (this << tcb);
+< 
+<   tcb->m_cWnd = std::max (tcb->m_cWnd.Get () / 2, tcb->m_segmentSize);
+< }
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-bic.h ../../ns-3-dev-git/src/internet/model/tcp-bic.h
+106d105
+<   virtual void ReduceCwnd (Ptr<TcpSocketState> tcb);
+diff ../../NS3-WiGig/src/internet/model/tcp-congestion-ops.cc ../../ns-3-dev-git/src/internet/model/tcp-congestion-ops.cc
+19a20
+> #include "tcp-socket-base.h"
+50,91d50
+< void
+< TcpCongestionOps::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked)
+< {
+<   NS_LOG_FUNCTION (this << tcb << segmentsAcked);
+< }
+< 
+< void
+< TcpCongestionOps::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
+<                              const Time& rtt)
+< {
+<   NS_LOG_FUNCTION (this << tcb << segmentsAcked << rtt);
+< }
+< 
+< void
+< TcpCongestionOps::CongestionStateSet (Ptr<TcpSocketState> tcb,
+<                                       const TcpSocketState::TcpCongState_t newState)
+< {
+<   NS_LOG_FUNCTION (this << tcb << newState);
+< }
+< 
+< void
+< TcpCongestionOps::CwndEvent (Ptr<TcpSocketState> tcb,
+<                              const TcpSocketState::TcpCAEvent_t event)
+< {
+<   NS_LOG_FUNCTION (this << tcb << event);
+< }
+< 
+< bool
+< TcpCongestionOps::HasCongControl () const
+< {
+<   return false;
+< }
+< 
+< void
+< TcpCongestionOps::CongControl (Ptr<TcpSocketState> tcb,
+<                                const TcpRateOps::TcpRateConnection &rc,
+<                                const TcpRateOps::TcpRateSample &rs)
+< {
+<   NS_LOG_FUNCTION (this << tcb);
+<   NS_UNUSED (rc);
+<   NS_UNUSED (rs);
+< }
+251,258d209
+< }
+< 
+< void
+< TcpNewReno::ReduceCwnd (Ptr<TcpSocketState> tcb)
+< {
+<   NS_LOG_FUNCTION (this << tcb);
+< 
+<   tcb->m_cWnd = std::max (tcb->m_cWnd.Get () / 2, tcb->m_segmentSize);
+diff ../../NS3-WiGig/src/internet/model/tcp-congestion-ops.h ../../ns-3-dev-git/src/internet/model/tcp-congestion-ops.h
+22,23c22
+< #include "tcp-rate-ops.h"
+< #include "tcp-socket-state.h"
+---
+> #include "ns3/tcp-socket-state.h"
+39,40c38,39
+<  * The design is inspired by what Linux v4.0 does (but it has been
+<  * in place for years). The congestion control is split from the main
+---
+>  * The design is inspired on what Linux v4.0 does (but it has been
+>  * in place since years). The congestion control is split from the main
+45c44
+<  * Only three methods have been implemented right now; however, Linux has many others,
+---
+>  * Only three methods has been utilized right now; however, Linux has many others,
+78,87d76
+<    * \brief Set configuration required by congestion control algorithm
+<    *
+<    * \param tcb internal congestion state
+<    */
+<   virtual void Init (Ptr<TcpSocketState> tcb)
+<     {
+<       NS_UNUSED (tcb);
+<     }
+< 
+<   /**
+90c79
+<    * Is guaranteed that the congestion control state (\p TcpAckState_t) is
+---
+>    * Is guaranteed that the congestion control state (TcpAckState_t) is
+107,108c96,97
+<    * Mimic the function \pname{cong_avoid} in Linux. New segments have been ACKed,
+<    * and the congestion control duty is to update the window.
+---
+>    * Mimic the function cong_avoid in Linux. New segments have been ACKed,
+>    * and the congestion control duty is to set
+115c104
+<   virtual void IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked);
+---
+>   virtual void IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked) = 0;
+122c111
+<    * optional (congestion controls need not implement it) and the default
+---
+>    * optional (congestion controls can not implement it) and the default
+130c119,124
+<                           const Time& rtt);
+---
+>                           const Time& rtt)
+>   {
+>     NS_UNUSED (tcb);
+>     NS_UNUSED (segmentsAcked);
+>     NS_UNUSED (rtt);
+>   }
+135,143c129,130
+<    * This function mimics the notification function \pname{set_state} in Linux.
+<    * The function does not change the congestion state in the tcb; it notifies
+<    * the congestion control algorithm that this state is about to be changed.
+<    * The tcb->m_congState variable must be separately set; for example:
+<    *
+<    * \code
+<    *   m_congestionControl->CongestionStateSet (m_tcb, TcpSocketState::CA_RECOVERY);
+<    *   m_tcb->m_congState = TcpSocketState::CA_RECOVERY;
+<    * \endcode
+---
+>    * This function mimics the function set_state in Linux.
+>    * The function is called before changing congestion state.
+149c136,140
+<                                    const TcpSocketState::TcpCongState_t newState);
+---
+>                                    const TcpSocketState::TcpCongState_t newState)
+>   {
+>     NS_UNUSED (tcb);
+>     NS_UNUSED (newState);
+>   }
+152c143
+<    * \brief Trigger events/calculations on occurrence of congestion window event
+---
+>    * \brief Trigger events/calculations on occurrence congestion window event
+154c145
+<    * This function mimics the function \pname{cwnd_event} in Linux.
+---
+>    * This function mimics the function cwnd_event in Linux.
+161,197c152,156
+<                           const TcpSocketState::TcpCAEvent_t event);
+< 
+<   /**
+<    * \brief Returns true when Congestion Control Algorithm implements CongControl
+<    *
+<    * \return true if CC implements CongControl function
+<    *
+<    * This function is the equivalent in C++ of the C checks that are used
+<    * in the Linux kernel to see if an optional function has been defined.
+<    * Since CongControl is optional, not all congestion controls have it. But,
+<    * from the perspective of TcpSocketBase, the behavior is different if
+<    * CongControl is present. Therefore, this check should return true for any
+<    * congestion controls that implements the CongControl optional function.
+<    */
+<   virtual bool HasCongControl () const;
+< 
+<   /**
+<    * \brief Called when packets are delivered to update cwnd and pacing rate
+<    *
+<    * This function mimics the function cong_control in Linux. It is allowed to
+<    * change directly cWnd and pacing rate.
+<    *
+<    * \param tcb internal congestion state
+<    * \param rc Rate information for the connection
+<    * \param rs Rate sample (over a period of time) information
+<    */
+<   virtual void CongControl (Ptr<TcpSocketState> tcb,
+<                             const TcpRateOps::TcpRateConnection &rc,
+<                             const TcpRateOps::TcpRateSample &rs);
+< 
+<   /**
+<    * \brief Reduces congestion window on receipt of ECN Echo Flag
+<    *
+<    * \param tcb internal congestion state
+<    */
+<   virtual void ReduceCwnd (Ptr<TcpSocketState> tcb) = 0;
+< 
+---
+>                           const TcpSocketState::TcpCAEvent_t event)
+>   {
+>     NS_UNUSED (tcb);
+>     NS_UNUSED (event);
+>   }
+200c159
+<   //     void (*in_ack_event)(struct sock *sk, u32 flags);
+---
+>   // void (*in_ack_event)(struct sock *sk, u32 flags);
+202c161
+<   //     u32  (*undo_cwnd)(struct sock *sk);
+---
+>   // u32  (*undo_cwnd)(struct sock *sk);
+204d162
+<   //     void (*pkts_acked)(struct sock *sk, u32 ext, int *attr, union tcp_cc_info *info);
+207c165
+<    * \brief Copy the congestion control algorithm across sockets
+---
+>    * \brief Copy the congestion control algorithm across socket
+246c204
+<   virtual void ReduceCwnd (Ptr<TcpSocketState> tcb);
+---
+> 
+Only in ../../NS3-WiGig/src/internet/model: tcp-cubic.cc
+Only in ../../NS3-WiGig/src/internet/model: tcp-cubic.h
+Only in ../../NS3-WiGig/src/internet/model: tcp-dctcp.cc
+Only in ../../NS3-WiGig/src/internet/model: tcp-dctcp.h
+diff ../../NS3-WiGig/src/internet/model/tcp-highspeed.cc ../../ns-3-dev-git/src/internet/model/tcp-highspeed.cc
+21,22d20
+< #include "tcp-socket-state.h"
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-highspeed.h ../../ns-3-dev-git/src/internet/model/tcp-highspeed.h
+23c23,24
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+26,27d26
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-htcp.h ../../ns-3-dev-git/src/internet/model/tcp-htcp.h
+30c30,31
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+33,34d33
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-hybla.cc ../../ns-3-dev-git/src/internet/model/tcp-hybla.cc
+21,22d20
+< #include "tcp-socket-state.h"
+< 
+23a22
+> #include "ns3/tcp-socket-base.h"
+diff ../../NS3-WiGig/src/internet/model/tcp-hybla.h ../../ns-3-dev-git/src/internet/model/tcp-hybla.h
+22c22,23
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+26,27d26
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-illinois.cc ../../ns-3-dev-git/src/internet/model/tcp-illinois.cc
+30,31d29
+< #include "tcp-socket-state.h"
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-illinois.h ../../ns-3-dev-git/src/internet/model/tcp-illinois.h
+31c31,32
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+34,35d34
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-ledbat.cc ../../ns-3-dev-git/src/internet/model/tcp-ledbat.cc
+23,24d22
+< #include "tcp-socket-state.h"
+< 
+26c24
+< #include "ns3/simulator.h" // Now ()
+---
+> #include "ns3/simulator.h"
+diff ../../NS3-WiGig/src/internet/model/tcp-ledbat.h ../../ns-3-dev-git/src/internet/model/tcp-ledbat.h
+25,26d24
+< #include "tcp-congestion-ops.h"
+< 
+27a26,27
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+30,31d29
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-lp.cc ../../ns-3-dev-git/src/internet/model/tcp-lp.cc
+25c25
+< 
+---
+> #include "ns3/tcp-socket-base.h"
+27d26
+< #include "ns3/simulator.h"
+diff ../../NS3-WiGig/src/internet/model/tcp-lp.h ../../ns-3-dev-git/src/internet/model/tcp-lp.h
+27,28c27,28
+< #include "tcp-congestion-ops.h"
+< 
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+32,33d31
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-option-rfc793.cc ../../ns-3-dev-git/src/internet/model/tcp-option-rfc793.cc
+225a226
+> 
+234c235
+<   // std::cout << "rfc793 size = "<< size << "\n";
+---
+> 
+diff ../../NS3-WiGig/src/internet/model/tcp-option-sack.cc ../../ns-3-dev-git/src/internet/model/tcp-option-sack.cc
+111c111
+<   m_sackList.clear ();
+---
+>   m_sackList.empty ();
+diff ../../NS3-WiGig/src/internet/model/tcp-prr-recovery.cc ../../ns-3-dev-git/src/internet/model/tcp-prr-recovery.cc
+25,26c25,26
+< #include "tcp-socket-state.h"
+< 
+---
+> #include "ns3/tcp-socket-base.h"
+> #include "ns3/tcp-congestion-ops.h"
+60a61
+>     m_previousSackedBytes (recovery.m_previousSackedBytes),
+73c74
+<                                uint32_t unAckDataCount, uint32_t deliveredBytes)
+---
+>                             uint32_t unAckDataCount, uint32_t lastSackedBytes)
+75c76
+<   NS_LOG_FUNCTION (this << tcb << dupAckCount << unAckDataCount);
+---
+>   NS_LOG_FUNCTION (this << tcb << dupAckCount << unAckDataCount << lastSackedBytes);
+80a82
+>   m_previousSackedBytes = lastSackedBytes;
+82c84
+<   DoRecovery (tcb, deliveredBytes);
+---
+>   DoRecovery (tcb, 0, lastSackedBytes);
+86c88,89
+< TcpPrrRecovery::DoRecovery (Ptr<TcpSocketState> tcb, uint32_t deliveredBytes)
+---
+> TcpPrrRecovery::DoRecovery (Ptr<TcpSocketState> tcb, uint32_t lastAckedBytes,
+>                          uint32_t lastSackedBytes)
+88,89c91,96
+<   NS_LOG_FUNCTION (this << tcb << deliveredBytes);
+<   m_prrDelivered += deliveredBytes;
+---
+>   NS_LOG_FUNCTION (this << tcb << lastAckedBytes << lastSackedBytes);
+>   uint32_t lastDeliveredBytes;
+>   int changeInSackedBytes = int (lastSackedBytes - m_previousSackedBytes);
+>   lastDeliveredBytes = lastAckedBytes + changeInSackedBytes > 0 ? lastAckedBytes + changeInSackedBytes : 0;
+>   m_previousSackedBytes = lastSackedBytes;
+>   m_prrDelivered += lastDeliveredBytes;
+105c112
+<           limit = std::max (m_prrDelivered - m_prrOut, deliveredBytes) + tcb->m_segmentSize;
+---
+>           limit = std::max (m_prrDelivered - m_prrOut, lastDeliveredBytes) + tcb->m_segmentSize;
+diff ../../NS3-WiGig/src/internet/model/tcp-prr-recovery.h ../../ns-3-dev-git/src/internet/model/tcp-prr-recovery.h
+23,24c23
+< #ifndef TCP_PRR_RECOVERY_H
+< #define TCP_PRR_RECOVERY_H
+---
+> #pragma once
+76c75
+<                               uint32_t unAckDataCount, uint32_t deliveredBytes) override;
+---
+>                               uint32_t unAckDataCount, uint32_t lastSackedBytes) override;
+78c77,78
+<   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t deliveredBytes) override;
+---
+>   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t lastAckedBytes,
+>                            uint32_t lastSackedBytes) override;
+89a90
+>   uint32_t m_previousSackedBytes            {0};    //!< total bytes SACKed by the previous ACK
+94d94
+< #endif /* TCP_PRR_RECOVERY_H */
+Only in ../../NS3-WiGig/src/internet/model: tcp-rate-ops.cc
+Only in ../../NS3-WiGig/src/internet/model: tcp-rate-ops.h
+diff ../../NS3-WiGig/src/internet/model/tcp-recovery-ops.cc ../../ns-3-dev-git/src/internet/model/tcp-recovery-ops.cc
+25d24
+< 
+59,63d57
+< void
+< TcpRecoveryOps::UpdateBytesSent (uint32_t bytesSent)
+< {
+<   NS_LOG_FUNCTION (this << bytesSent);
+< }
+98c92
+<                                    uint32_t unAckDataCount, uint32_t deliveredBytes)
+---
+>                                 uint32_t unAckDataCount, uint32_t lastSackedBytes)
+100c94
+<   NS_LOG_FUNCTION (this << tcb << dupAckCount << unAckDataCount);
+---
+>   NS_LOG_FUNCTION (this << tcb << dupAckCount << unAckDataCount << lastSackedBytes);
+102c96
+<   NS_UNUSED (deliveredBytes);
+---
+>   NS_UNUSED (lastSackedBytes);
+108c102,103
+< TcpClassicRecovery::DoRecovery (Ptr<TcpSocketState> tcb, uint32_t deliveredBytes)
+---
+> TcpClassicRecovery::DoRecovery (Ptr<TcpSocketState> tcb, uint32_t lastAckedBytes,
+>                              uint32_t lastSackedBytes)
+110,111c105,107
+<   NS_LOG_FUNCTION (this << tcb << deliveredBytes);
+<   NS_UNUSED (deliveredBytes);
+---
+>   NS_LOG_FUNCTION (this << tcb << lastAckedBytes << lastSackedBytes);
+>   NS_UNUSED (lastAckedBytes);
+>   NS_UNUSED (lastSackedBytes);
+diff ../../NS3-WiGig/src/internet/model/tcp-recovery-ops.h ../../ns-3-dev-git/src/internet/model/tcp-recovery-ops.h
+23,24c23
+< #ifndef TCP_RECOVERY_OPS_H
+< #define TCP_RECOVERY_OPS_H
+---
+> #pragma once
+100c99
+<    * \param deliveredBytes bytes (S)ACKed in the last (S)ACK
+---
+>    * \param lastSackedBytes bytes acknowledged via SACK in the last ACK
+103c102
+<                               uint32_t unAckDataCount, uint32_t deliveredBytes) = 0;
+---
+>                               uint32_t unAckDataCount, uint32_t lastSackedBytes) = 0;
+111a111,113
+>    * TODO: lastAckedBytes and lastSackedBytes should be one parameter
+>    * that indicates how much data has been ACKed or SACKed.
+>    *
+113c115,116
+<    * \param deliveredBytes bytes (S)ACKed in the last (S)ACK
+---
+>    * \param lastAckedBytes bytes acknowledged in the last ACK
+>    * \param lastSackedBytes bytes acknowledged via SACK in the last ACK
+115c118,119
+<   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t deliveredBytes) = 0;
+---
+>   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t lastAckedBytes,
+>                            uint32_t lastSackedBytes) = 0;
+135c139,142
+<   virtual void UpdateBytesSent (uint32_t bytesSent);
+---
+>   virtual void UpdateBytesSent (uint32_t bytesSent)
+>   {
+>     NS_UNUSED (bytesSent);
+>   }
+187c194
+<                               uint32_t unAckDataCount, uint32_t deliveredBytes) override;
+---
+>                               uint32_t unAckDataCount, uint32_t lastSackedBytes) override;
+189c196,197
+<   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t deliveredBytes) override;
+---
+>   virtual void DoRecovery (Ptr<TcpSocketState> tcb, uint32_t lastAckedBytes,
+>                            uint32_t lastSackedBytes) override;
+197,198d204
+< 
+< #endif /* TCP_RECOVERY_OPS_H */
+diff ../../NS3-WiGig/src/internet/model/tcp-scalable.cc ../../ns-3-dev-git/src/internet/model/tcp-scalable.cc
+31,32d30
+< #include "tcp-socket-state.h"
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-scalable.h ../../ns-3-dev-git/src/internet/model/tcp-scalable.h
+33c33,34
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+36,37d36
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-socket-base.cc ../../ns-3-dev-git/src/internet/model/tcp-socket-base.cc
+61d60
+< #include "ns3/tcp-rate-ops.h"
+65,69d63
+< #include <iostream>
+< #include <fstream>
+< 
+< using namespace ns3;
+< using namespace std;
+73d66
+< 
+151,156c144,148
+<     .AddAttribute ("UseEcn", "Parameter to set ECN functionality",
+<                    EnumValue (TcpSocketState::Off),
+<                    MakeEnumAccessor (&TcpSocketBase::SetUseEcn),
+<                    MakeEnumChecker (TcpSocketState::Off, "Off",
+<                                     TcpSocketState::On, "On",
+<                                     TcpSocketState::AcceptOnly, "AcceptOnly"))
+---
+>     .AddAttribute ("EcnMode", "Determines the mode of ECN",
+>                    EnumValue (EcnMode_t::NoEcn),
+>                    MakeEnumAccessor (&TcpSocketBase::m_ecnMode),
+>                    MakeEnumChecker (EcnMode_t::NoEcn, "NoEcn",
+>                                     EcnMode_t::ClassicEcn, "ClassicEcn"))
+250a243
+>   m_rxBuffer = CreateObject<TcpRxBuffer> ();
+253,255d245
+<   m_rateOps  = CreateObject <TcpRateLinux> ();
+< 
+<   m_tcb->m_rxBuffer = CreateObject<TcpRxBuffer> ();
+260,261d249
+<   m_tcb->m_sendEmptyPacketCallback = MakeCallback (&TcpSocketBase::SendEmptyPacket, this);
+< 
+347a336
+>     m_ecnMode (sock.m_ecnMode),
+367a357
+>   m_rxBuffer = CopyObject (sock.m_rxBuffer);
+369d358
+<   m_tcb->m_rxBuffer = CopyObject (sock.m_tcb->m_rxBuffer);
+377d365
+<       m_congestionControl->Init (m_tcb);
+385,390d372
+<   m_rateOps = CreateObject <TcpRateLinux> ();
+<   if (m_tcb->m_sendEmptyPacketCallback.IsNull ())
+<     {
+<       m_tcb->m_sendEmptyPacketCallback = MakeCallback (&TcpSocketBase::SendEmptyPacket, this);
+<     }
+< 
+739c721
+<   if (m_tcb->m_rxBuffer->Size () != 0)
+---
+>   if (m_rxBuffer->Size () != 0)
+822,826d803
+< 
+<       m_rateOps->CalculateAppLimited(m_tcb->m_cWnd, m_tcb->m_bytesInFlight, m_tcb->m_segmentSize,
+<                                      m_txBuffer->TailSequence (), m_tcb->m_nextTxSequence,
+<                                      m_txBuffer->GetLost (), m_txBuffer->GetRetransmitsCount ());
+< 
+863c840
+<   if (m_tcb->m_rxBuffer->Size () == 0 && m_state == CLOSE_WAIT)
+---
+>   if (m_rxBuffer->Size () == 0 && m_state == CLOSE_WAIT)
+867c844
+<   Ptr<Packet> outPacket = m_tcb->m_rxBuffer->Extract (maxSize);
+---
+>   Ptr<Packet> outPacket = m_rxBuffer->Extract (maxSize);
+909c886
+<   return m_tcb->m_rxBuffer->Available ();
+---
+>   return m_rxBuffer->Available ();
+1018c995
+<       if (m_tcb->m_useEcn == TcpSocketState::On)
+---
+>       if (m_ecnMode == EcnMode_t::ClassicEcn)
+1112c1089
+<       return (m_tcb->m_rxBuffer->NextRxSequence () != head);
+---
+>       return (m_rxBuffer->NextRxSequence () != head);
+1116c1093
+<   return (tail < m_tcb->m_rxBuffer->NextRxSequence () || m_tcb->m_rxBuffer->MaxRxSequence () <= head);
+---
+>   return (tail < m_rxBuffer->NextRxSequence () || m_rxBuffer->MaxRxSequence () <= head);
+1243,1244c1220,1221
+<                    ") out of range [" << m_tcb->m_rxBuffer->NextRxSequence () << ":" <<
+<                    m_tcb->m_rxBuffer->MaxRxSequence () << ")");
+---
+>                    ") out of range [" << m_rxBuffer->NextRxSequence () << ":" <<
+>                    m_rxBuffer->MaxRxSequence () << ")");
+1391c1368
+<           h.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>           h.SetAckNumber (m_rxBuffer->NextRxSequence ());
+1495c1472
+<       if (m_tcb->m_rxBuffer->Finished ())
+---
+>       if (m_rxBuffer->Finished ())
+1532c1509
+< TcpSocketBase::ReadOptions (const TcpHeader &tcpHeader, uint32_t *bytesSacked)
+---
+> TcpSocketBase::ReadOptions (const TcpHeader &tcpHeader, bool &scoreboardUpdated)
+1546c1523
+<           *bytesSacked = ProcessOptionSack (option);
+---
+>           scoreboardUpdated = ProcessOptionSack (option);
+1555c1532
+< TcpSocketBase::EnterRecovery (uint32_t currentDelivered)
+---
+> TcpSocketBase::EnterRecovery ()
+1592a1570
+>   m_recoveryOps->EnterRecovery (m_tcb, m_dupAckCount, UnAckDataCount (), m_txBuffer->GetSacked ());
+1594,1602c1572,1575
+<   if (!m_congestionControl->HasCongControl ())
+<     {
+<       m_recoveryOps->EnterRecovery (m_tcb, m_dupAckCount, UnAckDataCount (), currentDelivered);
+<       NS_LOG_INFO (m_dupAckCount << " dupack. Enter fast recovery mode." <<
+<                   "Reset cwnd to " << m_tcb->m_cWnd << ", ssthresh to " <<
+<                    m_tcb->m_ssThresh << " at fast recovery seqnum " << m_recover <<
+<                    " calculated in flight: " << bytesInFlight);
+<     }
+< 
+---
+>   NS_LOG_INFO (m_dupAckCount << " dupack. Enter fast recovery mode." <<
+>                "Reset cwnd to " << m_tcb->m_cWnd << ", ssthresh to " <<
+>                m_tcb->m_ssThresh << " at fast recovery seqnum " << m_recover <<
+>                " calculated in flight: " << bytesInFlight);
+1612c1585
+< TcpSocketBase::DupAck (uint32_t currentDelivered)
+---
+> TcpSocketBase::DupAck ()
+1655,1660c1628,1630
+<       if (!m_congestionControl->HasCongControl ())
+<         {
+<           m_recoveryOps->DoRecovery (m_tcb, currentDelivered);
+<           NS_LOG_INFO (m_dupAckCount << " Dupack received in fast recovery mode."
+<                        "Increase cwnd to " << m_tcb->m_cWnd);
+<         }
+---
+>       m_recoveryOps->DoRecovery (m_tcb, 0, m_txBuffer->GetSacked ());
+>       NS_LOG_INFO (m_dupAckCount << " Dupack received in fast recovery mode."
+>                    "Increase cwnd to " << m_tcb->m_cWnd);
+1669c1639
+<           EnterRecovery (currentDelivered);
+---
+>           EnterRecovery ();
+1678c1648
+<           EnterRecovery (currentDelivered);
+---
+>           EnterRecovery ();
+1713,1715c1683,1684
+<   uint32_t bytesSacked = 0;
+<   uint64_t previousDelivered = m_rateOps->GetConnectionRate ().m_delivered;
+<   ReadOptions (tcpHeader, &bytesSacked);
+---
+>   bool scoreboardUpdated = false;
+>   ReadOptions (tcpHeader, scoreboardUpdated);
+1719,1721c1688
+<   m_txBuffer->DiscardUpTo (ackNumber, MakeCallback (&TcpRateOps::SkbDelivered, m_rateOps));
+< 
+<   uint32_t currentDelivered = static_cast<uint32_t> (m_rateOps->GetConnectionRate ().m_delivered - previousDelivered);
+---
+>   m_txBuffer->DiscardUpTo (ackNumber);
+1733,1740d1699
+<   else if (m_tcb->m_ecnState == TcpSocketState::ECN_ECE_RCVD && !(tcpHeader.GetFlags () & TcpHeader::ECE))
+<     {
+<       m_tcb->m_ecnState = TcpSocketState::ECN_IDLE;
+<     }
+< 
+<   // Update bytes in flight before processing the ACK for proper calculation of congestion window
+<   NS_LOG_INFO ("Update bytes in flight before processing the ACK.");
+<   BytesInFlight ();
+1744,1758c1703
+<   ProcessAck (ackNumber, (bytesSacked > 0), currentDelivered, oldHeadSequence);
+< 
+<   if (m_congestionControl->HasCongControl ())
+<     {
+<       uint32_t previousLost = m_txBuffer->GetLost ();
+<       uint32_t priorInFlight = m_tcb->m_bytesInFlight.Get ();
+<       uint32_t currentLost = m_txBuffer->GetLost ();
+<       uint32_t lost = (currentLost > previousLost) ?
+<             currentLost - previousLost :
+<             previousLost - currentLost;
+<       auto rateSample = m_rateOps->GenerateSample (currentDelivered, lost,
+<                                               false, priorInFlight, m_tcb->m_minRtt);
+<       auto rateConn = m_rateOps->GetConnectionRate ();
+<       m_congestionControl->CongControl(m_tcb, rateConn, rateSample);
+<     }
+---
+>   ProcessAck (ackNumber, scoreboardUpdated, oldHeadSequence);
+1772,1773c1717,1718
+< TcpSocketBase::ProcessAck(const SequenceNumber32 &ackNumber, bool scoreboardUpdated,
+<                           uint32_t currentDelivered, const SequenceNumber32 &oldHeadSequence)
+---
+> TcpSocketBase::ProcessAck (const SequenceNumber32 &ackNumber, bool scoreboardUpdated,
+>                            const SequenceNumber32 &oldHeadSequence)
+1782d1726
+<   uint32_t bytesAcked = 0;
+1820c1764
+<       DupAck (currentDelivered);
+---
+>       DupAck ();
+1846c1790
+<       bytesAcked = ackNumber - oldHeadSequence;
+---
+>       uint32_t bytesAcked = ackNumber - oldHeadSequence;
+1849d1792
+<       bytesAcked -= bytesAcked % m_tcb->m_segmentSize;
+1854d1796
+<           bytesAcked += m_tcb->m_segmentSize;
+1898c1840
+<           if (!m_congestionControl->HasCongControl () && segsAcked >= 1)
+---
+>           if (segsAcked >= 1)
+1900c1842
+<               m_recoveryOps->DoRecovery (m_tcb, currentDelivered);
+---
+>               m_recoveryOps->DoRecovery (m_tcb, bytesAcked, m_txBuffer->GetSacked ());
+2085d2026
+<       m_tcb->m_congState = TcpSocketState::CA_OPEN;
+2101c2042
+<       m_tcb->m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+---
+>       m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+2105,2106c2046
+< 
+<       if (m_tcb->m_useEcn != TcpSocketState::Off && (tcpflags & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+---
+>       if (m_ecnMode == EcnMode_t::ClassicEcn && (tcpflags & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+2124d2063
+<       m_tcb->m_congState = TcpSocketState::CA_OPEN;
+2128c2067
+<       m_tcb->m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+---
+>       m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+2136c2075
+<       if (m_tcb->m_useEcn != TcpSocketState::Off && (tcpflags & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::ECE))
+---
+>       if (m_ecnMode == EcnMode_t::ClassicEcn && (tcpflags & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::ECE))
+2183d2121
+<       m_tcb->m_congState = TcpSocketState::CA_OPEN;
+2212c2150
+<       m_tcb->m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+---
+>       m_rxBuffer->SetNextRxSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (1));
+2216c2154
+<       if (m_tcb->m_useEcn != TcpSocketState::Off && (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+---
+>       if (m_ecnMode == EcnMode_t::ClassicEcn && (tcpHeader.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+2231c2169
+<       if (tcpHeader.GetSequenceNumber () == m_tcb->m_rxBuffer->NextRxSequence ())
+---
+>       if (tcpHeader.GetSequenceNumber () == m_rxBuffer->NextRxSequence ())
+2302c2240
+<       m_tcb->m_rxBuffer->SetFinSequence (tcpHeader.GetSequenceNumber ());
+---
+>       m_rxBuffer->SetFinSequence (tcpHeader.GetSequenceNumber ());
+2321c2259
+<   if ((m_state == FIN_WAIT_1 || m_state == FIN_WAIT_2) && m_tcb->m_rxBuffer->Finished ())
+---
+>   if ((m_state == FIN_WAIT_1 || m_state == FIN_WAIT_2) && m_rxBuffer->Finished ())
+2356c2294
+<       if (tcpHeader.GetSequenceNumber () == m_tcb->m_rxBuffer->NextRxSequence ())
+---
+>       if (tcpHeader.GetSequenceNumber () == m_rxBuffer->NextRxSequence ())
+2392c2330
+<       if (tcpHeader.GetSequenceNumber () == m_tcb->m_rxBuffer->NextRxSequence ())
+---
+>       if (tcpHeader.GetSequenceNumber () == m_rxBuffer->NextRxSequence ())
+2420,2421c2358,2359
+<   if (tcpHeader.GetSequenceNumber () < m_tcb->m_rxBuffer->NextRxSequence ()
+<       || tcpHeader.GetSequenceNumber () > m_tcb->m_rxBuffer->MaxRxSequence ())
+---
+>   if (tcpHeader.GetSequenceNumber () < m_rxBuffer->NextRxSequence ()
+>       || tcpHeader.GetSequenceNumber () > m_rxBuffer->MaxRxSequence ())
+2426c2364
+<   m_tcb->m_rxBuffer->SetFinSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (p->GetSize ()));
+---
+>   m_rxBuffer->SetFinSequence (tcpHeader.GetSequenceNumber () + SequenceNumber32 (p->GetSize ()));
+2434c2372
+<   if (!m_tcb->m_rxBuffer->Finished ())
+---
+>   if (!m_rxBuffer->Finished ())
+2550c2488
+<   header.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>   header.SetAckNumber (m_rxBuffer->NextRxSequence ());
+2617c2555
+<       if (m_sackEnabled && m_tcb->m_rxBuffer->GetSackListSize () > 0)
+---
+>       if (m_sackEnabled && m_rxBuffer->GetSackListSize () > 0)
+2621c2559
+<       NS_LOG_INFO ("Sending a pure ACK, acking seq " << m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>       NS_LOG_INFO ("Sending a pure ACK, acking seq " << m_rxBuffer->NextRxSequence ());
+2777c2715
+<   m_tcb->m_rxBuffer->SetNextRxSequence (h.GetSequenceNumber () + SequenceNumber32 (1));
+---
+>   m_rxBuffer->SetNextRxSequence (h.GetSequenceNumber () + SequenceNumber32 (1));
+2782,2783c2720
+<   if (m_tcb->m_useEcn != TcpSocketState::Off &&
+<       (h.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+---
+>   if (m_ecnMode == EcnMode_t::ClassicEcn && (h.GetFlags () & (TcpHeader::CWR | TcpHeader::ECE)) == (TcpHeader::CWR | TcpHeader::ECE))
+2822c2759
+<       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && !CheckNoEcn (GetIpTos ()))
+---
+>       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && CheckEcnEct0 (GetIpTos ()))
+2824c2761,2762
+<           ipTosTag.SetTos (MarkEcnCodePoint (GetIpTos (), m_tcb->m_ectCodePoint));
+---
+>           // Set ECT(0) if ECN is enabled with the last received ipTos
+>           ipTosTag.SetTos (MarkEcnEct0 (GetIpTos ()));
+2835c2773
+<       if ((m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && p->GetSize () > 0) || m_tcb->m_ecnMode == TcpSocketState::DctcpEcn)
+---
+>       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && p->GetSize () > 0)
+2836a2775
+>           // Set ECT(0) if ECN is enabled and ipTos is 0
+2838c2777
+<           ipTosTag.SetTos (MarkEcnCodePoint (GetIpTos (), m_tcb->m_ectCodePoint));
+---
+>           ipTosTag.SetTos (MarkEcnEct0 (GetIpTos ()));
+2846c2785
+<       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && !CheckNoEcn (GetIpv6Tclass ()))
+---
+>       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && CheckEcnEct0 (GetIpv6Tclass ()))
+2848c2787,2788
+<           ipTclassTag.SetTclass (MarkEcnCodePoint (GetIpv6Tclass (), m_tcb->m_ectCodePoint));
+---
+>           // Set ECT(0) if ECN is enabled with the last received ipTos
+>           ipTclassTag.SetTclass (MarkEcnEct0 (GetIpv6Tclass ()));
+2859c2799
+<       if ((m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && p->GetSize () > 0) || m_tcb->m_ecnMode == TcpSocketState::DctcpEcn)
+---
+>       if (m_tcb->m_ecnState != TcpSocketState::ECN_DISABLED && p->GetSize () > 0)
+2860a2801
+>           // Set ECT(0) if ECN is enabled and ipTos is 0
+2862c2803
+<           ipTclassTag.SetTclass (MarkEcnCodePoint (GetIpv6Tclass (), m_tcb->m_ectCodePoint));
+---
+>           ipTclassTag.SetTclass (MarkEcnEct0 (GetIpv6Tclass ()));
+2889d2829
+< 
+2897,2900c2837,2841
+<   bool isStartOfTransmission = BytesInFlight () == 0U;
+<   TcpTxItem *outItem = m_txBuffer->CopyFromSequence (maxSize, seq);
+< 
+<   m_rateOps->SkbSent(outItem, isStartOfTransmission);
+---
+>   bool isRetransmission = false;
+>   if (seq != m_tcb->m_highTxMark)
+>     {
+>       isRetransmission = true;
+>     }
+2902,2903c2843
+<   bool isRetransmission = outItem->IsRetrans ();
+<   Ptr<Packet> p = outItem->GetPacketCopy ();
+---
+>   Ptr<Packet> p = m_txBuffer->CopyFromSequence (maxSize, seq);
+2933c2873
+<       m_congestionControl->ReduceCwnd (m_tcb);
+---
+>       m_tcb->m_cWnd = std::max (m_tcb->m_cWnd.Get () / 2, m_tcb->m_segmentSize);
+2940a2881,2886
+>       NS_LOG_DEBUG (TcpSocketState::TcpCongStateName[m_tcb->m_congState] << " -> CA_CWR");
+>       if (m_tcb->m_congState == TcpSocketState::CA_OPEN)
+>         {
+>           m_congestionControl->CongestionStateSet (m_tcb, TcpSocketState::CA_CWR);
+>           m_tcb->m_congState = TcpSocketState::CA_CWR;
+>         }
+2962c2908
+<   header.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>   header.SetAckNumber (m_rxBuffer->NextRxSequence ());
+3014c2960
+<   if (!isRetransmission)
+---
+>   if (seq + sz > m_tcb->m_highTxMark)
+3238d3183
+<   // std::cout << win << ",," << inflight << "\n";
+3250c3195
+<   if (m_tcb->m_rxBuffer->GotFin ())
+---
+>   if (m_rxBuffer->GotFin ())
+3256c3201
+<       NS_ASSERT_MSG (m_tcb->m_rxBuffer->MaxRxSequence () - m_tcb->m_rxBuffer->NextRxSequence () >= 0,
+---
+>       NS_ASSERT_MSG (m_rxBuffer->MaxRxSequence () - m_rxBuffer->NextRxSequence () >= 0,
+3258c3203
+<       w = static_cast<uint32_t> (m_tcb->m_rxBuffer->MaxRxSequence () - m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>       w = static_cast<uint32_t> (m_rxBuffer->MaxRxSequence () - m_rxBuffer->NextRxSequence ());
+3289,3290c3234,3235
+<   SequenceNumber32 expectedSeq = m_tcb->m_rxBuffer->NextRxSequence ();
+<   if (!m_tcb->m_rxBuffer->Add (p, tcpHeader))
+---
+>   SequenceNumber32 expectedSeq = m_rxBuffer->NextRxSequence ();
+>   if (!m_rxBuffer->Add (p, tcpHeader))
+3305c3250
+<   if (expectedSeq < m_tcb->m_rxBuffer->NextRxSequence ())
+---
+>   if (expectedSeq < m_rxBuffer->NextRxSequence ())
+3318c3263
+<       if (m_tcb->m_rxBuffer->Finished () && (tcpHeader.GetFlags () & TcpHeader::FIN) == 0)
+---
+>       if (m_rxBuffer->Finished () && (tcpHeader.GetFlags () & TcpHeader::FIN) == 0)
+3325c3270
+<   if (m_tcb->m_rxBuffer->Size () > m_tcb->m_rxBuffer->Available () || m_tcb->m_rxBuffer->NextRxSequence () > expectedSeq + p->GetSize ())
+---
+>   if (m_rxBuffer->Size () > m_rxBuffer->Available () || m_rxBuffer->NextRxSequence () > expectedSeq + p->GetSize ())
+3358,3361d3302
+<       else if (!m_delAckEvent.IsExpired ())
+<         {
+<           m_congestionControl->CwndEvent (m_tcb, TcpSocketState::CA_EVENT_DELAYED_ACK);
+<         }
+3364d3304
+<           m_congestionControl->CwndEvent (m_tcb, TcpSocketState::CA_EVENT_DELAYED_ACK);
+3491c3431
+<           if (m_tcb->m_useEcn != TcpSocketState::Off)
+---
+>           if (m_ecnMode == EcnMode_t::ClassicEcn)
+3587a3528,3529
+>   m_tcb->m_cWnd = m_tcb->m_segmentSize;
+>   m_tcb->m_cWndInfl = m_tcb->m_cWnd;
+3591,3592d3532
+<   m_tcb->m_cWnd = m_tcb->m_segmentSize;
+<   m_tcb->m_cWndInfl = m_tcb->m_cWnd;
+3651c3591
+<   Ptr<Packet> p = m_txBuffer->CopyFromSequence (1, m_tcb->m_nextTxSequence)->GetPacketCopy ();
+---
+>   Ptr<Packet> p = m_txBuffer->CopyFromSequence (1, m_tcb->m_nextTxSequence);
+3655c3595
+<   tcpHeader.SetAckNumber (m_tcb->m_rxBuffer->NextRxSequence ());
+---
+>   tcpHeader.SetAckNumber (m_rxBuffer->NextRxSequence ());
+3672c3612
+<       ipTosTag.SetTos (MarkEcnCodePoint (0, m_tcb->m_ectCodePoint));
+---
+>       ipTosTag.SetTos (MarkEcnEct0 (0));
+3676c3616
+<       ipTclassTag.SetTclass (MarkEcnCodePoint (0, m_tcb->m_ectCodePoint));
+---
+>       ipTclassTag.SetTclass (MarkEcnEct0 (0));
+3779c3719
+<   m_tcb->m_rxBuffer->SetMaxBufferSize (size);
+---
+>   m_rxBuffer->SetMaxBufferSize (size);
+3802c3742
+<   return m_tcb->m_rxBuffer->MaxBufferSize ();
+---
+>   return m_rxBuffer->MaxBufferSize ();
+3962c3902
+<   uint32_t maxSpace = m_tcb->m_rxBuffer->MaxBufferSize ();
+---
+>   uint32_t maxSpace = m_rxBuffer->MaxBufferSize ();
+3978c3918
+<                static_cast<int> (scale) << " for buffer size " << m_tcb->m_rxBuffer->MaxBufferSize ());
+---
+>                static_cast<int> (scale) << " for buffer size " << m_rxBuffer->MaxBufferSize ());
+4002c3942
+< uint32_t
+---
+> bool
+4008c3948,3949
+<   return m_txBuffer->Update (s->GetSackList (), MakeCallback (&TcpRateOps::SkbDelivered, m_rateOps));
+---
+>   TcpOptionSack::SackList list = s->GetSackList ();
+>   return m_txBuffer->Update (list);
+4042c3983
+<   TcpOptionSack::SackList sackList = m_tcb->m_rxBuffer->GetSackList ();
+---
+>   TcpOptionSack::SackList sackList = m_rxBuffer->GetSackList ();
+4081c4022
+<   if (seq == m_tcb->m_rxBuffer->NextRxSequence () && seq <= m_highTxAck)
+---
+>   if (seq == m_rxBuffer->NextRxSequence () && seq <= m_highTxAck)
+4184c4125
+<   return m_tcb->m_rxBuffer;
+---
+>   return m_rxBuffer;
+4226,4227d4166
+< 
+< 
+4231,4238d4169
+< {
+<   // if (Simulator::Now ().GetSeconds () > 1.4)
+<   // {
+<   //   ofstream fout;
+<   //   fout.open( "1_seq.txt" ,ios::app);
+<   //   fout << Simulator::Now ().GetSeconds ()  <<  " "  << newValue << "\n";
+<   //   fout.close();
+<   // }
+4239a4171
+> {
+4258,4261d4189
+<     // ofstream fout;
+<     // fout.open( "1_RTT.txt" ,ios::app);
+<     // fout << Simulator::Now ().GetSeconds ()  <<  " "  << newValue.GetMicroSeconds() << "\n";
+<     // fout.close();
+4270d4197
+<   m_congestionControl->Init (m_tcb);
+4306c4233
+< TcpSocketBase::SetUseEcn (TcpSocketState::UseEcn_t useEcn)
+---
+> TcpSocketBase::SetEcn (EcnMode_t ecnMode)
+4308,4309c4235,4236
+<   NS_LOG_FUNCTION (this << useEcn);
+<   m_tcb->m_useEcn = useEcn;
+---
+>   NS_LOG_FUNCTION (this);
+>   m_ecnMode = ecnMode;
+diff ../../NS3-WiGig/src/internet/model/tcp-socket-base.h ../../ns-3-dev-git/src/internet/model/tcp-socket-base.h
+52d51
+< class TcpRateOps;
+484a484,492
+>    * \brief ECN Modes
+>    */
+>   typedef enum
+>     {
+>       NoEcn = 0,   //!< ECN is not enabled.
+>       ClassicEcn   //!< ECN functionality as described in RFC 3168.
+>     } EcnMode_t;
+> 
+>   /**
+525,535c533
+<    * \brief mark ECN code point
+<    *
+<    * \return TOS with specified ECN code point
+<    */
+<   inline uint8_t MarkEcnCodePoint (const uint8_t tos, const TcpSocketState::EcnCodePoint_t codePoint) const
+<     {
+<       return ((tos & 0xfc) | codePoint);
+<     }
+< 
+<   /**
+<    * \brief Set use of ECN on the socket
+---
+>    * \brief Set ECN mode to use on the socket
+537c535
+<    * \param useEcn Use of ECN. Currently Off and On are supported.
+---
+>    * \param ecnMode Mode of ECN. Currently NoEcn and ClassicEcn is supported.
+539c537
+<   void SetUseEcn (TcpSocketState::UseEcn_t useEcn);
+---
+>   void SetEcn (EcnMode_t ecnMode);
+970,971d967
+<    * \param currentDelivered The number of bytes (S)ACKed
+<    * \return the number of bytes (newly) acked, or 0 if it was a dupack
+974c970
+<                            uint32_t currentDelivered, const SequenceNumber32 &oldHeadSequence);
+---
+>                            const SequenceNumber32 &oldHeadSequence);
+1009,1010d1004
+<    *
+<    * \param currentDelivered Current (S)ACKed bytes
+1012c1006
+<   void DupAck (uint32_t currentDelivered);
+---
+>   void DupAck ();
+1016,1017d1009
+<    *
+<    * \param currentDelivered Currently (S)ACKed bytes
+1019c1011
+<   void EnterRecovery (uint32_t currentDelivered);
+---
+>   void EnterRecovery ();
+1062c1054,1055
+<    * \param [out] bytesSacked Number of bytes SACKed, or 0
+---
+>    * \param scoreboardUpdated indicates if the scoreboard was updated due to a
+>    * SACK option
+1064c1057
+<   void ReadOptions (const TcpHeader &tcpHeader, uint32_t *bytesSacked);
+---
+>   void ReadOptions (const TcpHeader &tcpHeader, bool &scoreboardUpdated);
+1116c1109
+<    * \returns the number of bytes sacked by this option
+---
+>    * \returns true in case of an update to the SACKed blocks
+1118c1111
+<   uint32_t ProcessOptionSack(const Ptr<const TcpOption> option);
+---
+>   bool ProcessOptionSack (const Ptr<const TcpOption> option);
+1221c1214,1215
+<   // Tx buffer management
+---
+>   // Rx and Tx buffer management
+>   Ptr<TcpRxBuffer> m_rxBuffer; //!< Rx buffer (reordering buffer)
+1262d1255
+<   Ptr<TcpRateOps>        m_rateOps;           //!< Rate operations
+1277a1271
+>   EcnMode_t                     m_ecnMode    {EcnMode_t::NoEcn};      //!< Socket ECN capability
+diff ../../NS3-WiGig/src/internet/model/tcp-socket.h ../../ns-3-dev-git/src/internet/model/tcp-socket.h
+149c149
+<    * \param cwnd the initial congestion window (in segments)
+---
+>    * \param cwnd the initial congestion window (in bytes)
+155c155
+<    * \returns the initial congestion window (in segments)
+---
+>    * \returns the initial congestion window (in bytes)
+diff ../../NS3-WiGig/src/internet/model/tcp-socket-state.cc ../../ns-3-dev-git/src/internet/model/tcp-socket-state.cc
+98,100c98
+<     m_lastRtt (other.m_lastRtt),
+<     m_ecnMode (other.m_ecnMode),
+<     m_useEcn (other.m_useEcn)
+---
+>     m_lastRtt (other.m_lastRtt)
+diff ../../NS3-WiGig/src/internet/model/tcp-socket-state.h ../../ns-3-dev-git/src/internet/model/tcp-socket-state.h
+18,19c18
+< #ifndef TCP_SOCKET_STATE_H
+< #define TCP_SOCKET_STATE_H
+---
+> #pragma once
+25d23
+< #include "tcp-rx-buffer.h"
+103,135d100
+<   /**
+<    * \brief Parameter value related to ECN enable/disable functionality
+<    *        similar to sysctl for tcp_ecn. Currently value 2 from
+<    *        https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+<    *        is not implemented.
+<    */
+<   typedef enum
+<     {
+<       Off        = 0,   //!< Disable
+<       On         = 1,   //!< Enable
+<       AcceptOnly = 2,   //!< Enable only when the peer endpoint is ECN capable
+<     } UseEcn_t;
+< 
+<   /**
+<    * \brief ECN code points
+<    */
+<   typedef enum
+<     {
+<       NotECT   = 0,   //!< Unmarkable
+<       Ect1     = 1,   //!< Markable
+<       Ect0     = 2,   //!< Markable
+<       CongExp  = 3,   //!< Marked
+<     } EcnCodePoint_t;
+< 
+<   /**
+<    * \brief ECN Modes
+<    */
+<   typedef enum
+<     {
+<       ClassicEcn,  //!< ECN functionality as described in RFC 3168.
+<       DctcpEcn,    //!< ECN functionality as described in RFC 8257. Note: this mode is specific to DCTCP.
+<     } EcnMode_t;
+< 
+192,198d156
+<   Ptr<TcpRxBuffer>       m_rxBuffer;                 //!< Rx buffer (reordering buffer)
+< 
+<   EcnMode_t              m_ecnMode {ClassicEcn}; //!< ECN mode
+<   UseEcn_t               m_useEcn {Off};         //!< Socket ECN capability
+< 
+<   EcnCodePoint_t         m_ectCodePoint {Ect0};  //!< ECT code point to use
+< 
+218,219d175
+< 
+<   Callback <void, uint8_t> m_sendEmptyPacketCallback;
+247,248d202
+< 
+< #endif /* TCP_SOCKET_STATE_H */
+diff ../../NS3-WiGig/src/internet/model/tcp-tx-buffer.cc ../../ns-3-dev-git/src/internet/model/tcp-tx-buffer.cc
+34a35,73
+> 
+> void
+> TcpTxItem::Print (std::ostream &os) const
+> {
+>   bool comma = false;
+>   os << "[" << m_startSeq << ";" << m_startSeq + GetSeqSize () << "|"
+>      << GetSeqSize () << "]";
+> 
+>   if (m_lost)
+>     {
+>       os << "[lost]";
+>       comma = true;
+>     }
+>   if (m_retrans)
+>     {
+>       if (comma)
+>         {
+>           os << ",";
+>         }
+> 
+>       os << "[retrans]";
+>       comma = true;
+>     }
+>   if (m_sacked)
+>     {
+>       if (comma)
+>         {
+>           os << ",";
+>         }
+>       os << "[sacked]";
+>       comma = true;
+>     }
+>   if (comma)
+>     {
+>       os << ",";
+>     }
+>   os << "[" << m_lastSent.GetSeconds () << "]";
+> }
+> 
+37d75
+< Callback<void, TcpTxItem *> TcpTxBuffer::m_nullCb = MakeNullCallback<void, TcpTxItem*> ();
+121,150d158
+< TcpTxBuffer::SetDupAckThresh (uint32_t dupAckThresh)
+< {
+<   m_dupAckThresh = dupAckThresh;
+< }
+< 
+< void
+< TcpTxBuffer::SetSegmentSize (uint32_t segmentSize)
+< {
+<   m_segmentSize = segmentSize;
+< }
+< 
+< uint32_t
+< TcpTxBuffer::GetRetransmitsCount (void) const
+< {
+<   return m_retrans;
+< }
+< 
+< uint32_t
+< TcpTxBuffer::GetLost (void) const
+< {
+<   return m_lostOut;
+< }
+< 
+< uint32_t
+< TcpTxBuffer::GetSacked (void) const
+< {
+<   return m_sackedOut;
+< }
+< 
+< void
+207c215
+< TcpTxItem *
+---
+> Ptr<Packet>
+221c229
+<       return nullptr;
+---
+>       return Create<Packet> ();
+259a268,270
+>   Ptr<Packet> toRet = outItem->m_packet->Copy ();
+> 
+>   NS_ASSERT (toRet->GetSize () <= s);
+264c275
+<   return outItem;
+---
+>   return toRet;
+591c602
+<   // be updated in MarkTransmittedSegment.
+---
+>   // be updated in GetTransmittedSegment.
+641,642c652
+< TcpTxBuffer::DiscardUpTo (const SequenceNumber32& seq,
+<                           const Callback<void, TcpTxItem *> &beforeDelCb)
+---
+> TcpTxBuffer::DiscardUpTo (const SequenceNumber32& seq)
+664c674
+<           Ptr<Packet> p = CopyFromSequence (offset, m_firstByteSeq)->GetPacketCopy ();
+---
+>           Ptr<Packet> p = CopyFromSequence (offset, m_firstByteSeq);
+690,696d699
+< 
+<           if (!beforeDelCb.IsNull ())
+<             {
+<               // Inform Rate algorithms only when a full packet is ACKed
+<               beforeDelCb (item);
+<             }
+< 
+758,760c761,762
+< uint32_t
+< TcpTxBuffer::Update (const TcpOptionSack::SackList &list,
+<                      const Callback<void, TcpTxItem *> &sackedCb)
+---
+> bool
+> TcpTxBuffer::Update (const TcpOptionSack::SackList &list)
+765c767
+<   uint32_t bytesSacked = 0;
+---
+>   bool modified = false;
+772c774
+<       if (m_firstByteSeq + m_sentSize < (*option_it).first)
+---
+>       if (m_firstByteSeq + m_sentSize < (*option_it).first && !modified)
+775c777
+<           return bytesSacked;
+---
+>           return false;
+807d808
+<                   bytesSacked += (*item_it)->m_packet->GetSize ();
+819,823d819
+< 
+<                   if (!sackedCb.IsNull ())
+<                     {
+<                       sackedCb (*item_it);
+<                     }
+824a821
+>               modified = true;
+840c837
+<   if (bytesSacked > 0)
+---
+>   if (modified)
+842c839
+<       NS_ASSERT_MSG (m_highestSack.first != m_sentList.end(), "Buffer status: " << *this);
+---
+>       NS_ASSERT_MSG (modified && m_highestSack.first != m_sentList.end(), "Buffer status: " << *this);
+851c848
+<   return bytesSacked;
+---
+>   return modified;
+1429c1426
+<   Ptr<const Packet> p;
+---
+>   Ptr<Packet> p;
+1432c1429
+<       p = (*it)->GetPacket ();
+---
+>       p = (*it)->m_packet;
+1442c1439
+<       appSize += (*it)->GetPacket ()->GetSize ();
+---
+>       appSize += (*it)->m_packet->GetSize ();
+diff ../../NS3-WiGig/src/internet/model/tcp-tx-buffer.h ../../ns-3-dev-git/src/internet/model/tcp-tx-buffer.h
+27a28
+> #include "ns3/nstime.h"
+29c30
+< #include "ns3/tcp-tx-item.h"
+---
+> #include "ns3/packet.h"
+36a38,68
+>  * \brief Item that encloses the application packet and some flags for it
+>  */
+> class TcpTxItem
+> {
+> public:
+>   // Default constructor, copy-constructor, destructor
+> 
+>   /**
+>    * \brief Print the time
+>    * \param os ostream
+>    */
+>   void Print (std::ostream &os) const;
+> 
+>   /**
+>    * \brief Get the size in the sequence number space
+>    *
+>    * \return 1 if the packet size is 0 or there's no packet, otherwise the size of the packet
+>    */
+>   uint32_t GetSeqSize (void) const { return m_packet && m_packet->GetSize () > 0 ? m_packet->GetSize () : 1; }
+> 
+>   SequenceNumber32 m_startSeq {0};     //!< Sequence number of the item (if transmitted)
+>   Ptr<Packet> m_packet {nullptr};    //!< Application packet (can be null)
+>   bool m_lost          {false};      //!< Indicates if the segment has been lost (RTO)
+>   bool m_retrans       {false};      //!< Indicates if the segment is retransmitted
+>   Time m_lastSent      {Time::Min()};//!< Timestamp of the time at which the segment has been sent last time
+>   bool m_sacked        {false};      //!< Indicates if the segment has been SACKed
+> };
+> 
+> /**
+>  * \ingroup tcp
+>  *
+179c211
+<   void SetDupAckThresh (uint32_t dupAckThresh);
+---
+>   void SetDupAckThresh (uint32_t dupAckThresh) { m_dupAckThresh = dupAckThresh; }
+185c217
+<   void SetSegmentSize (uint32_t segmentSize);
+---
+>   void SetSegmentSize (uint32_t segmentSize) { m_segmentSize = segmentSize; }
+196c228
+<   uint32_t GetRetransmitsCount (void) const;
+---
+>   uint32_t GetRetransmitsCount (void) const { return m_retrans; }
+204c236
+<   uint32_t GetLost (void) const;
+---
+>   uint32_t GetLost (void) const { return m_lostOut; }
+210c242
+<   uint32_t GetSacked (void) const;
+---
+>   uint32_t GetSacked (void) const { return m_sackedOut; }
+245,246c277
+<    * \returns a pointer to the TcpTxItem that corresponds to what requested.
+<    * Please do not delete the pointer, nor modify Packet data or sequence numbers.
+---
+>    * \returns a packet
+248c279
+<   TcpTxItem* CopyFromSequence (uint32_t numBytes, const SequenceNumber32& seq);
+---
+>   Ptr<Packet> CopyFromSequence (uint32_t numBytes, const SequenceNumber32& seq);
+264,265d294
+<    * \param beforeDelCb Callback invoked, if it is not null, before the deletion
+<    * of an Item (because it was, probably, ACKed)
+267,268c296
+<   void DiscardUpTo (const SequenceNumber32& seq,
+<                     const Callback<void, TcpTxItem *> &beforeDelCb = m_nullCb);
+---
+>   void DiscardUpTo (const SequenceNumber32& seq);
+273,275c301
+<    * \param sackedCb Callback invoked, if it is not null, when a segment has been
+<    * SACKed by the receiver.
+<    * \returns the number of bytes newly sacked by the list of blocks
+---
+>    * \returns true in case of an update
+277,278c303
+<   uint32_t Update (const TcpOptionSack::SackList &list,
+<                    const Callback<void, TcpTxItem *> &sackedCb = m_nullCb);
+---
+>   bool Update (const TcpOptionSack::SackList &list);
+594d618
+<   static Callback<void, TcpTxItem *> m_nullCb; //!< Null callback for an item
+Only in ../../NS3-WiGig/src/internet/model: tcp-tx-item.cc
+Only in ../../NS3-WiGig/src/internet/model: tcp-tx-item.h
+diff ../../NS3-WiGig/src/internet/model/tcp-vegas.cc ../../ns-3-dev-git/src/internet/model/tcp-vegas.cc
+28,29d27
+< #include "tcp-socket-state.h"
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-vegas.h ../../ns-3-dev-git/src/internet/model/tcp-vegas.h
+30c30,31
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+33,34d33
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/tcp-veno.cc ../../ns-3-dev-git/src/internet/model/tcp-veno.cc
+28,29d27
+< #include "tcp-socket-state.h"
+< 
+diff ../../NS3-WiGig/src/internet/model/tcp-veno.h ../../ns-3-dev-git/src/internet/model/tcp-veno.h
+30c30,31
+< #include "tcp-congestion-ops.h"
+---
+> #include "ns3/tcp-congestion-ops.h"
+> #include "ns3/tcp-recovery-ops.h"
+33,34d33
+< 
+< class TcpSocketState;
+diff ../../NS3-WiGig/src/internet/model/udp-l4-protocol.cc ../../ns-3-dev-git/src/internet/model/udp-l4-protocol.cc
+85c85
+<  * This method is called by AggregateObject and completes the aggregation
+---
+>  * This method is called by AddAgregate and completes the aggregation
+diff ../../NS3-WiGig/src/internet/model/udp-socket-impl.cc ../../ns-3-dev-git/src/internet/model/udp-socket-impl.cc
+571,572c571,577
+< 
+<   // Note that some systems will only send limited broadcast packets
+---
+>   //
+>   // If dest is set to the limited broadcast address (all ones),
+>   // convert it to send a copy of the packet out of every 
+>   // interface as a subnet-directed broadcast.
+>   // Exception:  if the interface has a /32 address, there is no
+>   // valid subnet-directed broadcast, so send it as limited broadcast
+>   // Note also that some systems will only send limited broadcast packets
+573a579
+>   //
+627d632
+<               // Here we try to route subnet-directed broadcasts
