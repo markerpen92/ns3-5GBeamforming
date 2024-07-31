@@ -69,6 +69,9 @@ if function is from ns-3
     function-name = [ns3]_[For Which Character In Network]_[Role]_[this fuinction's FunctionID]
                                                                         FunctionXX
 
+    if this function is for every character
+        function-name = [ns3]_[Role]_[this function's FunctionID]
+
 if function is not from ns-3 but used for ns-3
     function-name = [ns3Sub]_For[Which FunctionID]_[Role]_[this fuinction's FunctionID]
 
@@ -112,7 +115,7 @@ int main(int argc , char* argv[])
 
     string   MsduAggregationSize = "max";
     string   MpduAggregationSize = "max";
-    bool     EanbleRTS       = false;
+    bool     EnableRTS       = false;
     uint32_t RTSThreshold    = 0 ;
     string   PhyMode         = "EDMG_OFDM_MCS8";
     string   WifiStandard    = "802.11ay" ;
@@ -150,14 +153,14 @@ int main(int argc , char* argv[])
 
 
     /*--------------TCPLayer + MACLayer Config------------------*/
-    Config::SetDefault ("ns3::TcpL4Protocol::SocketType", StringValue   ("ns3::TcpCubic") ); //TCP
+    Config::SetDefault ("ns3::TcpL4Protocol::SocketType", StringValue   ("ns3::TcpCubic"));  //TCP
     Config::SetDefault ("ns3::TcpSocket::SegmentSize"   , UintegerValue (PayloadSize) );     //TCP
     Config::SetDefault ("ns3::TcpSocket::DelAckCount"   , UintegerValue (1));                //TCP
     Config::SetDefault ("ns3::TcpSocket::SndBufSize"    , UintegerValue (0.45*1024*1024) );  //TCP
     Config::SetDefault ("ns3::TcpSocket::RcvBufSize"    , UintegerValue (0.45*1024*1024) );  //TCP
     Config::SetDefault ("ns3::Ipv4GlobalRouting::RandomEcmpRouting", BooleanValue(true)  );  //TCP
 
-    Config::SetDefault ("ns3::WifiMacQueue::MaxDelay"   , TimeValue     (MilliSeconds (T_BM)) ); //MAC
+    Config::SetDefault ("ns3::WifiMacQueue::MaxDelay"   , TimeValue(MilliSeconds (T_BM)) );  //MAC
     if (EnableMACReTX)
     {
         Config::SetDefault("ns3::WifiRemoteStationManager::MaxSlrc"        ,  UintegerValue (4)    );
@@ -179,7 +182,7 @@ int main(int argc , char* argv[])
     cmd.AddValue ("--amsdusize", "The maximum aggregation size for A-MSDU in Bytes", MsduAggregationSize);
     cmd.AddValue ("--ampdusize", "The maximum aggregation size for A-MPDU in Bytes", MpduAggregationSize);
     cmd.AddValue ("scheme"     , "The access scheme used for channel access (0: SP allocation, 1: CBAP allocation)", AllocationType);
-    cmd.AddValue ("enableRts"  , "Enable or disable RTS/CTS handshake"             , EanbleRTS      );
+    cmd.AddValue ("enableRts"  , "Enable or disable RTS/CTS handshake"             , EnableRTS      );
     cmd.AddValue ("rtsThreshold", "The RTS/CTS threshold value"                    , RTSThreshold   );
     cmd.AddValue ("queueSize"  , "The maximum size of the Wifi MAC Queue"          , InputBufferSize);
     cmd.AddValue ("PhyMode"    , "The WiGig PHY Mode"                              , PhyMode        );
@@ -201,20 +204,33 @@ int main(int argc , char* argv[])
 
 
     /*----------------WiFi Setting------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    WifiPhyStandard NetworkStandard = WifiStandard=="802.11ay" ? WIFI_PHY_STANDARD_80211ad : WIFI_PHY_STANDARD_80211ay;
+    WifiPhyStandard NetworkStandard = WifiStandard=="802.11ay" ? WIFI_PHY_STANDARD_80211ay : WIFI_PHY_STANDARD_80211ad;
     if (WifiStandard!="802.11ay" && WifiStandard!="802.11ad")
     {
         NS_FATAL_ERROR ("Wrong WiGig standard");
         exit(1);
     }
 
+    cout << MsduAggregationSize << "||" << MpduAggregationSize << "||" << EnableRTS << "||" << RTSThreshold << "||" << NetworkStandard << endl;
+
     ValidateFrameAggregationAttributes (MsduAggregationSize, MpduAggregationSize, NetworkStandard);
-    ConfigureRtsCtsAndFragmenatation   (EanbleRTS , RTSThreshold);
+    ConfigureRtsCtsAndFragmenatation   (EnableRTS , RTSThreshold);
     ChangeQueueSize (InputBufferSize);
 
-    DmgWifiHelper WiFi;
-    WiFi.SetStandard (NetworkStandard);
-    WiFi.SetRemoteStationManager( "ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode) );
+    cout << MsduAggregationSize << "||" << MpduAggregationSize << "||" << EnableRTS << "||" << RTSThreshold << "||" << NetworkStandard << endl;
+
+    DmgWifiHelper WiFi_DmgWifiHelper;
+    WiFi_DmgWifiHelper.SetStandard(NetworkStandard);
+    WiFi_DmgWifiHelper.SetRemoteStationManager("ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode));
+    // Ptr<EdmgCapabilities> edmgCapabilities = CreateObject<EdmgCapabilities>();
+    // WiFi_DmgWifiHelper.SetEdmgCapabilities(edmgCapabilities);
+    WiFi_DmgWifiHelper.SetCodebook(
+        "ns3::CodebookAnalytical"    , 
+        "CodebookType"               , 
+        EnumValue(SIMPLE_CODEBOOK)   , 
+        "Antennas", UintegerValue(1) , 
+        "Sectors" , UintegerValue(8)
+    );
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Nodes" << string(5, '-') << '\n';
@@ -264,7 +280,6 @@ int main(int argc , char* argv[])
         UsersAntennas_NodeContainer[user_idx][0] = NodeContainer(UsersAntenna1_Node[user_idx] , Users_Node[user_idx]);
         UsersAntennas_NodeContainer[user_idx][1] = NodeContainer(UsersAntenna2_Node[user_idx] , Users_Node[user_idx]);
     }
-    
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Ether Channel" << string(5, '-') << '\n';
@@ -301,17 +316,6 @@ int main(int argc , char* argv[])
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Wireless Channel from antennas1 to AP1" << string(5, '-') << '\n';
 
     /*----------------Create Wireless Channel from antennas1 to AP1------------------------------------------------------------------------------------------------------------------------*/
-    DmgWifiHelper WiFi_DmgWifiHelper;
-    WiFi_DmgWifiHelper.SetStandard(NetworkStandard);
-    WiFi.SetRemoteStationManager  ("ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode));
-    WiFi_DmgWifiHelper.SetCodebook(
-        "ns3::CodebookAnalytical"    ,
-        "CodebookType"               ,
-        EnumValue(SIMPLE_CODEBOOK)   ,
-        "Antennas", UintegerValue(1) ,
-        "Sectors" , UintegerValue(8)
-    );
-
     DmgWifiPhyHelper AP1WiFiPhy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
     DmgWifiChannelHelper AP1Channel_DmgWifiChannelHelper;
     AP1Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
@@ -340,18 +344,20 @@ int main(int argc , char* argv[])
         "SSSlotsPerABFT" , UintegerValue(8)        , 
         "SSFramesPerSlot", UintegerValue(8)        ,
         "BeaconInterval" , TimeValue(MicroSeconds (102400)),
-        "EDMGSupported"  , BooleanValue((WifiStandard == "ay"))
+        "EDMGSupported"  , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer AP1_NetDeviceContainer = WiFi_DmgWifiHelper.Install(
         AP1WiFiPhy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , AP1_Node
     );
+
     AP1Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgStaWifiMac" , 
         "Ssid"               , SsidValue(AP1_Ssid)                , 
+        "ActiveProbing"      , BooleanValue(false)                ,
         "BE_MaxAmpduSize"    , StringValue(MpduAggregationSize)   ,
         "BE_MaxAmsduSize"    , StringValue(MsduAggregationSize)   ,
-        "EDMGSupported"      , BooleanValue((WifiStandard == "ay"))
+        "EDMGSupported"      , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer Antenna1ConnectAP1_NetDeviceContainer[(int)UserNum];
@@ -385,24 +391,6 @@ int main(int argc , char* argv[])
             StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt") 
         );
     }
-        
-    DmgWifiPhyHelper AP2Phy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
-    DmgWifiChannelHelper AP2Channel_DmgWifiChannelHelper;
-    AP2Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
-    AP2Channel_DmgWifiChannelHelper.AddPropagationLoss ("ns3::FriisPropagationLossModel" , "Frequency" , DoubleValue (60.48e9));
-    AP2Phy_DmgWifiPhyHelper.SetChannel(AP2Channel_DmgWifiChannelHelper.Create());
-    AP2Phy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
-    AP2Phy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
-    AP2Phy_DmgWifiPhyHelper.Set("TxPowerLevels"  , UintegerValue(1)  );
-    AP2Phy_DmgWifiPhyHelper.Set("ChannelNumber"  , UintegerValue(2)  );
-    AP2Phy_DmgWifiPhyHelper.Set("SupportOfdmPhy" , BooleanValue(true));
-    if(WifiStandard == "802.11ay")
-    {
-        AP2Phy_DmgWifiPhyHelper.SetErrorRateModel(
-            "ns3::DmgErrorModel","FileName", 
-            StringValue("WigigFiles/ErrorModel/LookupTable_1458_ay.txt")
-        );
-    }
 
     Ssid AP2_Ssid = Ssid("AP2");
     DmgWifiMacHelper AP2Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default();
@@ -414,26 +402,27 @@ int main(int argc , char* argv[])
         "SSSlotsPerABFT" , UintegerValue(8)                   , 
         "SSFramesPerSlot", UintegerValue(8)                   ,
         "BeaconInterval" , TimeValue(MicroSeconds (102400))   ,
-        "EDMGSupported"  , BooleanValue((WifiStandard == "ay"))
+        "EDMGSupported"  , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer AP2_NetDeviceContainer = WiFi_DmgWifiHelper.Install(
-        AP2Phy_DmgWifiPhyHelper , AP2Mac_DmgWifiMacHelper , AP2_Node
+        AP2WiFiPhy_DmgWifiPhyHelper , AP2Mac_DmgWifiMacHelper , AP2_Node
     );
 
     AP2Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgStaWifiMac" , 
-        "Ssid"            , SsidValue(AP2_Ssid)                , 
-        "BE_MaxAmpduSize" , StringValue(MpduAggregationSize)   ,
-        "BE_MaxAmsduSize" , StringValue(MsduAggregationSize)   ,
-        "EDMGSupported"   , BooleanValue((WifiStandard == "ay"))
+        "Ssid"               , SsidValue(AP2_Ssid)                , 
+        "ActiveProbing"      , BooleanValue(false)                ,
+        "BE_MaxAmpduSize"    , StringValue(MpduAggregationSize)   ,
+        "BE_MaxAmsduSize"    , StringValue(MsduAggregationSize)   ,
+        "EDMGSupported"      , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer Antenna2ConnectAP2_NetDeviceContainer[(int)UserNum];
     for(int antenna2_idx=0 ; antenna2_idx<(int)UserNum ; antenna2_idx++)
     {
         Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx] = WiFi_DmgWifiHelper.Install(
-            AP2Phy_DmgWifiPhyHelper , AP2Mac_DmgWifiMacHelper , UsersAntenna2_Node[antenna2_idx]
+            AP2WiFiPhy_DmgWifiPhyHelper , AP2Mac_DmgWifiMacHelper , UsersAntenna2_Node[antenna2_idx]
         );
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -477,12 +466,6 @@ int main(int argc , char* argv[])
     Mobile_MobilityHelper.Install(UsersAntenna1_NodeContainer);
     Mobile_MobilityHelper.Install(UsersAntenna2_NodeContainer);
     Mobile_MobilityHelper.Install(Users_NodeContainer        );
-    // for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
-    // {
-    //     Mobile_MobilityHelper.Install(UsersAntenna1_Node[user_idx]); // this location is for userX atanna1
-    //     Mobile_MobilityHelper.Install(UsersAntenna2_Node[user_idx]); // this location is for userX atanna2
-    //     Mobile_MobilityHelper.Install(Users_Node        [user_idx]); // this location is for userX
-    // }
 
     ns3_PrintNodePositions_FunctionPhysicalInfo1(EdgeServer_NodeContainer    , "EdgeServer");
     cout << string(25 , '_') << endl;
@@ -612,6 +595,9 @@ int main(int argc , char* argv[])
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         staticRouting_Server->AddHostRouteTo(
+            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1) , 1
+        );
+        staticRouting_Server->AddHostRouteTo(
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1) , 1
         );
     }
@@ -719,7 +705,7 @@ int main(int argc , char* argv[])
     }
 
 
-    cout << "EdgeServer-Network Device   Channel : " << EdgeServer_NetworkDevice->GetChannel() << endl;
+    cout << "EdgeServer-Network Device Channel : " << EdgeServer_NetworkDevice->GetChannel() << endl;
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         cout << "User-Network Device Channel : " << Users_NetworkDevice[user_idx]->GetChannel() << endl;
@@ -729,26 +715,33 @@ int main(int argc , char* argv[])
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Get MAC Info" << string(5, '-') << '\n';
 
-    /*----------------Get MAC48Address of all nodes----------------------------------------------------------------------------------------------------------------------------------------*/
+    /*----------------Get MAC48Address & Ipv4Address of all nodes----------------------------------------------------------------------------------------------------------------------------------------*/
     cout << string(10,'~') << "Server Node" << string(10,'~') << endl;
+    ns3_PrintIpv4Address_FunctionLayer3Info2     (EdgeServer_Node);
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(EdgeServer_Node);
     cout << string(10,'~') << "Gateway1" << string(10,'~') << endl;
+    ns3_PrintIpv4Address_FunctionLayer3Info2     (Gateway1_Node  );
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Gateway1_Node  );
     cout << string(10,'~') << "Gateway2" << string(10,'~') << endl;
+    ns3_PrintIpv4Address_FunctionLayer3Info2     (Gateway2_Node  );
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Gateway2_Node  );
     cout << string(10,'~') << "AP1     " << string(10,'~') << endl;
+    ns3_PrintIpv4Address_FunctionLayer3Info2     (AP1_Node       );
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(AP1_Node       );
     cout << string(10,'~') << "AP2     " << string(10,'~') << endl;
+    ns3_PrintIpv4Address_FunctionLayer3Info2     (AP2_Node       );
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(AP2_Node       );
 
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         cout << string(10,'~') << "User<" << user_idx << ">" << string(10,'~') << endl;
+        ns3_PrintIpv4Address_FunctionLayer3Info2     (Users_Node        [user_idx]);
         ns3_PrintNodeMacAddresses_FunctionLayer2Info1(Users_Node        [user_idx]);
+        ns3_PrintIpv4Address_FunctionLayer3Info2     (UsersAntenna1_Node[user_idx]);
         ns3_PrintNodeMacAddresses_FunctionLayer2Info1(UsersAntenna1_Node[user_idx]);
+        ns3_PrintIpv4Address_FunctionLayer3Info2     (UsersAntenna2_Node[user_idx]);
         ns3_PrintNodeMacAddresses_FunctionLayer2Info1(UsersAntenna2_Node[user_idx]);
     }
-    
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
@@ -774,13 +767,8 @@ int main(int argc , char* argv[])
             PayloadSize , DataRate , 1.4 , SimulationTime    , 
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1)
         );
-
-        ns3_ForServer_InstallTCPTxSink_TCPApp2(
-            &(ServerSink_ApplicationContainer[user_idx][1])  , 
-            EdgeServer_Node , (uint32_t)((int)port)          , 
-            PayloadSize , DataRate , 1.4 , SimulationTime    , 
-            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1)
-        );
+        
+        port--;
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -862,6 +850,9 @@ int main(int argc , char* argv[])
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Scheduling" << string(5, '-') << '\n';
+
+    /*----------------Scheduling-----------------------------------------------------------------------------------------------------------------------------------------------------------*/
     for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
     {
         Simulator::Schedule(
@@ -907,10 +898,12 @@ int main(int argc , char* argv[])
 
     if(PcapTrace)
     {
+        Channel_PointToPointHelper.EnablePcap("Traces/Server" , ServerConnectGateway1_NetDeviceContainer.Get(0) , true);
+
         AP1WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
         AP2WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-        AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP1" , AP1_NetDeviceContainer , true);
-        AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP2" , AP2_NetDeviceContainer , true);
+        AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP1"   , AP1_NetDeviceContainer   , true);
+        AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP2"   , AP2_NetDeviceContainer   , true);
         for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
         {
             string userx_antenna1_pcap = "Traces/user" + to_string(user_idx+1) + "_antenna1";
@@ -919,7 +912,11 @@ int main(int argc , char* argv[])
             AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap(userx_antenna2_pcap , Antenna2ConnectAP2_NetDeviceContainer[user_idx] , false);
         }
     }
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+    cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Start to run..." << string(5, '-') << '\n';
+
+    /*----------------Start to run---------------------------------------------------------------------------------------------------------------------------------------------------------*/
     Simulator::Stop(Seconds(SimulationTime+0.001));
     Simulator::Run    ();
     Simulator::Destroy();
