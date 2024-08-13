@@ -42,7 +42,6 @@ NS_LOG_COMPONENT_DEFINE ("CompareAccessSchemes");
 using namespace ns3;
 using namespace std;
 
-
 /*
 variable rule
 
@@ -107,9 +106,11 @@ int main(int argc , char* argv[])
 
 
     /*----------------Simulation Parameters------------------------------------------------------------------------------------------------------------------------------------------------*/
-    uint32_t port = 9999;
-    double   SimulationTime = condition==1 ? 10.0 : 4.0 ;
-    uint32_t PayloadSize    = 1400;
+    int user_num = UserNum;
+    uint32_t port = 6666;
+    // double   SimulationTime = condition==1 ? 10.0 : 4.0 ;
+    double   SimulationTime = 2.0      ;
+    uint32_t PayloadSize    = 1400     ;
     string   DataRate       = "300Mbps";
     uint32_t AllocationType = CBAP_ALLOCATION;
 
@@ -121,23 +122,23 @@ int main(int argc , char* argv[])
     string   WifiStandard    = "802.11ay" ;
     // float    TimeOffset      = 0.5;
     string   InputBufferSize = "4000p";
-    int T_BM = BM_enable ? ( UserNum==1 ? 3 : (UserNum<6 ? 2+((int)UserNum-1)*3 : 15) ) : 500 ; /*$T(BM)*/
+    int T_BM = BM_enable ? ( UserNum==1 ? 3 : (UserNum<6 ? 2+(user_num-1)*3 : 15) ) : 500 ; /*$T(BM)*/
 
     bool  Verbose       = false;
     bool  PcapTrace     = true ;
-    bool  EnableMACReTX = false;
+    bool  EnableMACReTX = true;
     uint32_t SnapShotLength = std::numeric_limits<uint32_t>::max (); /* The maximum PCAP Snapshot Length. */
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
 
     /*----------------Init Parameters for measurement--------------------------------------------------------------------------------------------------------------------------------------*/
-    uint64_t TotalRx          [(int)UserNum] = {0};
-    double   Throughput       [(int)UserNum] = {0};
-    Ptr<PacketSink> PacketSink[(int)UserNum];
+    uint64_t TotalRx          [user_num] = {0};
+    double   Throughput       [user_num] = {0};
+    Ptr<PacketSink> PacketSink[user_num];
 
-    ApplicationContainer SinkAPP[(int)UserNum];
-    ApplicationContainer SrcAPP[(int)UserNum] ;
+    ApplicationContainer SinkAPP[user_num];
+    ApplicationContainer SrcAPP[user_num] ;
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -161,7 +162,7 @@ int main(int argc , char* argv[])
     Config::SetDefault ("ns3::Ipv4GlobalRouting::RandomEcmpRouting", BooleanValue(true)  );  //TCP
 
     Config::SetDefault ("ns3::WifiMacQueue::MaxDelay"   , TimeValue(MilliSeconds (T_BM)) );  //MAC
-    if (EnableMACReTX)
+    if(EnableMACReTX)
     {
         Config::SetDefault("ns3::WifiRemoteStationManager::MaxSlrc"        ,  UintegerValue (4)    );
         Config::SetDefault("ns3::WifiRemoteStationManager::RtsCtsThreshold",  UintegerValue (65536));
@@ -198,7 +199,7 @@ int main(int argc , char* argv[])
 
 
     /*----------------Set OuputFile Path------------------------*/
-    OutputFileName = "./2_rawdata/seed"+ to_string(int(seed)) + "/"+ ConditionFile +"/" + Method + Method1 + "/" + to_string((int)UserNum) + "/";
+    OutputFileName = "./2_rawdata/seed"+ to_string(int(seed)) + "/"+ ConditionFile +"/" + Method + Method1 + "/" + to_string(user_num) + "/";
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -215,15 +216,13 @@ int main(int argc , char* argv[])
 
     ValidateFrameAggregationAttributes (MsduAggregationSize, MpduAggregationSize, NetworkStandard);
     ConfigureRtsCtsAndFragmenatation   (EnableRTS , RTSThreshold);
-    ChangeQueueSize (InputBufferSize);
+    ChangeQueueSize                    (InputBufferSize);
 
     cout << MsduAggregationSize << "||" << MpduAggregationSize << "||" << EnableRTS << "||" << RTSThreshold << "||" << NetworkStandard << endl;
 
     DmgWifiHelper WiFi_DmgWifiHelper;
     WiFi_DmgWifiHelper.SetStandard(NetworkStandard);
     WiFi_DmgWifiHelper.SetRemoteStationManager("ns3::ConstantRateWifiManager" , "DataMode" , StringValue(PhyMode));
-    // Ptr<EdmgCapabilities> edmgCapabilities = CreateObject<EdmgCapabilities>();
-    // WiFi_DmgWifiHelper.SetEdmgCapabilities(edmgCapabilities);
     WiFi_DmgWifiHelper.SetCodebook(
         "ns3::CodebookAnalytical"    , 
         "CodebookType"               , 
@@ -251,31 +250,31 @@ int main(int argc , char* argv[])
     Ptr<Node> AP2_Node = APs_NodeContainer.Get(1);
 
     NodeContainer Users_NodeContainer;
-    Users_NodeContainer.Create((int)UserNum);
-    Ptr<Node>     Users_Node  [(int)UserNum];
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    Users_NodeContainer.Create(user_num);
+    Ptr<Node>     Users_Node  [user_num];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         Users_Node[user_idx] = Users_NodeContainer.Get(user_idx);
     }
 
     NodeContainer UsersAntenna1_NodeContainer;
-    UsersAntenna1_NodeContainer.Create((int)UserNum);
-    Ptr<Node>     UsersAntenna1_Node  [(int)UserNum];
-    for(int antenna1_idx=0 ; antenna1_idx<(int)UserNum ; antenna1_idx++)
+    UsersAntenna1_NodeContainer.Create(user_num);
+    Ptr<Node>     UsersAntenna1_Node  [user_num];
+    for(int antenna1_idx=0 ; antenna1_idx<user_num ; antenna1_idx++)
     {
         UsersAntenna1_Node[antenna1_idx] = UsersAntenna1_NodeContainer.Get(antenna1_idx);
     }
 
     NodeContainer UsersAntenna2_NodeContainer;
-    UsersAntenna2_NodeContainer.Create((int)UserNum);
-    Ptr<Node>     UsersAntenna2_Node  [(int)UserNum];
-    for(int antenna2_idx=0 ; antenna2_idx<(int)UserNum ; antenna2_idx++)
+    UsersAntenna2_NodeContainer.Create(user_num);
+    Ptr<Node>     UsersAntenna2_Node  [user_num];
+    for(int antenna2_idx=0 ; antenna2_idx<user_num ; antenna2_idx++)
     {
         UsersAntenna2_Node[antenna2_idx] = UsersAntenna2_NodeContainer.Get(antenna2_idx);
     }
 
-    NodeContainer UsersAntennas_NodeContainer[(int)UserNum][2];
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    NodeContainer UsersAntennas_NodeContainer[user_num][2];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         UsersAntennas_NodeContainer[user_idx][0] = NodeContainer(UsersAntenna1_Node[user_idx] , Users_Node[user_idx]);
         UsersAntennas_NodeContainer[user_idx][1] = NodeContainer(UsersAntenna2_Node[user_idx] , Users_Node[user_idx]);
@@ -290,36 +289,46 @@ int main(int argc , char* argv[])
     Channel_PointToPointHelper.SetChannelAttribute("Delay"              , TimeValue(Seconds(0.000)));
     Channel_PointToPointHelper.SetQueue           ("ns3::DropTailQueue" , "MaxSize" , QueueSizeValue(QueueSize("4294967295p")));
 
+    PointToPointHelper ChannelByPass_PointToPointHelper; // This Ehter channel is for users send ack-pkt to edge server
+    ChannelByPass_PointToPointHelper.SetDeviceAttribute ("DataRate"           , StringValue("3Gbps")     );
+    ChannelByPass_PointToPointHelper.SetChannelAttribute("Delay"              , TimeValue(Seconds(0.005)));
+    ChannelByPass_PointToPointHelper.SetQueue           ("ns3::DropTailQueue" , "MaxSize" , QueueSizeValue(QueueSize("4294967295p")));
+
+    NodeContainer ServerConnectGateway1_NodeContainer = NodeContainer(EdgeServer_Node , Gateway1_Node);
     NetDeviceContainer ServerConnectGateway1_NetDeviceContainer   = 
-    Channel_PointToPointHelper.Install(NodeContainer(EdgeServer_Node , Gateway1_Node));
+    Channel_PointToPointHelper.Install(ServerConnectGateway1_NodeContainer);
     
+    NodeContainer Gateway1ConnectGateway2_NodeContainer = NodeContainer(Gateway1_Node , Gateway2_Node);
     NetDeviceContainer Gateway1ConnectGateway2_NetDeviceContainer = 
-    Channel_PointToPointHelper.Install(NodeContainer(Gateway1_Node   , Gateway2_Node));
+    Channel_PointToPointHelper.Install(Gateway1ConnectGateway2_NodeContainer);
 
+    NodeContainer Gateway2ConnectAP1_NodeContainer = NodeContainer(Gateway2_Node , AP1_Node);
     NetDeviceContainer Gateway2ConnectAP1_NetDeviceContainer      = 
-    Channel_PointToPointHelper.Install(NodeContainer(Gateway2_Node   ,      AP1_Node));
+    Channel_PointToPointHelper.Install(Gateway2ConnectAP1_NodeContainer);
 
+    NodeContainer Gateway2ConnectAP2_NodeContainer = NodeContainer(Gateway2_Node , AP2_Node);
     NetDeviceContainer Gateway2ConnectAP2_NetDeviceContainer      = 
-    Channel_PointToPointHelper.Install(NodeContainer(Gateway2_Node   ,      AP2_Node));  
+    Channel_PointToPointHelper.Install(Gateway2ConnectAP2_NodeContainer);  
 
-    NetDeviceContainer Antenna1ConnectAntenna2_NetDeviceContainer[(int)UserNum][2];
-    for(int user_containeridx=0 ; user_containeridx<(int)UserNum ; user_containeridx++)
+    NetDeviceContainer Antenna1ConnectAntenna2_NetDeviceContainer[user_num][2];
+    for(int user_containeridx=0 ; user_containeridx<user_num ; user_containeridx++)
     {
         Antenna1ConnectAntenna2_NetDeviceContainer[user_containeridx][0] = 
         Channel_PointToPointHelper.Install(UsersAntennas_NodeContainer[user_containeridx][0]);
 
         Antenna1ConnectAntenna2_NetDeviceContainer[user_containeridx][1] = 
         Channel_PointToPointHelper.Install(UsersAntennas_NodeContainer[user_containeridx][1]);
-    }
+    }    
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Wireless Channel from antennas1 to AP1" << string(5, '-') << '\n';
 
     /*----------------Create Wireless Channel from antennas1 to AP1------------------------------------------------------------------------------------------------------------------------*/
-    DmgWifiPhyHelper AP1WiFiPhy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
     DmgWifiChannelHelper AP1Channel_DmgWifiChannelHelper;
     AP1Channel_DmgWifiChannelHelper.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
     AP1Channel_DmgWifiChannelHelper.AddPropagationLoss ("ns3::FriisPropagationLossModel" , "Frequency" , DoubleValue (60.48e9));
+
+    DmgWifiPhyHelper AP1WiFiPhy_DmgWifiPhyHelper = DmgWifiPhyHelper::Default();
     AP1WiFiPhy_DmgWifiPhyHelper.SetChannel(AP1Channel_DmgWifiChannelHelper.Create());
     AP1WiFiPhy_DmgWifiPhyHelper.Set("TxPowerStart"   , DoubleValue(10.0) );
     AP1WiFiPhy_DmgWifiPhyHelper.Set("TxPowerEnd"     , DoubleValue(10.0) );
@@ -338,13 +347,13 @@ int main(int argc , char* argv[])
     DmgWifiMacHelper AP1Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default();
     AP1Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgApWifiMac" ,
-        "Ssid"           , SsidValue(AP1_Ssid)     ,
-        "BE_MaxAmpduSize", StringValue(MpduAggregationSize),
-        "BE_MaxAmsduSize", StringValue(MsduAggregationSize),
-        "SSSlotsPerABFT" , UintegerValue(8)        , 
-        "SSFramesPerSlot", UintegerValue(8)        ,
-        "BeaconInterval" , TimeValue(MicroSeconds (102400)),
-        "EDMGSupported"  , BooleanValue((WifiStandard == "802.11ay"))
+        "Ssid"              , SsidValue(AP1_Ssid)              ,
+        "BE_MaxAmpduSize"   , StringValue(MpduAggregationSize) ,
+        "BE_MaxAmsduSize"   , StringValue(MsduAggregationSize) ,
+        "SSSlotsPerABFT"    , UintegerValue(8)                 , 
+        "SSFramesPerSlot"   , UintegerValue(8)                 ,
+        "BeaconInterval"    , TimeValue(MicroSeconds (102400)) ,
+        "EDMGSupported"     , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer AP1_NetDeviceContainer = WiFi_DmgWifiHelper.Install(
@@ -360,8 +369,8 @@ int main(int argc , char* argv[])
         "EDMGSupported"      , BooleanValue((WifiStandard == "802.11ay"))
     );
 
-    NetDeviceContainer Antenna1ConnectAP1_NetDeviceContainer[(int)UserNum];
-    for(int antenna1_idx=0 ; antenna1_idx<(int)UserNum ; antenna1_idx++)
+    NetDeviceContainer Antenna1ConnectAP1_NetDeviceContainer[user_num];
+    for(int antenna1_idx=0 ; antenna1_idx<user_num ; antenna1_idx++)
     {
         Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx] = WiFi_DmgWifiHelper.Install(
             AP1WiFiPhy_DmgWifiPhyHelper , AP1Mac_DmgWifiMacHelper , UsersAntenna1_Node[antenna1_idx]
@@ -396,13 +405,13 @@ int main(int argc , char* argv[])
     DmgWifiMacHelper AP2Mac_DmgWifiMacHelper = DmgWifiMacHelper::Default();
     AP2Mac_DmgWifiMacHelper.SetType(
         "ns3::DmgApWifiMac" ,
-        "Ssid"           , SsidValue(AP2_Ssid)                ,
-        "BE_MaxAmpduSize", StringValue(MpduAggregationSize)   ,
-        "BE_MaxAmsduSize", StringValue(MsduAggregationSize)   ,
-        "SSSlotsPerABFT" , UintegerValue(8)                   , 
-        "SSFramesPerSlot", UintegerValue(8)                   ,
-        "BeaconInterval" , TimeValue(MicroSeconds (102400))   ,
-        "EDMGSupported"  , BooleanValue((WifiStandard == "802.11ay"))
+        "Ssid"              , SsidValue(AP2_Ssid)                ,
+        "BE_MaxAmpduSize"   , StringValue(MpduAggregationSize)   ,
+        "BE_MaxAmsduSize"   , StringValue(MsduAggregationSize)   ,
+        "SSSlotsPerABFT"    , UintegerValue(8)                   , 
+        "SSFramesPerSlot"   , UintegerValue(8)                   ,
+        "BeaconInterval"    , TimeValue(MicroSeconds (102400))   ,
+        "EDMGSupported"     , BooleanValue((WifiStandard == "802.11ay"))
     );
 
     NetDeviceContainer AP2_NetDeviceContainer = WiFi_DmgWifiHelper.Install(
@@ -418,8 +427,8 @@ int main(int argc , char* argv[])
         "EDMGSupported"      , BooleanValue((WifiStandard == "802.11ay"))
     );
 
-    NetDeviceContainer Antenna2ConnectAP2_NetDeviceContainer[(int)UserNum];
-    for(int antenna2_idx=0 ; antenna2_idx<(int)UserNum ; antenna2_idx++)
+    NetDeviceContainer Antenna2ConnectAP2_NetDeviceContainer[user_num];
+    for(int antenna2_idx=0 ; antenna2_idx<user_num ; antenna2_idx++)
     {
         Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx] = WiFi_DmgWifiHelper.Install(
             AP2WiFiPhy_DmgWifiPhyHelper , AP2Mac_DmgWifiMacHelper , UsersAntenna2_Node[antenna2_idx]
@@ -446,9 +455,9 @@ int main(int argc , char* argv[])
 
         double PositionStartPoint[3] = {0.0 , 0.0 , 3.0};
         double radius = 1.0;
-        for(int user_idx = 0; user_idx < (int)UserNum; user_idx++)
+        for(int user_idx = 0; user_idx < user_num; user_idx++)
         {
-            double angle = user_idx * 2 * 3.14159 / (int)UserNum;
+            double angle = user_idx * 2 * 3.14159 / user_num;
             double x = PositionStartPoint[0] + radius * cos(angle);
             double y = PositionStartPoint[1] + radius * sin(angle);
             double z = PositionStartPoint[2];
@@ -517,8 +526,8 @@ int main(int argc , char* argv[])
     Ipv4InterfaceContainer AP1_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         AP1_NetDeviceContainer
     );
-    Ipv4InterfaceContainer UsersAntenna1_Ipv4InterfaceContainer[(int)UserNum];
-    for(int antenna1_idx=0 ; antenna1_idx<(int)UserNum ; antenna1_idx++)
+    Ipv4InterfaceContainer UsersAntenna1_Ipv4InterfaceContainer[user_num];
+    for(int antenna1_idx=0 ; antenna1_idx<user_num ; antenna1_idx++)
     {
         UsersAntenna1_Ipv4InterfaceContainer[antenna1_idx] = Address_IPv4AddressHelper.Assign(
             Antenna1ConnectAP1_NetDeviceContainer[antenna1_idx]
@@ -530,8 +539,8 @@ int main(int argc , char* argv[])
     Ipv4InterfaceContainer AP2_Ipv4InterfaceContainer = Address_IPv4AddressHelper.Assign(
         AP2_NetDeviceContainer
     );
-    Ipv4InterfaceContainer UsersAntenna2_Ipv4InterfaceContainer[(int)UserNum];
-    for(int antenna2_idx=0 ; antenna2_idx<(int)UserNum ; antenna2_idx++)
+    Ipv4InterfaceContainer UsersAntenna2_Ipv4InterfaceContainer[user_num];
+    for(int antenna2_idx=0 ; antenna2_idx<user_num ; antenna2_idx++)
     {
         UsersAntenna2_Ipv4InterfaceContainer[antenna2_idx] = Address_IPv4AddressHelper.Assign(
             Antenna2ConnectAP2_NetDeviceContainer[antenna2_idx]
@@ -540,8 +549,8 @@ int main(int argc , char* argv[])
     cout << "Build Network 192.168.5.0 Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("192.168.6.0" , "255.255.255.0");
-    Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[(int)UserNum][2];
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    Ipv4InterfaceContainer UsersConnectAntennas_Ipv4InterfaceContainer[user_num][2];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0] = Address_IPv4AddressHelper.Assign(
             Antenna1ConnectAntenna2_NetDeviceContainer[user_idx][0]
@@ -560,13 +569,13 @@ int main(int argc , char* argv[])
     cout << "ARP Disable Successfully\n";
 
     Address_IPv4AddressHelper.SetBase("192.168.7.0" , "255.255.255.0");
-    NodeContainer      UsersConnectServer_NodeContainer     [(int)UserNum];
-    NetDeviceContainer UsersConnectServer_NetDeviceContainer[(int)UserNum];
-    Ipv4InterfaceContainer UsersConnectServer_Ipv4InterfaceContainer[(int)UserNum];
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    NodeContainer      UsersConnectServer_NodeContainer     [user_num];
+    NetDeviceContainer UsersConnectServer_NetDeviceContainer[user_num];
+    Ipv4InterfaceContainer UsersConnectServer_Ipv4InterfaceContainer[user_num];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         UsersConnectServer_NodeContainer     [user_idx] = NodeContainer(EdgeServer_Node , Users_Node[user_idx]);
-        UsersConnectServer_NetDeviceContainer[user_idx] = Channel_PointToPointHelper.Install(
+        UsersConnectServer_NetDeviceContainer[user_idx] = ChannelByPass_PointToPointHelper.Install(
             UsersConnectServer_NodeContainer [user_idx]
         );
         UsersConnectServer_Ipv4InterfaceContainer[user_idx] = Address_IPv4AddressHelper.Assign(
@@ -592,24 +601,21 @@ int main(int argc , char* argv[])
     // Server (192.168.1.0) -> Gateway1 (192.168.6.X)
     Ipv4StaticRoutingHelper EdgeServer_ipv4RoutingHelper;
     Ptr<Ipv4StaticRouting> staticRouting_Server = EdgeServer_ipv4RoutingHelper.GetStaticRouting(EdgeServer_Ipv4);
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         staticRouting_Server->AddHostRouteTo(
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1) , 1
         );
-        staticRouting_Server->AddHostRouteTo(
-            UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][1].GetAddress(1) , 1
-        );
     }
     
     // Server (192.168.1.0) -> Gateway1 (192.168.6.X)
-    Ptr<SimpleNetDevice>    Users_NetworkDevice    [(int)UserNum];
-    Ptr<Ipv4>               Users_Ipv4             [(int)UserNum];
-    int32_t                 Users_InterfaceIDX     [(int)UserNum];
-    Ipv4InterfaceAddress    Users_InterfaceAddress [(int)UserNum];
-    Ipv4StaticRoutingHelper Users_ipv4RoutingHelper[(int)UserNum];
-    Ptr<Ipv4StaticRouting>  staticRouting_Users    [(int)UserNum];
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    Ptr<SimpleNetDevice>    Users_NetworkDevice    [user_num];
+    Ptr<Ipv4>               Users_Ipv4             [user_num];
+    int32_t                 Users_InterfaceIDX     [user_num];
+    Ipv4InterfaceAddress    Users_InterfaceAddress [user_num];
+    Ipv4StaticRoutingHelper Users_ipv4RoutingHelper[user_num];
+    Ptr<Ipv4StaticRouting>  staticRouting_Users    [user_num];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         Users_NetworkDevice[user_idx] = CreateObject<SimpleNetDevice>();
         Users_NetworkDevice[user_idx] ->SetAddress(Mac48Address::Allocate());
@@ -661,7 +667,7 @@ int main(int argc , char* argv[])
     cout << "\n\n";
 
     cout << string(10,'~') << "UsersAntennas" << string(10,'~') << endl;
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         cout << "User" << user_idx << endl;
         ns3_PrintRoutingTable_FunctionRouteTable1(UsersAntenna1_Node[user_idx]);
@@ -671,46 +677,6 @@ int main(int argc , char* argv[])
         ns3_PrintRoutingTable_FunctionRouteTable1(Users_Node[user_idx]);
         cout << string(25,'_') <<endl;
     }
-
-
-
-    if(EdgeServer_NetworkDevice->GetChannel() == 0)
-    {
-        cout << "EdgeServer_NetworkDevice -> m_channel is NULL ptr ";
-        Ptr<SimpleChannel> EdgeServer_SimpleChannel = CreateObject<SimpleChannel>();
-        EdgeServer_NetworkDevice->SetChannel(EdgeServer_SimpleChannel);
-        cout << "====>>> Set Simple Channel : " << EdgeServer_SimpleChannel << endl;
-    }
-
-
-    vector<Ptr<SimpleChannel>> Users_SimpleChannel;
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
-    {
-        if(Users_NetworkDevice[user_idx]->GetChannel()==0)
-        {
-            cout << "User[" << user_idx+1 << "] : Users_NetDevice -> m_channel is NULL ptr";
-            Ptr<SimpleChannel> AUser_SimpleChannel = CreateObject<SimpleChannel>();
-            Users_SimpleChannel.push_back(AUser_SimpleChannel);
-            Users_NetworkDevice[user_idx]->SetChannel(Users_SimpleChannel[user_idx]);
-            cout << "====>>> Set Simple Channel : " << Users_SimpleChannel[user_idx] << endl;
-        }
-        else
-        {
-            Ptr<SimpleChannel> TheChannel = DynamicCast<SimpleChannel>(
-                Users_NetworkDevice[user_idx]->GetChannel()
-            );
-            Users_SimpleChannel.push_back(TheChannel);
-            cout << "User[" << user_idx+1 << "] : Already has Channel" << endl;
-        }
-    }
-
-
-    cout << "EdgeServer-Network Device Channel : " << EdgeServer_NetworkDevice->GetChannel() << endl;
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
-    {
-        cout << "User-Network Device Channel : " << Users_NetworkDevice[user_idx]->GetChannel() << endl;
-    }
-
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Get MAC Info" << string(5, '-') << '\n';
@@ -732,7 +698,7 @@ int main(int argc , char* argv[])
     ns3_PrintIpv4Address_FunctionLayer3Info2     (AP2_Node       );
     ns3_PrintNodeMacAddresses_FunctionLayer2Info1(AP2_Node       );
 
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         cout << string(10,'~') << "User<" << user_idx << ">" << string(10,'~') << endl;
         ns3_PrintIpv4Address_FunctionLayer3Info2     (Users_Node        [user_idx]);
@@ -747,12 +713,12 @@ int main(int argc , char* argv[])
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Install TCP Sink" << string(5, '-') << '\n';
 
     /*----------------Install TCP Sink----------------------------------------------------------------------------------------------------------------------------------------------------*/
-    ApplicationContainer UsersSink_ApplicationContainer    [(int)UserNum];
-    // Ptr<PacketSink>      Users_PacketSink               [(int)UserNum];
-    std::vector<ns3::Ptr<ns3::PacketSink>> Users_PacketSink((int)UserNum);
-    ApplicationContainer ServerSink_ApplicationContainer   [(int)UserNum][2];
+    ApplicationContainer UsersSink_ApplicationContainer    [user_num];
+    // Ptr<PacketSink>      Users_PacketSink               [user_num];
+    std::vector<ns3::Ptr<ns3::PacketSink>> Users_PacketSink(user_num);
+    ApplicationContainer ServerSink_ApplicationContainer   [user_num];
 
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         ns3_ForUsers_InstallTCPRxSink_TCPApp1(
             &(UsersSink_ApplicationContainer[user_idx]) , 
@@ -762,13 +728,13 @@ int main(int argc , char* argv[])
         );
 
         ns3_ForServer_InstallTCPTxSink_TCPApp2(
-            &(ServerSink_ApplicationContainer[user_idx][0])  , 
+            &(ServerSink_ApplicationContainer[user_idx])  , 
             EdgeServer_Node , (uint32_t)((int)port)          , 
             PayloadSize , DataRate , 1.4 , SimulationTime    , 
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1)
         );
-        
-        port--;
+
+        // port--;
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -781,12 +747,12 @@ int main(int argc , char* argv[])
     Ptr<WifiNetDevice> AP2_WiFiNetDevice              = StaticCast<WifiNetDevice>(AP2_NetDeviceContainer.Get(0));
     Ptr<DmgApWifiMac> AP2Mac_DmgApWifiMac_ForTraceLog = StaticCast<DmgApWifiMac> (AP2_WiFiNetDevice->GetMac()  );    
     
-    Ptr<WifiNetDevice> Antenna1ConnectAP1_WiFiNetDevice            [(int)UserNum];
-    Ptr<DmgStaWifiMac> Antenna1ConnectAP1_DmgStaWifiMac_ForTraceLog[(int)UserNum];
-    Ptr<WifiNetDevice> Antenna2ConnectAP2_WiFiNetDevice            [(int)UserNum];
-    Ptr<DmgStaWifiMac> Antenna2ConnectAP2_DmgStaWifiMac_ForTraceLog[(int)UserNum];
+    Ptr<WifiNetDevice> Antenna1ConnectAP1_WiFiNetDevice            [user_num];
+    Ptr<DmgStaWifiMac> Antenna1ConnectAP1_DmgStaWifiMac_ForTraceLog[user_num];
+    Ptr<WifiNetDevice> Antenna2ConnectAP2_WiFiNetDevice            [user_num];
+    Ptr<DmgStaWifiMac> Antenna2ConnectAP2_DmgStaWifiMac_ForTraceLog[user_num];
     
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         Antenna1ConnectAP1_WiFiNetDevice[user_idx] = StaticCast<WifiNetDevice>(
             Antenna1ConnectAP1_NetDeviceContainer[user_idx].Get(0)
@@ -853,7 +819,7 @@ int main(int argc , char* argv[])
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Scheduling" << string(5, '-') << '\n';
 
     /*----------------Scheduling-----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
         Simulator::Schedule(
             Seconds(1.4) , 
@@ -894,22 +860,34 @@ int main(int argc , char* argv[])
 
     FlowMonitorHelper FlowMonitorProgram;
     Ptr<FlowMonitor>  MonitorDevice = FlowMonitorProgram.InstallAll();
-    MonitorDevice->SerializeToXmlFile("Traces/FlowMonitorResults.xml", true, true);
+    // MonitorDevice->SerializeToXmlFile("Traces/FlowMonitorResults.xml", true, true);
+    string TraceFolderName = "Traces2/";
 
     if(PcapTrace)
     {
-        Channel_PointToPointHelper.EnablePcap("Traces/Server" , ServerConnectGateway1_NetDeviceContainer.Get(0) , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Server"                , ServerConnectGateway1_NetDeviceContainer.Get(0)   , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Gateway1"              , Gateway1ConnectGateway2_NetDeviceContainer.Get(0) , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Gateway2ToAP1-Gateway" , Gateway2ConnectAP1_NetDeviceContainer.Get(0)      , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Gateway2ToAP1-AP1"     , Gateway2ConnectAP1_NetDeviceContainer.Get(1)      , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Gateway2ToAP2-Gateway" , Gateway2ConnectAP2_NetDeviceContainer.Get(0)      , true);
+        Channel_PointToPointHelper.EnablePcap(TraceFolderName+"Upper/Gateway2ToAP2-AP2"     , Gateway2ConnectAP2_NetDeviceContainer.Get(1)      , true);
 
         AP1WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
         AP2WiFiPhy_DmgWifiPhyHelper.SetPcapDataLinkType(YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
-        AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP1"   , AP1_NetDeviceContainer   , true);
-        AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap("Traces/AP2"   , AP2_NetDeviceContainer   , true);
-        for(int user_idx=0 ; user_idx<(int)UserNum ; user_idx++)
+        AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap(TraceFolderName+"Lower/AP1"   , AP1_NetDeviceContainer   , true);
+        AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap(TraceFolderName+"Lower/AP2"   , AP2_NetDeviceContainer   , true);
+        for(int user_idx=0 ; user_idx<user_num ; user_idx++)
         {
-            string userx_antenna1_pcap = "Traces/user" + to_string(user_idx+1) + "_antenna1";
-            string userx_antenna2_pcap = "Traces/user" + to_string(user_idx+1) + "_antenna2";
+            string userx_antenna1_pcap = TraceFolderName + "Lower/user" + to_string(user_idx+1) + "_antenna1";
+            string userx_antenna2_pcap = TraceFolderName + "Lower/user" + to_string(user_idx+1) + "_antenna2";
             AP1WiFiPhy_DmgWifiPhyHelper.EnablePcap(userx_antenna1_pcap , Antenna1ConnectAP1_NetDeviceContainer[user_idx] , false);
             AP2WiFiPhy_DmgWifiPhyHelper.EnablePcap(userx_antenna2_pcap , Antenna2ConnectAP2_NetDeviceContainer[user_idx] , false);
+        }
+
+        for(int user_idx=0 ; user_idx<user_num ; user_idx++)
+        {
+            string ByPassPcap = TraceFolderName + "ByPass/user" + to_string(user_idx+1);
+            Channel_PointToPointHelper.EnablePcap(ByPassPcap , UsersConnectServer_NetDeviceContainer[user_idx].Get(0) , true);
         }
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
