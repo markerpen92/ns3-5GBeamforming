@@ -1,0 +1,36 @@
+33,43d32
+< #include "ns3/ipv4-header.h"
+< 
+< #include "ns3/srnc.h"
+< #include "ns3/srnc-header.h"
+< #include "ns3/srnc-tag.h"
+< 
+< #include <iostream>
+< #include <fstream>
+< 
+< using namespace ns3;
+< using namespace std;
+337,357d325
+<   // Ptr<Node> RxNowNode = GetNode();
+< 
+<   // Ipv4Header iHD;
+<   // packet->PeekHeader (iHD);
+<   // uint32_t m_RecvIncomingLabel = iHD.GetEncodedLabel();
+<   // uint8_t pri = iHD.GetPri();
+<   // std::cout << "pkt size = " << packet->GetSize ()  << "nodeid = " << RxNowNodeID << "\n";
+<   // if (RxNowNodeID  == 3)
+<   // {
+<   //   ofstream fout;
+<   //   fout.open( "0_AP1_lable.txt" ,ios::app);
+<   //   fout << Simulator::Now ().GetSeconds ()  <<  " "  << m_RecvIncomingLabel+(int(pri)/2)*10000 << "\n";
+<   //   fout.close();
+<   // }
+<   // else if (RxNowNodeID  == 4)
+<   // {
+<   //   ofstream fout;
+<   //   fout.open( "0_AP2_lable.txt" ,ios::app);
+<   //   fout << Simulator::Now ().GetSeconds ()  <<  " "  << m_RecvIncomingLabel+(int(pri)/2)*10000 << "\n";
+<   //   fout.close();
+<   // }
+360a329
+> 

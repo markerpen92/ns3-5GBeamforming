@@ -1,0 +1,11 @@
+474,478c474,477
+<   NetDeviceContainer
+<   virtual Install (const WifiPhyHelper &phy,
+<                    const WifiMacHelper &mac,
+<                    NodeContainer::Iterator first,
+<                    NodeContainer::Iterator last) const;
+---
+>   virtual NetDeviceContainer Install (const WifiPhyHelper &phy,
+>                                       const WifiMacHelper &mac,
+>                                       NodeContainer::Iterator first,
+>                                       NodeContainer::Iterator last) const;

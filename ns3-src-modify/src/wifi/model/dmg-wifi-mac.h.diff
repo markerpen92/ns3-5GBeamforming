@@ -1,0 +1,18 @@
+134a135,136
+> typedef std::map<AntennaID, Mac48Address> MU_MIMO_ANTENNA2RESPONDER;         /* Typedef for a map between an Antenna ID and the responder it will transmit to in MU-MIMO*/
+> typedef std::map<AntennaID, AntennaID> SU_MIMO_ANTENNA2ANTENNA;              /* Typedef for a map between a TX Antenna ID and the RX Antenna ID it will transmit to in SU-MIMO*/
+410d411
+<   float GetSnrTable (void);
+1278d1278
+<   float GetSnrConfiguration (SNR_MAP &snrMap);
+1725c1725
+<   TracedCallback<MimoPhaseMeasurementsAttributes> m_suMimoMimoPhaseMeasurements;
+---
+>   TracedCallback<MimoPhaseMeasurementsAttributes, SU_MIMO_ANTENNA2ANTENNA> m_suMimoMimoPhaseMeasurements;
+1759a1760,1761
+>    * \param MU_MIMO_ANTENNA2RESPONDER The matching between the antenna IDs and the responders they will transmit to.
+>    * \param bool Whether the node is the initiator or a responder in the MU-MIMO training
+1761c1763
+<   TracedCallback<MIMO_AWV_CONFIGURATION, uint8_t, uint16_t> m_muMimoOptimalConfig;
+---
+>   TracedCallback<MIMO_AWV_CONFIGURATION, uint8_t, uint16_t, MU_MIMO_ANTENNA2RESPONDER, bool> m_muMimoOptimalConfig;

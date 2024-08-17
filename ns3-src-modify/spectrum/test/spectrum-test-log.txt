@@ -1,1 +1,0 @@
-Only in ../../NS3-WiGig/src/spectrum/test: three-gpp-channel-test-suite.cc

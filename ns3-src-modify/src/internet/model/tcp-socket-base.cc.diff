@@ -1,0 +1,29 @@
+65,69d64
+< #include <iostream>
+< #include <fstream>
+< 
+< using namespace ns3;
+< using namespace std;
+73d67
+< 
+3238d3231
+<   // std::cout << win << ",," << inflight << "\n";
+4226,4227d4218
+< 
+< 
+4231,4238d4221
+< {
+<   // if (Simulator::Now ().GetSeconds () > 1.4)
+<   // {
+<   //   ofstream fout;
+<   //   fout.open( "1_seq.txt" ,ios::app);
+<   //   fout << Simulator::Now ().GetSeconds ()  <<  " "  << newValue << "\n";
+<   //   fout.close();
+<   // }
+4239a4223
+> {
+4258,4261d4241
+<     // ofstream fout;
+<     // fout.open( "1_RTT.txt" ,ios::app);
+<     // fout << Simulator::Now ().GetSeconds ()  <<  " "  << newValue.GetMicroSeconds() << "\n";
+<     // fout.close();

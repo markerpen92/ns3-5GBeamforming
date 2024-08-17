@@ -1,0 +1,96 @@
+312c312,313
+<                                                            Ptr<DmgWifiMac> srcWifiMac, MimoPhaseMeasurementsAttributes attributes)
+---
+>                                                            Ptr<DmgWifiMac> srcWifiMac, MimoPhaseMeasurementsAttributes attributes,
+>                                                            SU_MIMO_ANTENNA2ANTENNA antenna2antenna)
+314,315c315,316
+<   uint32_t srcID = helper->map_Mac2ID[srcWifiMac->GetAddress ()];
+<   uint32_t dstID = helper->map_Mac2ID[attributes.peerStation];
+---
+>   uint32_t dstID = helper->map_Mac2ID[srcWifiMac->GetAddress ()];
+>   uint32_t srcID = helper->map_Mac2ID[attributes.peerStation];
+352c353
+<           *outputMimoResults->GetStream () << "TX_ANTENNA_ID" << uint16_t (i) << ",TX_SECTOR_ID" << uint16_t (i) << ",TX_AWV_ID" << uint16_t (i) << ",";
+---
+>           *outputMimoResults->GetStream () << "PEER_RX_ID" << uint16_t (i) << ",TX_ANTENNA_ID" << uint16_t (i) << ",TX_SECTOR_ID" << uint16_t (i) << ",TX_AWV_ID" << uint16_t (i) << ",";
+384c385,386
+<       *helper->m_mimoPhaseResults[pair]->GetStream () << uint16_t (txCombination.at (i).first.first - 1)
+---
+>       *helper->m_mimoPhaseResults[pair]->GetStream () << uint16_t (antenna2antenna[txCombination.at (i).first.first] - 1) << ","
+>                                      << uint16_t (txCombination.at (i).first.first - 1)
+584,585c586,587
+<   MAP_PAIR2STREAM_I it = helper->m_mimoTxCandidates.find (pair);
+<   if (it == helper->m_mimoTxCandidates.end ())
+---
+>   MAP_PAIR2STREAM_I it = helper->m_mimoPhaseMeasurements.find (pair);
+>   if (it == helper->m_mimoPhaseMeasurements.end ())
+625c627
+<               *outputMimoPhase->GetStream () << "SINR_" << uint16_t (i) << "_" << uint16_t (j) << ",";
+---
+>               *outputMimoPhaseR->GetStream () << "SINR_" << uint16_t (i) << "_" << uint16_t (j) << ",";
+713c715,716
+<                                                            uint8_t muGroupID, uint16_t bftID)
+---
+>                                                            uint8_t muGroupID, uint16_t bftID,
+>                                                            MU_MIMO_ANTENNA2RESPONDER antenna2responder, bool isInitiator)
+722,726c725
+<       Ptr<OutputStreamWrapper> outputMimoPhase = helper->m_ascii.CreateFileStream (helper->m_tracesFolder + "MuMimo_" +
+<                                                                                    std::to_string (srcID) + "_" + std::to_string (muGroupID) + "_"
+<                                                                                    + helper->m_runNumber + ".csv");
+<       *outputMimoPhase->GetStream () << "TIME,TRACE_ID,SRC_ID,MU_GROUP_ID,BFT_ID,";
+<       for (uint8_t i = 1; i <= config.size (); i++)
+---
+>       if (isInitiator)
+728c727,750
+<           *outputMimoPhase->GetStream () << "ANTENNA_ID" << uint16_t (i) << ",SECTOR_ID" << uint16_t (i) << ",AWV_ID" << uint16_t (i) << ",";
+---
+>           Ptr<OutputStreamWrapper> outputMimoPhase = helper->m_ascii.CreateFileStream (helper->m_tracesFolder + "MuMimo_I_" +
+>                                                                                        std::to_string (srcID) + "_" + std::to_string (muGroupID) + "_"
+>                                                                                        + helper->m_runNumber + ".csv");
+>           *outputMimoPhase->GetStream () << "TIME,TRACE_ID,SRC_ID,MU_GROUP_ID,BFT_ID,";
+>           for (uint8_t i = 1; i <= config.size (); i++)
+>             {
+>               *outputMimoPhase->GetStream () << "RESPONDER_ID" << uint16_t (i) << ",ANTENNA_ID" << uint16_t (i)
+>                                              << ",SECTOR_ID" << uint16_t (i) << ",AWV_ID" << uint16_t (i) << ",";
+>             }
+>           *outputMimoPhase->GetStream () << "BSS_ID" << std::endl;
+>           helper->m_mimoOptimalConfiguration [pair] = outputMimoPhase;
+>         }
+>       else
+>         {
+>           Ptr<OutputStreamWrapper> outputMimoPhase = helper->m_ascii.CreateFileStream (helper->m_tracesFolder + "MuMimo_R_" +
+>                                                                                        std::to_string (srcID) + "_" + std::to_string (muGroupID) + "_"
+>                                                                                        + helper->m_runNumber + ".csv");
+>           *outputMimoPhase->GetStream () << "TIME,TRACE_ID,SRC_ID,MU_GROUP_ID,BFT_ID,";
+>           for (uint8_t i = 1; i <= config.size (); i++)
+>             {
+>               *outputMimoPhase->GetStream () << "ANTENNA_ID" << uint16_t (i) << ",SECTOR_ID" << uint16_t (i) << ",AWV_ID" << uint16_t (i) << ",";
+>             }
+>           *outputMimoPhase->GetStream () << "BSS_ID" << std::endl;
+>           helper->m_mimoOptimalConfiguration [pair] = outputMimoPhase;
+730,731d751
+<       *outputMimoPhase->GetStream () << "BSS_ID" << std::endl;
+<       helper->m_mimoOptimalConfiguration [pair] = outputMimoPhase;
+736c756,764
+<   for (uint8_t i = 0; i < config.size (); i ++)
+---
+>   if (isInitiator)
+>     {
+>       for (uint8_t i = 0; i < config.size (); i ++)
+>         {
+>           *helper->m_mimoOptimalConfiguration [pair]->GetStream () << helper->map_Mac2ID[antenna2responder[config.at (i).first.first]] << "," << uint16_t (config.at (i).first.first - 1) << ","
+>                                                                    << uint16_t (config.at (i).first.second - 1) << "," << uint16_t (config.at (i).second) << ",";
+>         }
+>     }
+>   else
+738,739c766,770
+<       *helper->m_mimoOptimalConfiguration [pair]->GetStream () << uint16_t (config.at (i).first.first - 1) << "," << uint16_t (config.at (i).first.second - 1)
+<                                          << "," << uint16_t (config.at (i).second) << ",";
+---
+>       for (uint8_t i = 0; i < config.size (); i ++)
+>         {
+>           *helper->m_mimoOptimalConfiguration [pair]->GetStream () << uint16_t (config.at (i).first.first - 1) << "," << uint16_t (config.at (i).first.second - 1)
+>                                              << "," << uint16_t (config.at (i).second) << ",";
+>         }
+740a772
+> 

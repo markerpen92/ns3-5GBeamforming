@@ -1,0 +1,4 @@
+82d81
+< class DmgWifiSpectrumSignalParameters;
+83a83
+> struct DmgWifiSpectrumSignalParameters;

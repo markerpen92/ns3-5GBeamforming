@@ -1,0 +1,29 @@
+36,41d35
+< 
+< #include <iostream>
+< #include <fstream>
+< using namespace ns3;
+< using namespace std;
+< 
+229,242c223,228
+<      TimestampTag timestamp;
+<      if (packet->FindFirstMatchingByteTag (timestamp))
+<        {
+<          Time tx = timestamp.GetTimestamp ();
+<          accummulator += Simulator::Now () - tx;
+<          if (Simulator::Now ().GetSeconds () > 1.9)
+<          {
+<            ofstream fout;
+<            fout.open( "0_packet_latency.txt" ,ios::app);
+<            fout << Simulator::Now ().GetSeconds ()  <<  " "  << (Simulator::Now () - tx).GetMicroSeconds() << " " << std::abs(49152-(InetSocketAddress::ConvertFrom (from).GetPort ()))<< "\n";
+<            fout.close();
+<          }
+< 
+<        }
+---
+> //      TimestampTag timestamp;
+> //      if (packet->FindFirstMatchingByteTag (timestamp))
+> //        {
+> //          Time tx = timestamp.GetTimestamp ();
+> //          accummulator += Simulator::Now () - tx;
+> //        }

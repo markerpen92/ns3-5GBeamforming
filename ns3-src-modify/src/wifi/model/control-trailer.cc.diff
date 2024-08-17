@@ -1,0 +1,18 @@
+154c154
+<       m_bw |= (value && 0x1F) << 3;
+---
+>       m_bw |= (value & 0x1F) << 3;
+167c167
+<       m_bw |= (value && 0x1F) << 3;
+---
+>       m_bw |= (value & 0x1F) << 3;
+184c184
+<       m_bw |= (value && 0x1F) << 3;
+---
+>       m_bw |= (value & 0x1F) << 3;
+199,200c199,200
+<           stream.SNR = (value >> offset) && 0xF;
+<           stream.RSSI = (value >> (offset + 4)) && 0x7;
+---
+>           stream.SNR = (value >> offset) & 0xF;
+>           stream.RSSI = (value >> (offset + 4)) & 0x7;

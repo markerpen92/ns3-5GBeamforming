@@ -1,0 +1,150 @@
+44,49c44
+<     m_headerSize(5*4),
+<     //---NC header---
+<     NcPri (0),
+<     EncodedNumber (0),
+<     EncodedLabel (0),
+<     EncodedCoeffVector (0)
+---
+>     m_headerSize(5*4)
+387,442d381
+< //--------NC Function--------
+< std::vector <uint8_t>
+< Ipv4Header::GetReceivedHeaderCoeffVector() const
+< { 
+<   return EncodedCoeffVector;
+< }
+< void 
+< Ipv4Header::SetEncodedLabel(uint32_t label)
+< {
+<   EncodedLabel = label;
+<   NS_LOG_FUNCTION(this << " SetNcLabel:"<<label);
+< }
+< 
+< uint32_t
+< Ipv4Header::GetEncodedLabel() const
+< { 
+<   NS_LOG_FUNCTION(this << " GetNcLabel:"<< EncodedLabel);
+<   return EncodedLabel;
+< }
+< void 
+< Ipv4Header::SetEncodedPacketNumber(uint8_t numbers)
+< {
+<   EncodedNumber = numbers;
+< }
+< 
+< uint8_t 
+< Ipv4Header::GetEncodedPacketNumber() const
+< {
+<   return EncodedNumber;
+< }
+< 
+< void 
+< Ipv4Header::SetPri(uint8_t pri)
+< {
+<   NcPri = pri;
+< }
+< 
+< uint8_t 
+< Ipv4Header::GetPri() const
+< {
+<   return NcPri;
+< }
+< 
+< void 
+< Ipv4Header::SetEncodedCoeffVector(const std::vector<uint8_t>& vector)
+< { 
+<   EncodedCoeffVector = vector;
+< }
+< 
+< const std::vector<uint8_t>& 
+< Ipv4Header::GetEncodedCoeffVector() const
+< {
+<   return EncodedCoeffVector;
+< }
+< 
+< 
+448,458c387,388
+<   uint8_t verIhl;
+<   if (m_ttl > 64 )
+<   {
+<     verIhl = (4 << 4) | (10);
+<   }
+<   else
+<   {
+<     verIhl = (4 << 4) | (5);
+<   }
+<   // verIhl = (4 << 4) | (5);
+<   // verIhl = (4 << 4) | (10);
+---
+> 
+>   uint8_t verIhl = (4 << 4) | (5);
+461,470c391
+<   if (m_ttl > 64 )
+<   {
+<     i.WriteHtonU16 (m_payloadSize + 10*4);
+<   }
+<   else
+<   {
+<     i.WriteHtonU16 (m_payloadSize + 5*4);
+<   }
+<   // i.WriteHtonU16 (m_payloadSize + 5*4);
+<   // i.WriteHtonU16 (m_payloadSize + 10*4);
+---
+>   i.WriteHtonU16 (m_payloadSize + 5*4);
+500,535d420
+< //-----NC Serialize-----
+<   if (m_ttl > 64 )
+<   {
+<     std::vector <uint8_t> headerVector;
+<     for(uint8_t i = 0 ; i < 14 ; i++)
+<     {   
+<       if (i < EncodedCoeffVector.size())
+<       {
+<         headerVector.push_back(EncodedCoeffVector[i]);
+<       }
+<       else
+<       {
+<         headerVector.push_back(0);
+<       }
+<     }
+<     i.WriteU32(EncodedLabel);
+<     i.WriteU8(EncodedNumber);
+<     i.WriteU8(NcPri);
+<     if(EncodedNumber)
+<     {
+<       for(uint8_t index = 0; index < headerVector.size();index++)
+<       {
+<         i.WriteU8(headerVector[index]);
+<       }
+<       // for(uint8_t index = 0; index < 14 ;index++)
+<       // {
+<       //   i.WriteU8(EncodedCoeffVector[index]);
+<       // }
+<     }
+< 
+<   }
+< 
+< 
+< 
+< 
+< 
+588,605d472
+<   if (m_ttl > 64)
+<   {
+<     EncodedLabel = i.ReadU32();
+<     EncodedNumber = i.ReadU8();
+<     NcPri = i.ReadU8();
+< 
+<     int temp;
+< 
+<     if(EncodedNumber)
+<     {
+<       for(uint8_t index = 0; index < 14 ;index++)
+<       {
+<         temp = i.ReadU8();
+<         EncodedCoeffVector.push_back(temp);
+<       }
+<     }
+<   }
+< 

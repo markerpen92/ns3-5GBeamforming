@@ -1,0 +1,76 @@
+222a223,235
+> void
+> Codebook::SetMimoBeamformingSectorList (SectorSweepType type, Mac48Address address, Antenna2SectorList &sectorList)
+> {
+>   if (type == TransmitSectorSweep)
+>     {
+>       m_txMimoCustomSectors[address] = sectorList;
+>     }
+>   else
+>     {
+>       m_rxMimoCustomSectors[address] = sectorList;
+>     }
+> }
+> 
+436c449
+<   Antenna2SectorList *txSectorList = (Antenna2SectorList *) &m_txCustomSectors.find (peer)->second;
+---
+>   Antenna2SectorList *txSectorList = (Antenna2SectorList *) &m_txMimoCustomSectors.find (peer)->second;
+1042c1055
+< Codebook::SetUpMimoBrpTxss (std::vector<AntennaID> antennaIds)
+---
+> Codebook::SetUpMimoBrpTxss (std::vector<AntennaID> antennaIds, Mac48Address peerStation)
+1044a1058,1060
+>   m_mimoCombinations.clear ();
+>   m_txMimoCustomSectors.erase (peerStation);
+>   m_rxMimoCustomSectors.erase (peerStation);
+1171c1187
+<       iter = m_txCustomSectors.find (address);
+---
+>       iter = m_txMimoCustomSectors.find (address);
+1173c1189
+<       if (iter != m_txCustomSectors.end ())
+---
+>       if (iter != m_txMimoCustomSectors.end ())
+1190c1206
+<       iter = m_rxCustomSectors.find (address);
+---
+>       iter = m_rxMimoCustomSectors.find (address);
+1192c1208
+<       if (iter != m_rxCustomSectors.end ())
+---
+>       if (iter != m_rxMimoCustomSectors.end ())
+1259,1260c1275,1276
+<   SetBeamformingSectorList (TransmitSectorSweep, from, txSectorCandidates);
+<   SetBeamformingSectorList (ReceiveSectorSweep, from, rxSectorCandidates);
+---
+>   SetMimoBeamformingSectorList (TransmitSectorSweep, from, txSectorCandidates);
+>   SetMimoBeamformingSectorList (ReceiveSectorSweep, from, rxSectorCandidates);
+1299c1315
+<   Antenna2SectorList *txSectorList = (Antenna2SectorList *) &m_txCustomSectors.find (peer)->second;
+---
+>   Antenna2SectorList *txSectorList = (Antenna2SectorList *) &m_txMimoCustomSectors.find (peer)->second;
+1363c1379
+<   iter = m_rxCustomSectors.find (peer);
+---
+>   iter = m_rxMimoCustomSectors.find (peer);
+1365c1381
+<   if (iter != m_rxCustomSectors.end ())
+---
+>   if (iter != m_rxMimoCustomSectors.end ())
+1463a1480,1490
+> SectorID
+> Codebook::GetSectorIdMimoBrpTxss (AntennaID antenna, SectorID sector)
+> {
+>   uint8_t numberOfSectorsTrained = m_currentSectorList->find (antenna)->second.size ();
+>   if (sector > numberOfSectorsTrained)
+>     {
+>       sector = std::remainder (sector, numberOfSectorsTrained);
+>     }
+>   return sector;
+> }
+> 
+1489c1516
+<   SetBeamformingSectorList (TransmitSectorSweep, own, txSectorCandidates);
+---
+>   SetMimoBeamformingSectorList (TransmitSectorSweep, own, txSectorCandidates);

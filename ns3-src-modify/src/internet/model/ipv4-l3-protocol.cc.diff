@@ -1,0 +1,4 @@
+604c604
+<       // packet->RemoveAtEnd (packet->GetSize () - ipHeader.GetPayloadSize ());
+---
+>       packet->RemoveAtEnd (packet->GetSize () - ipHeader.GetPayloadSize ());

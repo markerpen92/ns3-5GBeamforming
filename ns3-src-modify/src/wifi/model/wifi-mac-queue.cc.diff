@@ -1,0 +1,131 @@
+28,36d27
+< #include "ns3/ipv4-header.h"
+< #include "ns3/llc-snap-header.h"
+< 
+< #include <iostream>
+< #include <fstream>
+< 
+< using namespace ns3;
+< using namespace std;
+< 
+111,122d101
+<       // Ptr<Packet> copy = (*it)->GetPacket()->Copy();
+<       // if (copy->GetSize() == 1480)
+<       // {
+<       //   LlcSnapHeader llc;
+<       //   Ipv4Header iHD;
+<       //   copy->RemoveHeader(llc);
+<       //   copy->PeekHeader (iHD);
+<       //   copy->AddHeader(llc);
+<       //   uint8_t pri = iHD.GetPri();
+<         // std::cout << int(pri) <<" queue packet drop by time\n";
+< 
+<       // }
+124d102
+<       // std::cout << copy->GetSize() <<" queue packet drop by time\n";
+134a113
+> 
+146,175d124
+< void
+< WifiMacQueue::LabelExceeded (uint32_t IncomingLabel,ConstIterator &it2)
+< {
+<   NS_LOG_FUNCTION (this);
+<   //Remove all the packet in queue which size = 1480 and Label is smaller than IncomingLabel.
+<       Ptr<Packet> copy = (*it2)->GetPacket()->Copy();
+< 
+<       if (copy->GetSize() == 1480)
+<       {   
+<         LlcSnapHeader llc;
+<         Ipv4Header iHD;
+<         copy->RemoveHeader(llc);
+<         copy->PeekHeader (iHD);
+<         copy->AddHeader(llc);
+<         uint32_t FindingLabel = iHD.GetEncodedLabel();
+< 
+<         if (FindingLabel < IncomingLabel-10)
+<         {
+<           auto curr = it2++;
+<           DoRemove (curr);
+<           std::cout <<"Incoming " << IncomingLabel << ",Remove " << FindingLabel << "\n";
+<         }
+<       }
+< }
+< 
+< 
+< 
+< double NowLable = 0;
+< 
+<  
+183d131
+< 
+185d132
+<   // if (QueueBase::GetNPackets () < GetMaxSize ().GetValue ())
+188,234d134
+<       Ptr<Packet> copy = item->GetPacket()->Copy ();
+<       if (item->GetPacket()->GetSize () == 1480)
+<       {
+<         LlcSnapHeader llc;
+<         Ipv4Header iHD;
+<         copy->RemoveHeader(llc);
+<         copy->PeekHeader (iHD);
+<         copy->AddHeader(llc);
+<         // uint32_t m_RecvIncomingLabel = iHD.GetEncodedLabel();
+<         // uint8_t pri = iHD.GetPri();
+< 
+<         // if (pri%2 ==1 )
+<         // {
+<           // std::cout << "1\n";
+<           // ofstream fout;
+<           // fout.open( "2_AP1_queue.txt" ,ios::app);
+<           // fout << Simulator::Now ().GetSeconds () <<  " "  << QueueBase::GetNPackets () << "\n";
+<           // fout.close();
+<         // } 
+<         // else if (pri%2 == 0)
+<         // {
+<           // std::cout << "AP222222222222222222222\n";
+<             // ofstream fout;
+<             // fout.open( "2_AP2_queue.txt" ,ios::app);
+<             // fout << Simulator::Now ().GetSeconds () <<  " "  << QueueBase::GetNPackets () << "\n";
+<             // fout.close();
+<         // }
+<         // uint8_t EncodeNumber = iHD.GetEncodedPacketNumber();
+<         // std::cout << "m_RecvIncomingLabel =" << m_RecvIncomingLabel << "\n"; // I have the new label
+< 
+<         // if (m_RecvIncomingLabel > NowLable)
+<         // {
+<         //   NowLable = m_RecvIncomingLabel;
+<         //   // ConstIterator it2 = begin ();
+<         //   // while (it2 != end ())
+<         //   // {
+<         //   //   LabelExceeded(m_RecvIncomingLabel,it2);
+<         //   //   it2++;
+<         //   // }
+<         //   return DoEnqueue (pos, item);
+<         // }
+<         // else //if (m_RecvIncomingLabel == NowLable)
+<         // {
+<         //   return DoEnqueue (pos, item);
+<         // }
+<         // return DoEnqueue (pos, item);
+<       }
+236,239d135
+<       // else
+<       // {
+<       //   return DoEnqueue (pos, item);
+<       // }
+241c137
+<     // std::cout << QueueBase::GetNPackets () << "\n";
+---
+> 
+244d139
+< 
+259c154
+<    if (m_dropPolicy == DROP_OLDEST)
+---
+>   if (m_dropPolicy == DROP_OLDEST)
+264,265c159,160
+<     return DoEnqueue (pos, item);
+<       // return 0;
+---
+> 
+>   return DoEnqueue (pos, item);

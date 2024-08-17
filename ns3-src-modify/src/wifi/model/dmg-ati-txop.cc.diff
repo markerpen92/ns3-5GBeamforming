@@ -1,0 +1,8 @@
+184c184
+< DmgAtiTxop::GotAck (double snr, WifiMode txMode)
+---
+> DmgAtiTxop::GotAck (void)
+186c186
+<   NS_LOG_FUNCTION (this << snr << txMode);
+---
+>   NS_LOG_FUNCTION (this);

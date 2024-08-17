@@ -1,0 +1,107 @@
+138,141d137
+< bool times[10] = {0};
+< Ipv4Address address_list[10];
+< bool RoundRobin = true;
+< 
+226,228c222,223
+<       uint32_t selectIndex = 0;
+< 
+<         if (m_randomEcmpRouting && RoundRobin == 0)
+---
+>       uint32_t selectIndex;
+>       if (m_randomEcmpRouting)
+234,301c229
+<           if (allRoutes.size () == 1)
+<           {
+<             selectIndex = 0;
+<           }
+<           else
+<           {
+<             if (dest == address_list[0] && dest!= "10.1.1.1") // packet
+<               {
+<                 selectIndex = pri[0] > -1 ? !(pri[0]%2) : 0 ; //pri is global
+<                 // selectIndex = times[0];
+<                 // times[0] = times[0]^1;
+<               }
+<               else if (dest == address_list[1] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[1] > -1 ? !(pri[1]%2) : 0 ; //pri is global
+<                 // selectIndex = times[1];
+<                 // times[1] = times[1]^1;
+<               }
+<               else if (dest == address_list[2] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[2] > -1 ? !(pri[2]%2) : 0 ; //pri is global
+<                 // selectIndex = times[2];
+<                 // times[2] = times[2]^1;
+<               }
+<               else if (dest == address_list[3] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[3] > -1 ? !(pri[3]%2) : 0 ; //pri is global
+<                 // selectIndex = times[3];
+<                 // times[3] = times[3]^1;
+<               }
+<                else if (dest == address_list[4] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[4] > -1 ? !(pri[4]%2) : 0 ; //pri is global
+<                 // selectIndex = times[4];
+<                 // times[4] = times[4]^1;
+<               }
+<               else if (dest == address_list[5] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[5] > -1 ? !(pri[5]%2) : 0 ; //pri is global
+<                 // selectIndex = times[5];
+<                 // times[5] = times[5]^1;
+<               }
+<               else if (dest == address_list[6] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[6] > -1 ? !(pri[6]%2) : 0 ; //pri is global
+<                 // selectIndex = times[6];
+<                 // times[6] = times[6]^1;
+<               }
+<               else if (dest == address_list[7] && dest!= "10.1.1.1")//packet
+<               {
+<                 selectIndex = pri[7] > -1 ? !(pri[7]%2) : 0 ; //pri is global
+<                 // selectIndex = times[7];
+<                 // times[7] = times[7]^1;
+<               }
+<               else if (dest == "10.1.1.1")//ack
+<               {
+<                 selectIndex = times[8];
+<                 times[8] = times[8]^1;
+<               }
+<               else 
+<               {
+<                 // selectIndex = pri[3] > -1 ? pri[3] : 0 ; //pri is global
+<                 selectIndex = times[9];
+<                 times[9] = times[9]^1;
+<                 // selectIndex = 0;
+<               }
+<               // std::cout << selectIndex << " \n";
+<           }
+---
+>           selectIndex = 0;
+555d482
+< 
+564,582d490
+<   // MengHua{
+<   for (int list = 0; list < 10; list++) //regist New IP
+<   {
+<     if (address_list[list] != header.GetDestination() && address_list[list] == "102.102.102.102")  
+<     {
+< 
+<       address_list[list] = header.GetDestination();
+<       rout = list;
+<       // std::cout << list  << "  "<< header.GetDestination()<< "\n";
+<       break;
+<     }
+<     else if (address_list[list] == header.GetDestination())
+<     {
+<       rout = list;
+<       break;
+<     }
+<   }
+<   pri[rout] = p->GetSize () == 1432 ? header.GetPri() : -1;
+<   // }MengHua
+612d519
+<   // Ptr<Ipv4Route> rtentry = LookupGlobal (header.GetDestination ());

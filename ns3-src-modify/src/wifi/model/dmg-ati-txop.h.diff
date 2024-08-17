@@ -1,0 +1,8 @@
+61,63d60
+<    *
+<    * \param snr
+<    * \param txMode
+65c62
+<   void GotAck (double snr, WifiMode txMode);
+---
+>   void GotAck (void);

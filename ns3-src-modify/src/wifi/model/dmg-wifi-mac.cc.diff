@@ -1,0 +1,175 @@
+1374a1375
+>           NS_LOG_DEBUG ("Short SSW config: " << +shortSsw.GetCDOWN () << " " << +m_codebook->GetActiveAntennaID () << " " << +shortSsw.GetRFChainID () );
+1670,1677c1671,1673
+<           // ANTENNA_CONFIGURATION_COMBINATION config = it->first;
+<           // printf ("My AntennaID: %d, Peer AntennaID: %d, Peer SectorID: %2d, SNR: %+2.2f dB\n",
+<           //         std::get<0> (config), std::get<1> (config), std::get<2> (config), RatioToDb (it->second));
+<             if (RatioToDb (it->second) > -3)
+<             {
+<               std::cout << RatioToDb (it->second) << "        ";
+<             }
+<             // break;
+---
+>           ANTENNA_CONFIGURATION_COMBINATION config = it->first;
+>           printf ("My AntennaID: %d, Peer AntennaID: %d, Peer SectorID: %2d, SNR: %+2.2f dB\n",
+>                   std::get<0> (config), std::get<1> (config), std::get<2> (config), RatioToDb (it->second));
+1685,1687c1681,1683
+<   // std::cout << "****************************************************************" << std::endl;
+<   // std::cout << " SNR Dump for Sector Level Sweep for Station: " << GetAddress () << std::endl;
+<   // std::cout << "****************************************************************" << std::endl;
+---
+>   std::cout << "****************************************************************" << std::endl;
+>   std::cout << " SNR Dump for Sector Level Sweep for Station: " << GetAddress () << std::endl;
+>   std::cout << "****************************************************************" << std::endl;
+1691,1694c1687,1690
+<       // std::cout << "Peer DMG STA: " << it->first << std::endl;
+<       // std::cout << "***********************************************" << std::endl;
+<       // std::cout << "Transmit Sector Sweep (TXSS) SNRs: " << std::endl;
+<       // std::cout << "***********************************************" << std::endl;
+---
+>       std::cout << "Peer DMG STA: " << it->first << std::endl;
+>       std::cout << "***********************************************" << std::endl;
+>       std::cout << "Transmit Sector Sweep (TXSS) SNRs: " << std::endl;
+>       std::cout << "***********************************************" << std::endl;
+1696,1737c1692,1696
+<       // std::cout << "***********************************************" << std::endl;
+<       // std::cout << "Receive Sector Sweep (RXSS) SNRs: " << std::endl;
+<       // std::cout << "***********************************************" << std::endl;
+<       // PrintSnrConfiguration (snrPair.second);
+<       // std::cout << "***********************************************" << std::endl;
+<     }
+< }
+< 
+< float
+< DmgWifiMac::GetSnrConfiguration (SNR_MAP &snrMap)
+< {
+<   // if (snrMap.begin () == snrMap.end ())
+<   //   {
+<   //     std::cout << "No SNR Information Availalbe" << std::endl;
+<   //     return -200.0;
+<   //   }
+<   // else
+<   //   {
+<       for (SNR_MAP::iterator it = snrMap.begin (); it != snrMap.end (); it++)
+<         {
+<             while (RatioToDb (it->second) < -3)
+<             {
+<               it++;
+<             }
+<             return RatioToDb (it->second);
+< 
+<         }
+<     // }
+<     return -100.0;
+< }
+< 
+< float
+< DmgWifiMac::GetSnrTable (void)
+< {
+<   // std::cout << "****************************************************************" << std::endl;
+<   // std::cout << " SNR Dump for Sector Level Sweep for Station: " << GetAddress () << std::endl;
+<   // std::cout << "****************************************************************" << std::endl;
+<   for (STATION_SNR_PAIR_MAP_CI it = m_stationSnrMap.begin (); it != m_stationSnrMap.end (); it++)
+<     {
+<       SNR_PAIR snrPair = it->second;
+<       // std::cout <<"a = "<< a <<"\n";
+<       return GetSnrConfiguration (snrPair.first);
+---
+>       std::cout << "***********************************************" << std::endl;
+>       std::cout << "Receive Sector Sweep (RXSS) SNRs: " << std::endl;
+>       std::cout << "***********************************************" << std::endl;
+>       PrintSnrConfiguration (snrPair.second);
+>       std::cout << "***********************************************" << std::endl;
+1739d1697
+<     return -105.0;
+1742,1743d1699
+< 
+< 
+2727c2683
+<       m_txssPackets = m_codebook->SetUpMimoBrpTxss (antennaIds);
+---
+>       m_txssPackets = m_codebook->SetUpMimoBrpTxss (antennaIds, responder);
+2980d2935
+<   // For now we set the number of requested tx combinations to 1 - only the best combination
+3205c3160,3161
+< 
+---
+>   // Delete the results from previous trainings
+>   m_suMimoRxCombinations.erase (m_peerStation);
+3523a3480
+>   std::priority_queue<std::pair<double, SU_MIMO_ANTENNA2ANTENNA>> antenna2antennaQueue;
+3587c3544
+< //          uint8_t bestTxRxPairIdx = 0; // TO-DO (Check with NINA)
+---
+>           uint8_t bestTxRxPairIdx = 0; // TO-DO (Check with NINA)
+3610c3567
+< //                  bestTxRxPairIdx = indexPairs;
+---
+>                   bestTxRxPairIdx = indexPairs;
+3624a3582,3593
+>           if (m_suMimoBeamformingTraining)
+>             {
+>               SU_MIMO_ANTENNA2ANTENNA antenna2antenna;
+>               for (auto txRxPair : validTxRxPairs.at (bestTxRxPairIdx))
+>                 {
+>                   uint16_t txId = std::floor (txRxPair / static_cast<double> (nRxAntennas)) + 1;
+>                   uint16_t rxId = (txRxPair % nRxAntennas) + 1;
+>                   antenna2antenna[txId] = rxId;
+> 
+>                 }
+>                 antenna2antennaQueue.push (std::make_pair (maxMinSnr, antenna2antenna));
+>             }
+3630c3599
+<                                      nTxAntennas, nRxAntennas, rxCombinationsTested, m_bftIdMap[m_peerStation]));
+---
+>                                      nTxAntennas, nRxAntennas, rxCombinationsTested, m_bftIdMap[m_peerStation]), antenna2antennaQueue.top ().second);
+3885a3855
+>   m_muMimoFeedbackMap.clear ();
+4492a4463
+>   m_muMimoTxCombinations.erase (m_edmgMuGroup.groupID);
+4497a4469
+>   MU_MIMO_ANTENNA2RESPONDER antenna2responder;
+4503c4475,4478
+<             m_sisoIdSubsetIndexList.push_back (m_sisoIdSubsetIndexMap[config]);
+---
+>             {
+>               m_sisoIdSubsetIndexList.push_back (m_sisoIdSubsetIndexMap[config]);
+>               antenna2responder[std::get<0> (config)] = m_aidMap[aid];
+>             }
+4509c4484
+<   m_muMimoOptimalConfig (txCombination, m_edmgMuGroup.groupID, m_muMimoBftIdMap [m_edmgMuGroup.groupID]);
+---
+>   m_muMimoOptimalConfig (txCombination, m_edmgMuGroup.groupID, m_muMimoBftIdMap [m_edmgMuGroup.groupID], antenna2responder, true);
+5228a5204
+>               m_mimoSnrList.clear ();
+5796c5772
+<                         m_txssPackets = m_codebook->SetUpMimoBrpTxss (antennaIds);
+---
+>                         m_txssPackets = m_codebook->SetUpMimoBrpTxss (antennaIds, from);
+5852a5829
+>                                     SectorID sector = m_codebook->GetSectorIdMimoBrpTxss (sectorIdList.at (i).TXAntennaID, sectorIdList.at (i).SectorID);
+5855c5832
+<                                                            sectorIdList.at (i).SectorID);
+---
+>                                                            sector);
+6131a6109
+>                         m_mimoSnrList.clear ();
+6143a6122
+>                         m_mimoSnrList.clear ();
+6146c6125
+<                         m_codebook->SetUpMimoBrpTxss (m_codebook->GetTotalAntennaIdList ());
+---
+>                         m_codebook->SetUpMimoBrpTxss (m_codebook->GetTotalAntennaIdList (), from);
+6178a6158,6162
+>                     // Delete any existing results from previous trainings
+>                     if (m_suMimoBeamformingTraining)
+>                       {
+>                         m_suMimoTxCombinations.erase (from);
+>                       }
+6315a6300
+>                     m_muMimoRxCombinations.erase (element.GetEDMGGroupID ());
+6344c6329,6330
+<                     m_muMimoOptimalConfig (rxCombination, element.GetEDMGGroupID (), m_muMimoBftIdMap [element.GetEDMGGroupID ()]);
+---
+>                     MU_MIMO_ANTENNA2RESPONDER antenna2responder;
+>                     m_muMimoOptimalConfig (rxCombination, element.GetEDMGGroupID (), m_muMimoBftIdMap [element.GetEDMGGroupID ()], antenna2responder, false);

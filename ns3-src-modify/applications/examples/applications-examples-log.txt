@@ -1,5 +1,0 @@
-diff ../../NS3-WiGig/src/applications/examples/three-gpp-http-example.cc ../../ns-3-dev-git/src/applications/examples/three-gpp-http-example.cc
-101c101
-<   CommandLine cmd (__FILE__);
----
->   CommandLine cmd;

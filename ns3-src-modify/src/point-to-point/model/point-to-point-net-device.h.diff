@@ -1,0 +1,74 @@
+23,25d22
+< #include <fstream>
+< #include <iostream>
+< 
+41c38
+< class ErrorModel; 
+---
+> class ErrorModel;
+291,341d287
+< 
+< 
+<   void StartTimeInterval(int list);
+<   /**
+<    * Update TimeInterval
+<    */
+< 
+<   void UpdateTimeInterval(int list);
+< 
+<   /**
+<    * Set TimeInterval
+<    */
+< 
+<   void SetTimeInterval(uint16_t TimeVal);
+< 
+<   void NCpreprocess(Ptr<Packet> packet, int list);
+< 
+<   /**
+<    * Get TimeInterval
+<    */
+< 
+<   uint16_t GetTimeInterval(void) const;
+< 
+<   /**
+<    * Update LabelK
+<    */
+<   void UpdateLabelK(int list);
+< 
+<   /**
+<    * Set LabelK
+<    */
+< 
+<   void SetLabelK(uint32_t labelk,int list);
+< 
+<   /**
+<    * Get LabelK
+<    */
+< 
+<   uint32_t GetLabelK(int list) const;
+< 
+<   /**
+<    * Trigger Clock
+<    */
+< 
+<   /**
+<    * Transmit NC Packet 
+<    */
+< 
+<   void DoTransmitNcPacket(Ptr<Packet> NcPacket,int list);
+< 
+< 
+527,539d472
+< 
+<   //std::vector <uint32_t> RecvTcpSeqVector;
+< 
+<   //std::vector <uint32_t> CodingTcpSeqVector; //sequence number
+< 
+<   //std::vector <uint32_t> RecvTcpTsVector;
+< 
+<   //std::vector <uint32_t> CodingTcpTsVector;//time stamp
+< 
+<   //std::vector <uint32_t> RecvTcpEhVector;
+< 
+<   //std::vector <uint32_t> CodingTcpEhVector;//time stamp echo
+< 

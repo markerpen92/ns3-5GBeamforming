@@ -1,0 +1,6 @@
+82c82
+<                    MakeUintegerChecker<uint8_t> (1, 8)) 
+---
+>                    MakeUintegerChecker<uint8_t> (1, 8))
+371a372
+> 

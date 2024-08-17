@@ -1,7 +1,0 @@
-diff ../../NS3-WiGig/src/spectrum/doc/spectrum.rst ../../ns-3-dev/src/spectrum/doc/spectrum.rst
-322,324c322
-<    gnuplot commands:
-< 
-< .. sourcecode:: none
----
->    gnuplot commands::

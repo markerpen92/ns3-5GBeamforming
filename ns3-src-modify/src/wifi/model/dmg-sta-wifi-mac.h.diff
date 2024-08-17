@@ -1,0 +1,2 @@
+712d711
+<   bool m_groupTrainingPerformed;                //!< Flag to indicate whether any training using TRN SFs was performed.

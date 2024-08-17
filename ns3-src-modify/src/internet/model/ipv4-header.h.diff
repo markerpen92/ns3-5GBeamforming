@@ -1,0 +1,22 @@
+58,71d57
+<   
+< 	void SetEncodedCoeffVector(const std::vector<uint8_t>& vector);
+< 	const std::vector<uint8_t>& GetEncodedCoeffVector() const;
+< 
+< 	std::vector <uint8_t> GetReceivedHeaderCoeffVector() const;
+< 
+< 	void SetEncodedLabel (uint32_t label);
+< 	uint32_t GetEncodedLabel() const;
+< 
+< 	void SetPri(uint8_t pri);
+< 	uint8_t GetPri() const;
+< 
+< 	void SetEncodedPacketNumber(uint8_t numbers);
+< 	uint8_t GetEncodedPacketNumber() const;
+277,282d262
+< 
+< 	uint8_t NcPri;
+< 	uint8_t EncodedNumber;
+< 	uint32_t EncodedLabel;
+< 	std::vector <uint8_t> EncodedCoeffVector;
+< 	std::vector <uint8_t> ReceivedHeaderCoeffVector;

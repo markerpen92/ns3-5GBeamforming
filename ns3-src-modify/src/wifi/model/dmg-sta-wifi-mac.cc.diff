@@ -1,0 +1,12 @@
+124c124
+<                     BooleanValue (true),
+---
+>                     BooleanValue (false),
+232d231
+<   m_groupTrainingPerformed = false;
+1233d1231
+<   m_groupTrainingPerformed = false;
+1424c1422
+<       if (m_groupTraining && IsAssociated () && m_groupTrainingPerformed)
+---
+>       if (m_groupTraining && IsAssociated ())
