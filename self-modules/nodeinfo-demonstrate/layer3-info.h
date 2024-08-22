@@ -25,6 +25,8 @@ namespace ns3 {
      */
     void ns3_PrintRoutingTable_FunctionRouteTable1(Ptr<Node> node);
 
+    void ns3_PrintIpv4Address_FunctionLayer3Info2 (Ptr<Node> node);
+
 } // namespace ns3
 
 #endif // LAYER3_INFO_H

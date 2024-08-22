@@ -81,5 +81,4 @@ namespace ns3 {
             APxMac_DmgApWifiMac_ForTraceLog ->GetAddress()
         );
     }
-
 }

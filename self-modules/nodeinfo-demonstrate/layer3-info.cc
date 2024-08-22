@@ -52,6 +52,27 @@ namespace ns3 {
                 << endl;
         }
     }
+
+
+
+    void ns3_PrintIpv4Address_FunctionLayer3Info2(Ptr<Node> node)
+    {
+        Ptr<Ipv4> ipv4 = node->GetObject<Ipv4>();
+        if(ipv4 == nullptr)
+        {
+            NS_LOG_ERROR("Node does not have an Ipv4 object");
+            return;
+        }
+
+        for (uint32_t i = 0; i < ipv4->GetNInterfaces(); ++i)
+        {
+            for (uint32_t j = 0; j < ipv4->GetNAddresses(i); ++j)
+            {
+                Ipv4Address address = ipv4->GetAddress(i, j).GetLocal();
+                cout << "Node " << node->GetId() << " - Interface " << i << " - Address " << j << ": " << address << endl;
+            }
+        }
+    }
 }
 
 

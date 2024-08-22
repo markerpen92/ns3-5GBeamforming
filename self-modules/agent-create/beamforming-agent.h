@@ -48,7 +48,7 @@ namespace ns3 {
             Dict<string , double> DOUBLE_Variables = dict<string , double>({{"default", 0.0}});
             Dict<string , float > FLOAT_Variables  = dict<string , float> ({{"default", 0.0}});
             Dict<string , string> STRING_Variables = dict<string , string>({{"default", "0"}});
-            void Find(value* v);
+            template <typename T> T Find(string Key);
 
         /*--------------Declare Private attributes-------------------------------------------------*/
         private : 

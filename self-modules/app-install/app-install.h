@@ -53,6 +53,30 @@ namespace ns3 {
         double      SimulateEndTime    ,
         Ipv4Address UsersAddress
     );
+
+
+
+    void ns3_ForUsers_InstallUDPRxSink_TCPApp1(
+        ApplicationContainer *UsersSink_ApplicationContainer , 
+        Ptr<PacketSink>*      Users_PacketSink  , 
+        Ptr<Node>            Users_Node         ,  
+        uint32_t             Users_Port         ,
+        double               SimulateStartTime , 
+        double               SimulateEndTime
+    );
+
+
+
+    void ns3_ForServer_InstallUDPTxSink_TCPApp2(
+        ApplicationContainer *ServerSink_ApplicationContainer , 
+        Ptr<Node>   Server_Node           ,  
+        uint32_t    Server_Port           ,
+        uint32_t    Server_PayloadSize    , 
+        string      Server_DataRate       , 
+        double      SimulateStartTime  , 
+        double      SimulateEndTime    ,
+        Ipv4Address UsersAddress
+    );
 }
 
 #endif /* APP_INSTALL_H */

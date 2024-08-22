@@ -200,16 +200,28 @@ namespace ns3
 
 
     /*----------Half Global variable----------------------------------------------------------------*/
-    void ns3_ClassBF01_AP_BeamformingAgent::Find(value* v)
+    template <typename T> T ns3_ClassBF01_AP_BeamformingAgent::Find(string Key)
     {
-        if(INT_Variables.contains       (v->Key)) 
-            v->INT = INT_Variables      [v->Key];
-        if(DOUBLE_Variables.contains    (v->Key)) 
-            v->DOUBLE = DOUBLE_Variables[v->Key];
-        if(FLOAT_Variables.contains     (v->Key)) 
-            v->FLOAT = FLOAT_Variables  [v->Key];
-        if(STRING_Variables.contains    (v->Key)) 
-            v->STRING = STRING_Variables[v->Key];
+        if(ns3_ClassBF01_AP_BeamformingAgent::INT_Variables.contains(Key))
+        {
+            int int_value = ns3_ClassBF01_AP_BeamformingAgent::INT_Variables[Key];
+            return int_value;
+        }
+        if(ns3_ClassBF01_AP_BeamformingAgent::FLOAT_Variables.contains(Key))
+        {
+            float float_vlaue = ns3_ClassBF01_AP_BeamformingAgent::FLOAT_Variables[Key];
+            return float_vlaue;
+        }
+        if(ns3_ClassBF01_AP_BeamformingAgent::DOUBLE_Variables.contains(Key))
+        {
+            double double_vlaue = ns3_ClassBF01_AP_BeamformingAgent::DOUBLE_Variables[Key];
+            return double_vlaue;
+        }
+        if(ns3_ClassBF01_AP_BeamformingAgent::STRING_Variables.contains(Key))
+        {
+            string string_vlaue = ns3_ClassBF01_AP_BeamformingAgent::STRING_Variables[Key];
+            return string_vlaue;
+        }
     }
     /*----------------------------------------------------------------------------------------------*/
 }

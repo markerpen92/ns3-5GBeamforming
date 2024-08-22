@@ -50,14 +50,15 @@ namespace ns3 {
         double CurrentRx   = (*PacketSink)->GetTotalRx()*8.0/1e6;
         double Interval    = now.GetSeconds()-(*TotalRx)/((*Throughput)+1e-5);
         double IntervalThr = (CurrentRx-*TotalRx)/Interval;
-        *TotalRx           = CurrentRx;
-        *Throughput        = CurrentRx/now.GetSeconds();
+        *Throughput        = CurrentRx/(now.GetSeconds());
 
         cout << "    " <<  left << "\n==========" << "IP<" << Antenna1NodeAddress << " & " << Antenna2NodeAddress << ">" << "at time " << now.GetSeconds() << " ==========\n";
-        cout << "    " <<  setw(10) << "Total-Throughput : " << *Throughput  << endl         ;
-        cout << "    " <<  setw(10) << "Itval-Throughput : " << IntervalThr  << endl         ;
-        cout << "    " <<  setw(10) << "CurrentRx        : " << CurrentRx    << endl         ;
-        cout << "    " <<  setw(10) <<  "Itval            : " << Interval    << '\n' << endl ;
+        cout << "    " <<  setw(10) << "Total-Throughput : " << *Throughput  << endl                               ;
+        cout << "    " <<  setw(10) << "Itval-Throughput : " << IntervalThr  << endl                               ;
+        cout << "    " <<  setw(10) << "CurrentRx        : " << CurrentRx    << endl                               ;
+        cout << "    " <<  setw(10) << "Rx-LastTime      : " << *TotalRx     << endl                               ;
+        cout << "    " <<  setw(10) << "Rx-InInterval    : " << CurrentRx-*TotalRx  << endl , *TotalRx = CurrentRx ;
+        cout << "    " <<  setw(10) << "Itval            : " << Interval    << '\n' << endl                        ;
 
         Simulator::Schedule(
             Seconds(0.1) , 

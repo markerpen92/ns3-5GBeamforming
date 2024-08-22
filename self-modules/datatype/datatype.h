@@ -84,15 +84,6 @@ namespace ns3 {
     Dict<K, V> dict(std::initializer_list<std::pair<const K, V>> init) {
         return Dict<K, V>(init);
     }
-
-    struct value
-    {
-        std::string  Key  ;
-        int          INT  ;
-        float       FLOAT ;
-        double      DOUBLE;
-        std::string STRING;
-    };
 }
 
 #endif /* DATATYPE_H */
