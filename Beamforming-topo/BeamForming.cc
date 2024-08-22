@@ -34,6 +34,11 @@
 #include "ns3/layer3-info.h"
 
 
+#include "ns3/srnc-ethernet-helper.h"
+#include "ns3/srnc-ethernet-channel.h"
+#include "ns3/srnc-ethernet-device.h"
+
+
 #include "ns3/parameters.h"
 #include "ns3/common-tools.h"
 
@@ -109,7 +114,7 @@ int main(int argc , char* argv[])
     int user_num = UserNum;
     uint32_t port = 6666;
     // double   SimulationTime = condition==1 ? 10.0 : 4.0 ;
-    double   SimulationTime = 2.0      ;
+    double   SimulationTime = 5.0      ;
     uint32_t PayloadSize    = 1400     ;
     string   DataRate       = "300Mbps";
     uint32_t AllocationType = CBAP_ALLOCATION;
@@ -249,13 +254,13 @@ int main(int argc , char* argv[])
     Ptr<Node> AP1_Node = APs_NodeContainer.Get(0);
     Ptr<Node> AP2_Node = APs_NodeContainer.Get(1);
 
-    NodeContainer Users_NodeContainer;
-    Users_NodeContainer.Create(user_num);
-    Ptr<Node>     Users_Node  [user_num];
-    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
-    {
-        Users_Node[user_idx] = Users_NodeContainer.Get(user_idx);
-    }
+    // NodeContainer Users_NodeContainer;
+    // Users_NodeContainer.Create(user_num);
+    // Ptr<Node>     Users_Node  [user_num];
+    // for(int user_idx=0 ; user_idx<user_num ; user_idx++)
+    // {
+    //     Users_Node[user_idx] = Users_NodeContainer.Get(user_idx);
+    // }
 
     NodeContainer UsersAntenna1_NodeContainer;
     UsersAntenna1_NodeContainer.Create(user_num);
@@ -273,6 +278,14 @@ int main(int argc , char* argv[])
         UsersAntenna2_Node[antenna2_idx] = UsersAntenna2_NodeContainer.Get(antenna2_idx);
     }
 
+    NodeContainer Users_NodeContainer;
+    Users_NodeContainer.Create(user_num);
+    Ptr<Node>     Users_Node  [user_num];
+    for(int user_idx=0 ; user_idx<user_num ; user_idx++)
+    {
+        Users_Node[user_idx] = Users_NodeContainer.Get(user_idx);
+    }
+
     NodeContainer UsersAntennas_NodeContainer[user_num][2];
     for(int user_idx=0 ; user_idx<user_num ; user_idx++)
     {
@@ -284,8 +297,8 @@ int main(int argc , char* argv[])
     cout << "\n\n" << string(5, '-') << left << setfill('-') << setw(45) << "Create Ether Channel" << string(5, '-') << '\n';
 
     /*----------------Create Ether Channel--------------------------------------------------------------------------------------------------------------------------------------------------*/
-    PointToPointHelper Channel_PointToPointHelper;
-    Channel_PointToPointHelper.SetDeviceAttribute ("DataRate"           , StringValue("5Gbps")     );
+    ns3_ClassSRNC00_PointToPointHelper Channel_PointToPointHelper; 
+    Channel_PointToPointHelper.SetDeviceAttribute ("DataRate"           , StringValue("4Gbps")     );
     Channel_PointToPointHelper.SetChannelAttribute("Delay"              , TimeValue(Seconds(0.000)));
     Channel_PointToPointHelper.SetQueue           ("ns3::DropTailQueue" , "MaxSize" , QueueSizeValue(QueueSize("4294967295p")));
 
@@ -734,7 +747,7 @@ int main(int argc , char* argv[])
             UsersConnectAntennas_Ipv4InterfaceContainer[user_idx][0].GetAddress(1)
         );
 
-        // port--;
+        port--;
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -861,7 +874,7 @@ int main(int argc , char* argv[])
     FlowMonitorHelper FlowMonitorProgram;
     Ptr<FlowMonitor>  MonitorDevice = FlowMonitorProgram.InstallAll();
     // MonitorDevice->SerializeToXmlFile("Traces/FlowMonitorResults.xml", true, true);
-    string TraceFolderName = "Traces2/";
+    string TraceFolderName = "Traces/";
 
     if(PcapTrace)
     {
